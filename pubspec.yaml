@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  url_launcher_ios: ^6.0.14
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -21,6 +23,4 @@ flutter:
     platforms:
       android:
         package: io.upgrade
-        pluginClass: UpgradeUtilPlugin
-      ios:
         pluginClass: UpgradeUtilPlugin

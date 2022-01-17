@@ -1,64 +1,75 @@
-import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrade_util/upgrade_util.dart';
+import 'package:upgrade_util_example/page_ios.dart';
+
+import 'util_platform.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await UpgradeUtil.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-      ),
+      // locale: const Locale('zh', 'CN'),
+      // locale: const Locale('en', 'US'),
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        UpdateLocalizationsDelegate.delegate,
+      ],
+      supportedLocales: const [Locale('en', 'US'), Locale('zh', 'CN')],
+      home: const HomePage(),
+      routes: {
+        '/iOSUpgradePage': (context) => const PageIOS(),
+      },
+      debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(context) => _platformWidget();
+
+  Widget _platformWidget() {
+    Widget child = Text('不支持【 ${PlatformUtil.operatingSystem} 】平台');
+
+    if (Platform.isIOS || Platform.isAndroid) {
+      child = ElevatedButton(
+        onPressed: () async => Navigator.pushNamed(context, pageName),
+        child: const Text('To Upgrade Page'),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Plugin example app')),
+      body: Center(child: child),
+    );
+  }
+
+  String get pageName {
+    if (Platform.isIOS) {
+      return '/iOSUpgradePage';
+    } else if (Platform.isAndroid) {
+      return '/AndroidUpgradePage';
+    } else {
+      return '';
+    }
   }
 }

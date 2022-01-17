@@ -10,3 +10,5 @@ class UpgradeUtil {
     return version;
   }
 }
+export 'src/update_localizations.dart';
+export 'src/update_localizations_delegate.dart';

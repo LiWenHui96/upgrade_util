@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
-///
 /// @Describe: iOS upgrade function class
 ///
 /// @Author: LiWeNHuI
 /// @Date: 2022/1/14
-///
 
 /// iOS - Jump to the link address of the AppStore details page.
 /// Another link: itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=

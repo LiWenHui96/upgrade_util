@@ -59,8 +59,8 @@ class UpdateLocalizations extends UpdateLocalizationsBase {
     'zh': {
       'title': '发现新版本',
       'content': '新功能已上线，立即更新',
-      'cancelText': '暂不更新',
-      'updateText': '立即更新',
+      'cancelText': '以后再说',
+      'updateText': '立即体验',
     },
   };
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:upgrade_util/upgrade_util.dart';
 
@@ -36,6 +38,12 @@ class UpdateDialog<T> {
   Future<T?> show() async {
     assert(appKey != null && appKey.isNotEmpty);
 
+    if (Platform.isIOS) {
+      return showIOSDialog();
+    }
+  }
+
+  Future<T?> showIOSDialog() async {
     final local = UpdateLocalizations.of(context);
 
     return showCupertinoDialog<T>(
@@ -53,7 +61,13 @@ class UpdateDialog<T> {
 
         final updateAction = CupertinoDialogAction(
           key: updateKey,
-          onPressed: () async => updateCallback?.call(ctx) ?? _update(ctx),
+          onPressed: () async =>
+              updateCallback?.call(ctx) ??
+              () async {
+                Navigator.pop(ctx);
+                await IOSUpdateUtil.jumpToAppStore(
+                    eIOSJumpMode: EIOSJumpMode.detailPage, appId: appKey);
+              },
           isDefaultAction: force ? force : isUpdateDefaultAction,
           isDestructiveAction: isUpdateDestructiveAction,
           textStyle: updateTextStyle,
@@ -71,12 +85,6 @@ class UpdateDialog<T> {
         );
       },
     );
-  }
-
-  /// The default update scheme, which can be replaced with `updateCallback`.
-  Future _update(BuildContext context) async {
-    Navigator.pop(context);
-    await UpgradeUtil.upgradeApp(appKey: appKey);
   }
 
   final BuildContext context;

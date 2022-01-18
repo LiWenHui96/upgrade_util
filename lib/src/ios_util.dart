@@ -43,19 +43,19 @@ class IOSUpdateUtil {
 
   /// Method - iOS - Jump to the details page of App Store.
   ///
-  /// appId - App Store ID
+  /// The [appId] is App Store ID.
   static Future<bool> _jumpToDetailPage({required String appId}) async =>
       _launchUrl('$detailPageUrl$appId');
 
   /// Method - iOS - Jump to the reviews page of App Store.
   ///
-  /// appId - App Store ID
+  /// The [appId] is App Store ID.
   static Future<bool> _jumpToReviewsPage({required String appId}) async =>
       _launchUrl('$reviewsPageUrl$appId');
 
   /// Method - iOS - Jump to App Store and leave a review.
   ///
-  /// appId - App Store ID
+  /// The [appId] is App Store ID.
   static Future<bool> _jumpToWriteReviews({required String appId}) async =>
       _launchUrl('$detailPageUrl$appId$writeReviewUrl');
 

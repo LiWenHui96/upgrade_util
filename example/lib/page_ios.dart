@@ -56,7 +56,10 @@ class _PageIOSState extends State<PageIOS> {
     switch (index) {
       case 0:
         // Jump to the AppStore details page, here we use WeChat as an example.
-        await UpgradeUtil.upgradeApp(appKey: wechatAppID);
+        await IOSUpdateUtil.jumpToAppStore(
+          eIOSJumpMode: EIOSJumpMode.detailPage,
+          appId: wechatAppID,
+        );
         break;
       case 1:
         // Jump to the AppStore review page, here we use WeChat as an example.

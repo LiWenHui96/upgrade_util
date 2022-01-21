@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 /// @Author: LiWeNHuI
 /// @Date: 2022/1/12
 
-abstract class UpdateLocalizationsBase {
-  const UpdateLocalizationsBase(this.locale);
+abstract class UpgradeLocalizationsBase {
+  const UpgradeLocalizationsBase(this.locale);
 
   final Locale? locale;
 
@@ -19,13 +19,19 @@ abstract class UpdateLocalizationsBase {
   String get cancelText => getItem('cancelText').toString();
 
   String get updateText => getItem('updateText').toString();
+
+  String get androidTitle => getItem('androidTitle').toString();
+
+  String get androidCencel => getItem('androidCencel').toString();
+
+  String get downloadTip => getItem('downloadTip').toString();
 }
 
 /// localizations
-class UpdateLocalizations extends UpdateLocalizationsBase {
-  const UpdateLocalizations(Locale? locale) : super(locale);
+class UpgradeLocalizations extends UpgradeLocalizationsBase {
+  const UpgradeLocalizations(Locale? locale) : super(locale);
 
-  static const UpdateLocalizations _static = UpdateLocalizations(null);
+  static const UpgradeLocalizations _static = UpgradeLocalizations(null);
 
   @override
   Object? getItem(String key) {
@@ -39,9 +45,9 @@ class UpdateLocalizations extends UpdateLocalizationsBase {
     return localData[key];
   }
 
-  static UpdateLocalizations of(BuildContext context) {
-    return Localizations.of<UpdateLocalizations>(
-            context, UpdateLocalizations) ??
+  static UpgradeLocalizations of(BuildContext context) {
+    return Localizations.of<UpgradeLocalizations>(
+            context, UpgradeLocalizations) ??
         _static;
   }
 
@@ -55,12 +61,18 @@ class UpdateLocalizations extends UpdateLocalizationsBase {
       'content': 'New features are live, update now.',
       'cancelText': 'Not Updated',
       'updateText': 'Update Now',
+      'androidTitle': 'Complete action using',
+      'androidCencel': 'Cancel',
+      'downloadTip': 'Downloading:',
     },
     'zh': {
       'title': '发现新版本',
       'content': '新功能已上线，立即更新',
       'cancelText': '以后再说',
       'updateText': '立即体验',
+      'androidTitle': '选择要使用的应用',
+      'androidCencel': '取消',
+      'downloadTip': '正在下载：',
     },
   };
 }

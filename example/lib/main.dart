@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrade_util/upgrade_util.dart';
+import 'package:upgrade_util_example/page_android.dart';
 import 'package:upgrade_util_example/page_ios.dart';
 
 import 'util_platform.dart';
@@ -24,12 +25,13 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
-        UpdateLocalizationsDelegate.delegate,
+        UpgradeLocalizationsDelegate.delegate,
       ],
       supportedLocales: const [Locale('en', 'US'), Locale('zh', 'CN')],
       home: const HomePage(),
       routes: {
         '/iOSUpgradePage': (context) => const PageIOS(),
+        '/AndroidUpgradePage': (context) => const PageAndroid(),
       },
       debugShowCheckedModeBanner: false,
     );

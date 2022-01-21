@@ -22,7 +22,7 @@ const String writeReviewUrl = '?action=write-review';
 /// iOS - jump mode
 enum EIOSJumpMode { detailPage, reviewsPage, writeReview }
 
-class IOSUpdateUtil {
+class IOSUpgradeUtil {
   /// The [eIOSJumpMode] is jump mode.
   /// It is `EIOSJumpMode.detailPage` by default.
   ///

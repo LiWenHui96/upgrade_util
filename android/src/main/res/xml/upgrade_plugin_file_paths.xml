@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <cache-path
-        name="upgrade_storage_root"
+        name="upgrade_cache_root"
         path="." />
 </paths>

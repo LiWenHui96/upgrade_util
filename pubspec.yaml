@@ -1,6 +1,6 @@
 name: upgrade_util
 description: An application upgrade plug-in.
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/LiWenHui96/upgrade_util
 
 environment:

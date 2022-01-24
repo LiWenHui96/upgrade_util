@@ -23,8 +23,8 @@ class AndroidUtil {
     String? apkName,
     String? prefixName,
   }) async {
-    apkName = apkName ?? 'temp.apk';
-    prefixName = prefixName ?? '/libCacheApkDownload/';
+    apkName = '${apkName ?? 'temp'}.apk';
+    prefixName = '/${prefixName ?? 'libCacheApkDownload'}/';
 
     final result = await _channel.invokeMethod<String>('getApkDownloadPath');
     return '$result$prefixName$apkName';

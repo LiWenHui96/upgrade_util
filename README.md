@@ -115,7 +115,7 @@ Parameter names and descriptions of `UpgradeDialog`:
 * `saveApkName` does not need to carry a suffix, the default setting is `.apk`;
 * `savePrefixName` does not need to concatenate `/`, the default configuration is `/${savePrefixName}/`.
 
-## 方法
+## Method
 
 ### iOS
 

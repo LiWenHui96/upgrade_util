@@ -1,5 +1,7 @@
 name: upgrade_util
 description: An application upgrade plug-in.
+  In iOS, it realizes the function of jumping to the app store and comments.
+  In Android, it realizes the functions of jumping to the application market and installing after downloading.
 version: 1.0.0
 homepage: https://github.com/LiWenHui96/upgrade_util
 

@@ -1,3 +1,8 @@
+## 1.0.2
+
+* Update README.md.
+* Update pubspec.yaml.
+
 ## 1.0.1
 
 * Update pubspec.yaml.

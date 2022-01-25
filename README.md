@@ -55,11 +55,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    ...
-    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-    ...
-    UpgradeLocalizationsDelegate.delegate,
-    ],
+      ...
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        ...
+        UpgradeLocalizationsDelegate.delegate,
+      ],
     ...
     );
   }

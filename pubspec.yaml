@@ -1,6 +1,6 @@
 name: upgrade_util
 description: An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/LiWenHui96/upgrade_util
 
 environment:

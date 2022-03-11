@@ -10,7 +10,6 @@ Language: 中文 | [English](README.md)
 ### 第三方使用
 
 * 使用 `dio` 实现Android的apk下载；
-* 使用 `url_launcher_ios` 实现iOS的链接跳转。
 
 ## 准备工作
 
@@ -72,44 +71,50 @@ class MyApp extends StatelessWidget {
 
 `UpgradeDialog` 参数名及描述：
 
-| 参数名 | 类型 | 描述 | 默认值 |
-| --- | --- | --- | --- |
-| key | `Key?` | 组件标识符 | `ObjectKey(context)` |
-| appKey | `String` | Android应用包名；iOS应用商店编号 | 必填项 |
-| androidMarket | `AndroidMarket?` | Android应用市场配置 | `AndroidMarket()` |
-| otherMarkets | `List<String>?` | 未在 `AndroidMarket` 内预置的应用市场包名 | `null` |
-| downloadUrl | `String?` | apk下载链接 | ` ` |
-| saveApkName | `String?` | apk文件保存名称 | `temp` |
-| savePrefixName | `String?` | apk文件保存的文件夹 | `libCacheApkDownload` |
-| title | `String?` | 标题 | `UpgradeLocalizations.of(context).title` |
-| content | `String?` | 版本新增内容 | `UpgradeLocalizations.of(context).content` |
-| contentTextAlign | `TextAlign` | `content` 对齐方式 | `TextAlign.start` |
-| scrollController | `ScrollController?` | `CupertinoAlertDialog.scrollController` | `null` |
-| actionScrollController | `ScrollController?` | `CupertinoAlertDialog.actionScrollController` | `null` |
-| force | `bool` | 是否为强制更新 | `false` |
-| updateKey | `Key?` | 确定（升级）按钮的组件标识符 | `null` |
-| updateText | `String?` | 确定（升级）按钮的文字显示 | `UpgradeLocalizations.of(context).updateText` |
-| updateTextStyle | `TextStyle?` | 确定（升级）按钮的文字风格 | `null` |
-| isUpgradeDefaultAction | `bool` | 确定（升级）按钮是否为默认选项 | `false` |
-| isUpgradeDestructiveAction | `bool` | 确定（升级）按钮是否为销毁操作 | `false` |
-| cancelKey | `Key?` | 取消按钮的组件标识符 | `null` |
-| cancelText | `String?` | 取消按钮的文字显示 | `UpgradeLocalizations.of(context).cancelText` |
-| cancelTextStyle | `TextStyle?` | 取消按钮的文字风格 | `null` |
-| isCancelDefaultAction | `bool` | 取消按钮是否为默认选项 | `false` |
-| isCancelDestructiveAction | `bool` | 取消按钮是否为销毁操作 | `true` |
-| updateCallback | `VoidCallback?` | 确定（升级）按钮的点击事件监听 | `null` |
-| cancelCallback | `VoidCallback?` | 取消按钮的点击事件监听 | `null` |
-| downloadProgressCallback | `DownloadProgressCallback?` | 下载事件的进度监听 | `null` |
-| downloadStatusCallback | `DownloadStatusCallback?` | 下载事件的状态监听 | `null` |
+| 参数名                        | 类型                          | 描述                                            | 默认值                                           |
+|----------------------------|-----------------------------|-----------------------------------------------|-----------------------------------------------|
+| key                        | `Key?`                      | 组件标识符                                         | `ObjectKey(context)`                          |
+| iOSAppId                   | `String`                    | iOS应用商店编号                                     | 必填项                                           |
+| androidUpgradeInfo         | `AndroidUpgradeInfo`        | Android升级信息                                   | 必填项                                           |
+| title                      | `String?`                   | 标题                                            | `UpgradeLocalizations.of(context).title`      |
+| content                    | `String?`                   | 版本新增内容                                        | `UpgradeLocalizations.of(context).content`    |
+| contentTextAlign           | `TextAlign`                 | `content` 对齐方式                                | `TextAlign.start`                             |
+| scrollController           | `ScrollController?`         | `CupertinoAlertDialog.scrollController`       | `null`                                        |
+| actionScrollController     | `ScrollController?`         | `CupertinoAlertDialog.actionScrollController` | `null`                                        |
+| force                      | `bool`                      | 是否为强制更新                                       | `false`                                       |
+| updateKey                  | `Key?`                      | 确定（升级）按钮的组件标识符                                | `null`                                        |
+| updateText                 | `String?`                   | 确定（升级）按钮的文字显示                                 | `UpgradeLocalizations.of(context).updateText` |
+| updateTextStyle            | `TextStyle?`                | 确定（升级）按钮的文字风格                                 | `null`                                        |
+| isUpgradeDefaultAction     | `bool`                      | 确定（升级）按钮是否为默认选项                               | `false`                                       |
+| isUpgradeDestructiveAction | `bool`                      | 确定（升级）按钮是否为销毁操作                               | `false`                                       |
+| cancelKey                  | `Key?`                      | 取消按钮的组件标识符                                    | `null`                                        |
+| cancelText                 | `String?`                   | 取消按钮的文字显示                                     | `UpgradeLocalizations.of(context).cancelText` |
+| cancelTextStyle            | `TextStyle?`                | 取消按钮的文字风格                                     | `null`                                        |
+| isCancelDefaultAction      | `bool`                      | 取消按钮是否为默认选项                                   | `false`                                       |
+| isCancelDestructiveAction  | `bool`                      | 取消按钮是否为销毁操作                                   | `true`                                        |
+| updateCallback             | `VoidCallback?`             | 确定（升级）按钮的点击事件监听                               | `null`                                        |
+| cancelCallback             | `VoidCallback?`             | 取消按钮的点击事件监听                                   | `null`                                        |
+| downloadProgressCallback   | `DownloadProgressCallback?` | 下载事件的进度监听                                     | `null`                                        |
+| downloadStatusCallback     | `DownloadStatusCallback?`   | 下载事件的状态监听                                     | `null`                                        |
 
 ### iOS
 
-* `appKey` 为App Store的应用编号，请确保应用是已发布并为上架状态；
-* `androidMarket`，`otherMarkets`，`downloadUrl`，`saveApkName`，`savePrefixName`，`downloadProgressCallback`，`downloadStatusCallback`，在iOS平台是无效的。
+* `iOSAppId` 为App Store的应用编号，请确保应用是已发布并为上架状态；
+* `androidUpgradeInfo`，在iOS平台是无效的。
 
 ### Android
 
-* `appKey` 为应用包名；
+`AndroidUpgradeInfo` 字段说明
+
+| 参数名            | 类型               | 描述                            | 默认值                   |
+|----------------|------------------|-------------------------------|-----------------------|
+| packageName    | `String`         | Android应用包名                   | 必填项                   |
+| androidMarket  | `AndroidMarket?` | Android应用市场配置                 | `AndroidMarket()`     |
+| otherMarkets   | `List<String>?`  | 未在 `AndroidMarket` 内预置的应用市场包名 | `null`                |
+| downloadUrl    | `String?`        | apk下载链接                       | `''`                  |
+| saveApkName    | `String?`        | apk文件保存名称                     | `temp`                |
+| savePrefixName | `String?`        | apk文件保存的文件夹                   | `libCacheApkDownload` |
+
 * `androidMarket` 应用市场详细配置可查看 [AndroidMarket](lib/src/android/android_market.dart)；
 * `androidMarket` 与 `downloadUrl`，需配置其一；均配置的情况下，优先以 `androidMarket` 为主；
 * `saveApkName` 无须携带后缀，默认设置为 `.apk`；
@@ -117,21 +122,19 @@ class MyApp extends StatelessWidget {
 
 ## 方法
 
-### iOS
+跳转到 AppStore 或 应用市场，使用 `jumpToStore` 方法
 
-跳转到App Store，使用 `jumpToAppStore` 方法
+* 必填项为 `jumpMode`，目前为止三种模式；
+    1. `JumpMode.detailPage`，跳转到应用详情页面（即产品介绍页）；
+    2. `JumpMode.reviewsPage`，跳转到应用评论页面（iOS独有模式）；
+    3. `JumpMode.writeReview`，跳转到应用评论页面并进行评论（iOS独有模式）。
+* `iOSAppId` 为 iOS 的必填项，此为App Store的应用编号；
+* `androidPackageName` 为 Android 的必填项，此为应用包名；
+* `androidMarketPackageName` 为 Android 跳转的应用市场的包名，非必填项。
 
-* 必填项为 `appId`，此为App Store的应用编号；
-* 分三种模式
-
-    1. `EIOSJumpMode.detailPage`，跳转到应用详情页面（即产品介绍页）；
-    2. `EIOSJumpMode.reviewsPage`，跳转到应用评论页面；
-    3. `EIOSJumpMode.writeReview`，跳转到应用评论页面并进行评论。
-
-### Android
+### Android 独有方法
 
 1. `getDownloadPath` 获取apk下载地址；
 2. `installApk` 安装apk，跳转至安装引导页；
-3. `getAvailableMarket` 获取当前可用的应用市场；
-4. `jumpToMarket` 跳转到应用市场的应用详情页面。
+3. `getAvailableMarket` 获取当前可用的应用市场。
 

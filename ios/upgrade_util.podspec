@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'upgrade_util'
-  s.version          = '1.0.3'
+  s.version          = '2.0.0'
   s.summary          = 'An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.'
   s.description      = <<-DESC
 An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.

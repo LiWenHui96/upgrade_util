@@ -22,7 +22,7 @@ abstract class UpgradeLocalizationsBase {
 
   String get androidTitle => getItem('androidTitle').toString();
 
-  String get androidCencel => getItem('androidCencel').toString();
+  String get androidCancel => getItem('androidCancel').toString();
 
   String get downloadTip => getItem('downloadTip').toString();
 }
@@ -35,7 +35,7 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
 
   @override
   Object? getItem(String key) {
-    Map? localData;
+    Map<String, Object>? localData;
     if (locale != null) {
       localData = localizedValues[locale!.languageCode];
     }
@@ -52,11 +52,12 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
   }
 
   /// Language Support
-  static const List<String> languages = ['en', 'zh'];
+  static const List<String> languages = <String>['en', 'zh'];
 
   /// Language Values
-  static const Map<String, Map<String, Object>> localizedValues = {
-    'en': {
+  static const Map<String, Map<String, Object>> localizedValues =
+      <String, Map<String, Object>>{
+    'en': <String, String>{
       'title': 'Discover new versions',
       'content': 'New features are live, update now.',
       'cancelText': 'Not Updated',
@@ -65,13 +66,13 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
       'androidCencel': 'Cancel',
       'downloadTip': 'Downloading:',
     },
-    'zh': {
+    'zh': <String, String>{
       'title': '发现新版本',
       'content': '新功能已上线，立即更新',
       'cancelText': '以后再说',
       'updateText': '立即体验',
       'androidTitle': '选择要使用的应用',
-      'androidCencel': '取消',
+      'androidCancel': '取消',
       'downloadTip': '正在下载：',
     },
   };

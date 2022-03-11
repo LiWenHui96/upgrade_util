@@ -112,7 +112,7 @@ class AndroidMarket {
   static const String MARKET_MM = 'com.aspire.mm';
 
   List<String> toMarkets() {
-    final markets = <String>[];
+    final List<String> markets = <String>[];
 
     if (isGooglePlay) {
       markets.add(MARKET_GOOGLE);

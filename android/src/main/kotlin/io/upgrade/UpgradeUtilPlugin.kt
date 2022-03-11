@@ -29,18 +29,16 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var mContext: Context
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "upgrade_util")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
         channel.setMethodCallHandler(this)
 
-        flutterPluginBinding.platformViewRegistry.registerViewFactory(
-            "plugins.upgrade_util/view",
-            MarketViewFactory()
-        )
+        flutterPluginBinding.platformViewRegistry.registerViewFactory(viewName, MarketViewFactory())
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "getApkDownloadPath" -> result.success(mContext.cacheDir.path)
+            "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
+            "apkDownloadPath" -> result.success(mContext.cacheDir.path)
             "installApk" -> {
                 val path = call.argument<String>("path")
                 path?.also { result.success(installApk(path)) }
@@ -61,7 +59,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Install Apk
      *
-     * @param path 软件保存地址
+     * @param path The storage address of apk.
      * @return Boolean
      */
     private fun installApk(path: String): Boolean {
@@ -94,7 +92,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Gets a list of installed app market package names
      *
-     * @param packages 需要验证的包名列表
+     * @param packages List of package names to verify
      * @return List<String>
      */
     private fun getMarkets(packages: List<String>?): List<Map<String, String>> {
@@ -120,7 +118,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Determine if an app is installed
      *
-     * @param packageName 包名
+     * @param packageName The package name of the software.
      * @return Boolean
      */
     private fun isAppExist(packageName: String): Boolean {
@@ -138,8 +136,8 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Jump to market
      *
-     * @param packageName 应用包名
-     * @param marketPackageName 市场包名
+     * @param packageName The package name of the application
+     * @param marketPackageName The package name of market.
      * @return Boolean
      */
     private fun jumpToMarket(packageName: String?, marketPackageName: String?) {
@@ -159,7 +157,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Distinguish Samsung's Uri.
      *
-     * @param packageName 包名
+     * @param packageName The package name of the software.
      * @return String
      */
     private fun getUriString(packageName: String?): String {
@@ -176,6 +174,11 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+    }
+
+    companion object {
+        const val channelName = "upgrade_util.io.channel/method"
+        const val viewName = "upgrade_util.io.view/android"
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {

@@ -23,7 +23,8 @@ typedef DownloadStatusCallback = Function(DownloadStatus downloadStatus,
 class UpgradeDialog extends StatefulWidget {
   UpgradeDialog({
     Key? key,
-    required this.appKey,
+    required this.iOSAppId,
+    required this.androidPackageName,
     required this.androidMarket,
     this.otherMarkets,
     required this.downloadUrl,
@@ -52,18 +53,15 @@ class UpgradeDialog extends StatefulWidget {
     required this.androidTitle,
     required this.androidCancel,
     required this.downloadTip,
-  })  : assert(appKey.isNotEmpty),
+  })  : assert(iOSAppId.isNotEmpty),
+        assert(androidPackageName.isNotEmpty),
         super(key: key);
 
   static Future<T?> show<T>(
     BuildContext context, {
     Key? key,
-    required String appKey,
-    AndroidMarket? androidMarket,
-    List<String>? otherMarkets,
-    String? downloadUrl,
-    String? saveApkName,
-    String? savePrefixName,
+    required String iOSAppId,
+    required AndroidUpgradeInfo androidUpgradeInfo,
     String? title,
     String? content,
     TextAlign contentTextAlign = TextAlign.start,
@@ -86,19 +84,20 @@ class UpgradeDialog extends StatefulWidget {
     DownloadStatusCallback? downloadStatusCallback,
   }) async {
     if (!(Platform.isIOS || Platform.isAndroid)) {
-      throw 'Unsupported platform.';
+      throw UnimplementedError('Unsupported platform.');
     }
 
-    final local = UpgradeLocalizations.of(context);
+    final UpgradeLocalizations local = UpgradeLocalizations.of(context);
 
     Widget child = UpgradeDialog(
       key: key ?? ObjectKey(context),
-      appKey: appKey,
-      androidMarket: androidMarket ?? AndroidMarket(),
-      otherMarkets: otherMarkets,
-      downloadUrl: downloadUrl ?? '',
-      saveApkName: saveApkName,
-      savePrefixName: savePrefixName,
+      iOSAppId: iOSAppId,
+      androidPackageName: androidUpgradeInfo.packageName,
+      androidMarket: androidUpgradeInfo.androidMarket ?? AndroidMarket(),
+      otherMarkets: androidUpgradeInfo.otherMarkets,
+      downloadUrl: androidUpgradeInfo.downloadUrl ?? '',
+      saveApkName: androidUpgradeInfo.saveApkName,
+      savePrefixName: androidUpgradeInfo.savePrefixName,
       title: title ?? local.title,
       content: content ?? local.content,
       contentTextAlign: contentTextAlign,
@@ -120,22 +119,30 @@ class UpgradeDialog extends StatefulWidget {
       downloadProgressCallback: downloadProgressCallback,
       downloadStatusCallback: downloadStatusCallback,
       androidTitle: local.androidTitle,
-      androidCancel: local.androidCencel,
+      androidCancel: local.androidCancel,
       downloadTip: local.downloadTip,
     );
 
     child = WillPopScope(child: child, onWillPop: () async => false);
 
-    return showCupertinoDialog(context: context, builder: (ctx) => child);
+    return showCupertinoDialog(
+      context: context,
+      builder: (BuildContext ctx) => child,
+    );
   }
 
   @override
-  _UpgradeDialogState createState() => _UpgradeDialogState();
+  State<UpgradeDialog> createState() => _UpgradeDialogState();
 
-  /// On Android platform, The [appKey] is the package name.
-  /// On iOS platform, The [appKey] is App Store ID.
+  /// The [iOSAppId] is App Store ID.
+  ///
   /// It is required.
-  final String appKey;
+  final String iOSAppId;
+
+  /// The [androidPackageName] is the package name.
+  ///
+  /// It is required.
+  final String androidPackageName;
 
   /// The [androidMarket] is the settings of app market for Android.
   ///
@@ -205,7 +212,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
   bool _isShowProgress = false;
 
-  final _cancelToken = CancelToken();
+  final CancelToken _cancelToken = CancelToken();
 
   @override
   void dispose() {
@@ -216,7 +223,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final cancelAction = CupertinoDialogAction(
+    final CupertinoDialogAction cancelAction = CupertinoDialogAction(
       key: widget.cancelKey,
       onPressed: _cancel,
       isDestructiveAction: widget.isCancelDestructiveAction,
@@ -225,7 +232,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       child: Text(widget.cancelText),
     );
 
-    final updateAction = CupertinoDialogAction(
+    final CupertinoDialogAction updateAction = CupertinoDialogAction(
       key: widget.updateKey,
       onPressed: _update,
       isDefaultAction: force ? force : widget.isUpgradeDefaultAction,
@@ -234,7 +241,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       child: Text(widget.updateText),
     );
 
-    final baseActions = <Widget>[
+    final List<Widget> baseActions = <Widget>[
       if (!force) cancelAction,
       if (_isShowProgress)
         ConstrainedBox(
@@ -245,13 +252,13 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         updateAction,
     ];
 
-    final downloadActions = <Widget>[
+    final List<Widget> downloadActions = <Widget>[
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         child: Material(
           color: Colors.transparent,
           child: Column(
-            children: [
+            children: <Widget>[
               Text(widget.downloadTip),
               const SizedBox(height: 8.0),
               LinearProgressIndicator(value: _downloadProgress),
@@ -284,7 +291,8 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       ),
     ];
 
-    final actions = _downloadProgress > 0 ? downloadActions : baseActions;
+    final List<Widget> actions =
+        _downloadProgress > 0 ? downloadActions : baseActions;
 
     return CupertinoAlertDialog(
       title: Text(widget.title),
@@ -301,30 +309,29 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     Navigator.pop(context);
   }
 
-  Future _update() async {
+  Future<void> _update() async {
     updateCallback?.call();
 
     if (Platform.isIOS) {
-      await _iosUpgrade();
+      Navigator.pop(context);
+      await UpgradeUtil.jumpToStore(
+        jumpMode: JumpMode.detailPage,
+        iOSAppId: widget.iOSAppId,
+      );
     } else if (Platform.isAndroid) {
       await _androidUpgrade();
     }
   }
 
-  Future _iosUpgrade() async {
-    Navigator.pop(context);
-    const e = EIOSJumpMode.detailPage;
-    await IOSUpgradeUtil.jumpToAppStore(eIOSJumpMode: e, appId: widget.appKey);
-  }
-
-  Future _androidUpgrade() async {
+  Future<void> _androidUpgrade() async {
     setState(() {
       if (mounted) {
         _isShowProgress = true;
       }
     });
 
-    final markets = await AndroidUtil.getAvailableMarket(
+    final List<AndroidMarketModel> markets =
+        await UpgradeUtil.getAvailableMarket(
       androidMarket: widget.androidMarket,
       otherMarkets: widget.otherMarkets,
     );
@@ -339,7 +346,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       if (widget.downloadUrl.isNotEmpty) {
         await _download();
       } else {
-        throw 'Both [androidMarket] and [downloadUrl] are empty';
+        throw ArgumentError('Both androidMarket and downloadUrl are empty');
       }
     } else {
       if (markets.length == 1) {
@@ -351,16 +358,16 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
   }
 
   /// Choose Market
-  Future _chooseMarkets(List<AndroidMarketModel> markets) async {
+  Future<void> _chooseMarkets(List<AndroidMarketModel> markets) async {
     showModalBottomSheet<void>(
       context: context,
       barrierColor:
           CupertinoDynamicColor.resolve(kCupertinoModalBarrierColor, context),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(14.0))),
-      builder: (ctx) {
-        final radius = BorderRadius.circular(24.0);
-        const color = Color(0xFFDEDEDE);
+      builder: (BuildContext ctx) {
+        final BorderRadius radius = BorderRadius.circular(24.0);
+        const Color color = Color(0xFFDEDEDE);
 
         Widget child = InkWell(
           borderRadius: radius,
@@ -386,9 +393,9 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemCount: markets.length,
-                itemBuilder: (ctx, index) {
+                itemBuilder: (BuildContext ctx, int index) {
                   Widget child = AndroidView(
-                    viewType: 'plugins.upgrade_util/view',
+                    viewType: viewName,
                     creationParams: markets[index].packageName,
                     creationParamsCodec: const StandardMessageCodec(),
                     hitTestBehavior: PlatformViewHitTestBehavior.transparent,
@@ -418,9 +425,6 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 1.0,
                 ),
               ),
             ),
@@ -434,17 +438,16 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     );
   }
 
-  Future _jumpToMarket(String marketPackageName) async {
-    print(marketPackageName);
-
+  Future<void> _jumpToMarket(String marketPackageName) async {
     Navigator.pop(context);
-    await AndroidUtil.jumpToMarket(
-      packageName: widget.appKey,
-      marketPackageName: marketPackageName,
+    await UpgradeUtil.jumpToStore(
+      jumpMode: JumpMode.detailPage,
+      androidPackageName: widget.androidPackageName,
+      androidMarketPackageName: marketPackageName,
     );
   }
 
-  Future _download() async {
+  Future<void> _download() async {
     if (_downloadStatus == DownloadStatus.start ||
         _downloadStatus == DownloadStatus.downloading ||
         _downloadStatus == DownloadStatus.done) {
@@ -456,18 +459,18 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     _updateStatus(DownloadStatus.start);
 
     try {
-      final urlPath = widget.downloadUrl;
-      final savePath = await AndroidUtil.getDownloadPath(
+      final String urlPath = widget.downloadUrl;
+      final String savePath = await UpgradeUtil.getDownloadPath(
         apkName: widget.saveApkName,
         prefixName: widget.savePrefixName,
       );
 
-      final dio = Dio();
+      final Dio dio = Dio();
       await dio.download(
         urlPath,
         savePath,
         cancelToken: _cancelToken,
-        onReceiveProgress: (count, total) async {
+        onReceiveProgress: (int count, int total) async {
           if (total == -1) {
             _updateProgress(0.01);
           } else {
@@ -479,7 +482,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
             // After downloading, jump to the program installation interface.
             _updateStatus(DownloadStatus.done);
             Navigator.pop(context);
-            await AndroidUtil.installApk(savePath);
+            await UpgradeUtil.installApk(savePath);
           } else {
             _updateStatus(DownloadStatus.downloading);
           }

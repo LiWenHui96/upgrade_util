@@ -11,18 +11,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^4.0.0
-  url_launcher_ios: ^6.0.14
-  url_launcher_platform_interface: ^2.0.5
+  dio: ^4.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 flutter:
   plugin:
     platforms:
       android:
         package: io.upgrade
+        pluginClass: UpgradeUtilPlugin
+      ios:
         pluginClass: UpgradeUtilPlugin

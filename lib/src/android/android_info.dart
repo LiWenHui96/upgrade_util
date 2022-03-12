@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'android_market.dart';
 
 /// @Describe: Android Upgrade Info
@@ -7,7 +9,7 @@ import 'android_market.dart';
 
 class AndroidUpgradeInfo {
   AndroidUpgradeInfo({
-    required this.packageName,
+    @required this.packageName,
     this.androidMarket,
     this.otherMarkets,
     this.downloadUrl,
@@ -21,15 +23,15 @@ class AndroidUpgradeInfo {
   /// The [androidMarket] is the settings of app market for Android.
   ///
   /// It is all false by default.
-  final AndroidMarket? androidMarket;
+  final AndroidMarket androidMarket;
 
   /// Package name for markets other than presets.
-  final List<String>? otherMarkets;
+  final List<String> otherMarkets;
 
   /// The [downloadUrl] is a link of download for Apk.
-  final String? downloadUrl;
+  final String downloadUrl;
 
   /// They are the saved information after the apk download is completed. For details, see the [UpgradeUtil.getDownloadPath] method.
-  final String? saveApkName;
-  final String? savePrefixName;
+  final String saveApkName;
+  final String savePrefixName;
 }

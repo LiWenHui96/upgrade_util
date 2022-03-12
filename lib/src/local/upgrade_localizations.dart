@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 abstract class UpgradeLocalizationsBase {
   const UpgradeLocalizationsBase(this.locale);
 
-  final Locale? locale;
+  final Locale locale;
 
-  Object? getItem(String key);
+  Object getItem(String key);
 
   String get title => getItem('title').toString();
 
@@ -29,18 +29,18 @@ abstract class UpgradeLocalizationsBase {
 
 /// localizations
 class UpgradeLocalizations extends UpgradeLocalizationsBase {
-  const UpgradeLocalizations(Locale? locale) : super(locale);
+  const UpgradeLocalizations(Locale locale) : super(locale);
 
   static const UpgradeLocalizations _static = UpgradeLocalizations(null);
 
   @override
-  Object? getItem(String key) {
-    Map<String, Object>? localData;
+  Object getItem(String key) {
+    Map<String, Object> localData;
     if (locale != null) {
-      localData = localizedValues[locale!.languageCode];
+      localData = localizedValues[locale.languageCode];
     }
     if (localData == null) {
-      return localizedValues['zh']![key];
+      return localizedValues['zh'][key];
     }
     return localData[key];
   }

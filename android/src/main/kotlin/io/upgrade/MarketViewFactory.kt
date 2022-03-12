@@ -11,7 +11,7 @@ import io.flutter.plugin.platform.PlatformViewFactory
  * @describe Factory
  */
 class MarketViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
-    override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        return MarketView(context, args as String?)
-    }
+  override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
+    return MarketView(context, args as String?)
+  }
 }

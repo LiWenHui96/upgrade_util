@@ -14,27 +14,27 @@ import io.flutter.plugin.platform.PlatformView
  * @describe
  */
 class MarketView internal constructor(
-    context: Context,
-    args: String?
+  context: Context,
+  args: String?
 ) : PlatformView, MethodChannel.MethodCallHandler {
-    private var mImageView = ImageView(context)
+  private var mImageView = ImageView(context)
 
-    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+  override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
 
+  }
+
+  override fun getView(): View {
+    return mImageView
+  }
+
+  override fun dispose() {}
+
+  init {
+    args?.also {
+      val pm = context.packageManager
+      val info = pm.getApplicationInfo(it, PackageManager.GET_META_DATA)
+      val icon = pm.getApplicationIcon(info)
+      mImageView.setImageDrawable(icon)
     }
-
-    override fun getView(): View {
-        return mImageView
-    }
-
-    override fun dispose() {}
-
-    init {
-        args?.also {
-            val pm = context.packageManager
-            val info = pm.getApplicationInfo(it, PackageManager.GET_META_DATA)
-            val icon = pm.getApplicationIcon(info)
-            mImageView.setImageDrawable(icon)
-        }
-    }
+  }
 }

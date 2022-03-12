@@ -24,6 +24,6 @@
 
 * Update README.md.
 
-## 0.1.0
+## 0.9.0
 
-* Release the first edition.
+* Support old version.

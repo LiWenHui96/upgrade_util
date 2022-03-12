@@ -27,26 +27,26 @@ class AndroidMarket {
     this.isMM = false,
   });
 
-  late bool isGooglePlay;
-  late bool isHuawei;
-  late bool isXiaomi;
-  late bool isOppo;
-  late bool isVivo;
-  late bool isMeizu;
-  late bool isZte;
-  late bool isSamsung;
-  late bool isLenovo;
-  late bool isNubia;
-  late bool isTencent;
-  late bool is360;
-  late bool isBaidu;
-  late bool isWanDouJia;
-  late bool is91;
-  late bool isPp;
-  late bool isAnZhi;
-  late bool isYingYongHui;
-  late bool isCool;
-  late bool isMM;
+  final bool isGooglePlay;
+  final bool isHuawei;
+  final bool isXiaomi;
+  final bool isOppo;
+  final bool isVivo;
+  final bool isMeizu;
+  final bool isZte;
+  final bool isSamsung;
+  final bool isLenovo;
+  final bool isNubia;
+  final bool isTencent;
+  final bool is360;
+  final bool isBaidu;
+  final bool isWanDouJia;
+  final bool is91;
+  final bool isPp;
+  final bool isAnZhi;
+  final bool isYingYongHui;
+  final bool isCool;
+  final bool isMM;
 
   // Google Play Store - https://play.google.com/
   static const String MARKET_GOOGLE = 'com.android.vending';
@@ -256,12 +256,12 @@ class AndroidMarketModel {
   });
 
   AndroidMarketModel.fromJson(Map<String, dynamic> json) {
-    showName = json['showName'] as String?;
-    packageName = json['packageName'] as String?;
+    showName = json['showName'] as String;
+    packageName = json['packageName'] as String;
   }
 
-  String? showName;
-  String? packageName;
+  String showName;
+  String packageName;
 
   String get showNameD => showName ?? '';
 

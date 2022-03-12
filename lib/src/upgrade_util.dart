@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:upgrade_util/upgrade_util.dart';
 
@@ -12,8 +13,8 @@ import 'package:upgrade_util/upgrade_util.dart';
 class UpgradeUtil {
   static const MethodChannel _channel = MethodChannel(channelName);
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
+  static Future<String> get platformVersion async {
+    final String version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
 
@@ -26,14 +27,14 @@ class UpgradeUtil {
   ///
   /// The [prefixName] is intermediate folder.
   static Future<String> getDownloadPath({
-    String? apkName,
-    String? prefixName,
+    String apkName,
+    String prefixName,
   }) async {
     if (!Platform.isAndroid) {
       throw UnimplementedError('Other platforms are not supported for now');
     }
 
-    final String? result = await _channel.invokeMethod('apkDownloadPath');
+    final String result = await _channel.invokeMethod('apkDownloadPath');
     apkName = '${apkName ?? 'temp'}.apk';
     prefixName = '/${prefixName ?? 'libCacheApkDownload'}/';
     return '$result$prefixName$apkName';
@@ -44,13 +45,13 @@ class UpgradeUtil {
   /// Jump to the APK installation page.
   ///
   /// The [path] is the storage address of apk.
-  static Future<bool?> installApk(String path) async {
+  static Future<bool> installApk(String path) async {
     if (!Platform.isAndroid) {
       throw UnimplementedError('Other platforms are not supported for now');
     }
 
     final Map<String, String> map = <String, String>{'path': path};
-    final bool? result = await _channel.invokeMethod('installApk', map);
+    final bool result = await _channel.invokeMethod('installApk', map);
     return result;
   }
 
@@ -59,8 +60,8 @@ class UpgradeUtil {
   /// When set to true, make sure your program is on the market.
   /// This plug-in does not verify that your program is on the shelf.
   static Future<List<AndroidMarketModel>> getAvailableMarket({
-    AndroidMarket? androidMarket,
-    List<String>? otherMarkets,
+    AndroidMarket androidMarket,
+    List<String> otherMarkets,
   }) async {
     if (!Platform.isAndroid) {
       throw UnimplementedError('Other platforms are not supported for now');
@@ -69,7 +70,7 @@ class UpgradeUtil {
     final List<String> list = (androidMarket ?? AndroidMarket()).toMarkets();
     list.addAll(otherMarkets ?? <String>[]);
 
-    final List<dynamic>? result = await _channel.invokeMethod(
+    final List<dynamic> result = await _channel.invokeMethod(
       'availableMarket',
       <String, List<String>>{'packages': list},
     );
@@ -93,10 +94,10 @@ class UpgradeUtil {
   /// On Android, the [appId] is package name.
   /// On Android, the [marketPackageName] is the package name of market.
   static Future<void> jumpToStore({
-    required JumpMode jumpMode,
-    String? iOSAppId,
-    String? androidPackageName,
-    String? androidMarketPackageName,
+    @required JumpMode jumpMode,
+    String iOSAppId,
+    String androidPackageName,
+    String androidMarketPackageName,
   }) async {
     if (Platform.isAndroid) {
       if (jumpMode == JumpMode.detailPage) {
@@ -135,19 +136,19 @@ class UpgradeUtil {
   /// Jump to the details page of App Store.
   ///
   /// The [appId] is App Store ID.
-  static Future<bool> _jumpToDetailPage({required String appId}) async =>
+  static Future<bool> _jumpToDetailPage({@required String appId}) async =>
       _launchUrl('$detailPageUrl$appId');
 
   /// Jump to the reviews page of App Store.
   ///
   /// The [appId] is App Store ID.
-  static Future<bool> _jumpToReviewsPage({required String appId}) async =>
+  static Future<bool> _jumpToReviewsPage({@required String appId}) async =>
       _launchUrl('$reviewsPageUrl$appId');
 
   /// Jump to App Store and leave a review.
   ///
   /// The [appId] is App Store ID.
-  static Future<bool> _jumpToWriteReviews({required String appId}) async =>
+  static Future<bool> _jumpToWriteReviews({@required String appId}) async =>
       _launchUrl('$detailPageUrl$appId$writeReviewUrl');
 
   /// On iOS, implement link jump.
@@ -159,7 +160,7 @@ class UpgradeUtil {
     url += url.contains('?') ? '&' : '?';
     url += 'ls=1&mt=8';
 
-    final bool? result = await _channel.invokeMethod('launch', <String, Object>{
+    final bool result = await _channel.invokeMethod('launch', <String, Object>{
       'url': url,
       'universalLinksOnly': universalLinksOnly,
     });

@@ -16,8 +16,8 @@ At present, the plugin is only used by Android, iOS
 ### Version constraints
 
 ```yaml
-  sdk: ">=2.2.2 <3.0.0"
-  flutter: ">=1.12.13+hotfix.7"
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.5.0"
 ```
 
 ### Rely
@@ -71,35 +71,35 @@ Popups are implemented by using `CupertinoAlertDialog`.
 
 Parameter names and descriptions of `UpgradeDialog`:
 
-| Name                       | Type                       | Description                                                | Default                                       |
-|----------------------------|----------------------------|------------------------------------------------------------|-----------------------------------------------|
-| key                        | `Key`                      | Identifier of the component                                | `ObjectKey(context)`                          |
-| iOSAppId                   | `String`                   | App Store number for iOS                                   | Required                                      |
-| androidUpgradeInfo         | `AndroidUpgradeInfo`       | The upgrade info for Android                               | Required                                      |
-| title                      | `String`                   | Title                                                      | `UpgradeLocalizations.of(context).title`      |
-| titleTextStyle             | `TextStyle`                | TitleTextStyle                                             | `null`                                        |
-| titleStrutStyle            | `StrutStyle`               | TitleStrutStyle                                            | `null`                                        |
-| content                    | `String`                   | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
-| contentTextStyle           | `TextStyle`                | ContentTextStyle                                           | `null`                                        |
-| contentStrutStyle          | `StrutStyle`               | ContentStrutStyle                                          | `null`                                        |
-| contentTextAlign           | `TextAlign`                | The alignment of `content`                                 | `TextAlign.start`                             |
-| scrollController           | `ScrollController`         | `CupertinoAlertDialog.scrollController`                    | `null`                                        |
-| actionScrollController     | `ScrollController`         | `CupertinoAlertDialog.actionScrollController`              | `null`                                        |
-| force                      | `bool`                     | Is it a mandatory update                                   | `false`                                       |
-| updateKey                  | `Key`                      | The component identifier for the OK (upgrade) button       | `null`                                        |
-| updateText                 | `String`                   | Text of OK (Upgrade) button                                | `UpgradeLocalizations.of(context).updateText` |
-| updateTextStyle            | `TextStyle`                | Text style for OK (Upgrade) button                         | `null`                                        |
-| isUpgradeDefaultAction     | `bool`                     | Determine if the OK (Upgrade) button is the default option | `false`                                       |
-| isUpgradeDestructiveAction | `bool`                     | Determine if the OK (Upgrade) button is a destroy action   | `false`                                       |
-| cancelKey                  | `Key`                      | The component identifier for the cancel button             | `null`                                        |
-| cancelText                 | `String`                   | Text of Cancel button                                      | `UpgradeLocalizations.of(context).cancelText` |
-| cancelTextStyle            | `TextStyle`                | Text style for Cancel button                               | `null`                                        |
-| isCancelDefaultAction      | `bool`                     | Determine if the Cancel button is the default option       | `false`                                       |
-| isCancelDestructiveAction  | `bool`                     | Determine if the Cancel button is a destroy action         | `true`                                        |
-| updateCallback             | `VoidCallback`             | Click event listener for OK (upgrade) button               | `null`                                        |
-| cancelCallback             | `VoidCallback`             | Click event listener for Cancel button                     | `null`                                        |
-| downloadProgressCallback   | `DownloadProgressCallback` | Progress monitoring of download events                     | `null`                                        |
-| downloadStatusCallback     | `DownloadStatusCallback`   | Status listener of download events                         | `null`                                        |
+| Name                       | Type                        | Description                                                | Default                                       |
+|----------------------------|-----------------------------|------------------------------------------------------------|-----------------------------------------------|
+| key                        | `Key?`                      | Identifier of the component                                | `ObjectKey(context)`                          |
+| iOSAppId                   | `String`                    | App Store number for iOS                                   | Required                                      |
+| androidUpgradeInfo         | `AndroidUpgradeInfo`        | The upgrade info for Android                               | Required                                      |
+| title                      | `String`                    | Title                                                      | `UpgradeLocalizations.of(context).title`      |
+| titleTextStyle             | `TextStyle?`                | TitleTextStyle                                             | `null`                                        |
+| titleStrutStyle            | `StrutStyle?`               | TitleStrutStyle                                            | `null`                                        |
+| content                    | `String`                    | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
+| contentTextStyle           | `TextStyle?`                | ContentTextStyle                                           | `null`                                        |
+| contentStrutStyle          | `StrutStyle?`               | ContentStrutStyle                                          | `null`                                        |
+| contentTextAlign           | `TextAlign`                 | The alignment of `content`                                 | `TextAlign.start`                             |
+| scrollController           | `ScrollController?`         | `CupertinoAlertDialog.scrollController`                    | `null`                                        |
+| actionScrollController     | `ScrollController?`         | `CupertinoAlertDialog.actionScrollController`              | `null`                                        |
+| force                      | `bool`                      | Is it a mandatory update                                   | `false`                                       |
+| updateKey                  | `Key?`                      | The component identifier for the OK (upgrade) button       | `null`                                        |
+| updateText                 | `String?`                   | Text of OK (Upgrade) button                                | `UpgradeLocalizations.of(context).updateText` |
+| updateTextStyle            | `TextStyle?`                | Text style for OK (Upgrade) button                         | `null`                                        |
+| isUpgradeDefaultAction     | `bool`                      | Determine if the OK (Upgrade) button is the default option | `false`                                       |
+| isUpgradeDestructiveAction | `bool`                      | Determine if the OK (Upgrade) button is a destroy action   | `false`                                       |
+| cancelKey                  | `Key?`                      | The component identifier for the cancel button             | `null`                                        |
+| cancelText                 | `String?`                   | Text of Cancel button                                      | `UpgradeLocalizations.of(context).cancelText` |
+| cancelTextStyle            | `TextStyle?`                | Text style for Cancel button                               | `null`                                        |
+| isCancelDefaultAction      | `bool`                      | Determine if the Cancel button is the default option       | `false`                                       |
+| isCancelDestructiveAction  | `bool`                      | Determine if the Cancel button is a destroy action         | `true`                                        |
+| updateCallback             | `VoidCallback?`             | Click event listener for OK (upgrade) button               | `null`                                        |
+| cancelCallback             | `VoidCallback?`             | Click event listener for Cancel button                     | `null`                                        |
+| downloadProgressCallback   | `DownloadProgressCallback?` | Progress monitoring of download events                     | `null`                                        |
+| downloadStatusCallback     | `DownloadStatusCallback?`   | Status listener of download events                         | `null`                                        |
 
 ### iOS
 
@@ -110,14 +110,14 @@ Parameter names and descriptions of `UpgradeDialog`:
 
 Field description of `AndroidUpgradeInfo`
 
-| Name           | Type            | Description                                                              | Default               |
-|----------------|-----------------|--------------------------------------------------------------------------|-----------------------|
-| packageName    | `String`        | The package name for Android                                             | Required              |
-| androidMarket  | `AndroidMarket` | The App Market Configuration for Android                                 | `AndroidMarket()`     |
-| otherMarkets   | `List<String>`  | The package name of the app market that is not preset in `AndroidMarket` | `null`                |
-| downloadUrl    | `String`        | The download link for apk                                                | ` `                   |
-| saveApkName    | `String`        | The save name of the apk file                                            | `temp`                |
-| savePrefixName | `String`        | The folder where the apk file is saved                                   | `libCacheApkDownload` |
+| Name           | Type             | Description                                                              | Default               |
+|----------------|------------------|--------------------------------------------------------------------------|-----------------------|
+| packageName    | `String`         | The package name for Android                                             | Required              |
+| androidMarket  | `AndroidMarket?` | The App Market Configuration for Android                                 | `AndroidMarket()`     |
+| otherMarkets   | `List<String>?`  | The package name of the app market that is not preset in `AndroidMarket` | `null`                |
+| downloadUrl    | `String?`        | The download link for apk                                                | ` `                   |
+| saveApkName    | `String?`        | The save name of the apk file                                            | `temp`                |
+| savePrefixName | `String?`        | The folder where the apk file is saved                                   | `libCacheApkDownload` |
 
 * `androidMarket` application market detailed configuration can be
   viewed [AndroidMarket](lib/src/android/android_market.dart);

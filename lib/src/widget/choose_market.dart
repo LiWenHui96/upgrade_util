@@ -10,21 +10,18 @@ import 'package:upgrade_util/upgrade_util.dart';
 /// @Date: 2022/3/14
 
 class ChooseMarket {
-  static Future<String> chooseMarkets({
-    @required BuildContext context,
-    @required List<AndroidMarketModel> markets,
+  static Future<String?> chooseMarkets({
+    required BuildContext context,
+    required List<AndroidMarketModel> markets,
   }) async {
     if (markets.length == 1) {
-      return Future.value(markets.first.packageNameD);
+      return Future<String>.value(markets.first.packageNameD);
     }
 
     return showModalBottomSheet(
       context: context,
       barrierColor: CupertinoDynamicColor.resolve(
-        CupertinoDynamicColor.withBrightness(
-          color: Color(0x33000000),
-          darkColor: Color(0x7A000000),
-        ),
+        kCupertinoModalBarrierColor,
         context,
       ),
       shape: const RoundedRectangleBorder(
@@ -51,7 +48,7 @@ class ChooseMarket {
 
         child = Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Text(local.androidTitle, style: const TextStyle(fontSize: 20.0)),
             const SizedBox(height: 10.0),
             Flexible(
@@ -67,8 +64,8 @@ class ChooseMarket {
                     creationParamsCodec: const StandardMessageCodec(),
                     hitTestBehavior: PlatformViewHitTestBehavior.translucent,
                     onPlatformViewCreated: (int id) {
-                      final _channel = MethodChannel('${viewChannelName}_$id');
-                      _channel.setMethodCallHandler((call) async {
+                      final MethodChannel _channel = MethodChannel('${viewChannelName}_$id');
+                      _channel.setMethodCallHandler((MethodCall call) async {
                         if (call.method == 'OnClickListener') {
                           Navigator.pop(context, markets[index].packageNameD);
                         }
@@ -84,7 +81,7 @@ class ChooseMarket {
 
                   child = Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [child, Text(markets[index].showNameD)],
+                    children: <Widget>[child, Text(markets[index].showNameD)],
                   );
 
                   child =

@@ -21,74 +21,74 @@ typedef DownloadStatusCallback = Function(DownloadStatus downloadStatus,
 
 class UpgradeDialog extends StatefulWidget {
   UpgradeDialog({
-    Key key,
-    @required this.iOSAppId,
-    @required this.androidPackageName,
-    @required this.androidMarket,
+    Key? key,
+    required this.iOSAppId,
+    required this.androidPackageName,
+    required this.androidMarket,
     this.otherMarkets,
-    @required this.downloadUrl,
+    required this.downloadUrl,
     this.saveApkName,
     this.savePrefixName,
-    @required this.title,
+    required this.title,
     this.titleTextStyle,
     this.titleStrutStyle,
-    @required this.content,
+    required this.content,
     this.contentTextStyle,
     this.contentStrutStyle,
-    @required this.contentTextAlign,
+    required this.contentTextAlign,
     this.scrollController,
     this.actionScrollController,
-    @required this.force,
+    required this.force,
     this.updateKey,
-    @required this.updateText,
+    required this.updateText,
     this.updateTextStyle,
-    @required this.isUpgradeDefaultAction,
-    @required this.isUpgradeDestructiveAction,
+    required this.isUpgradeDefaultAction,
+    required this.isUpgradeDestructiveAction,
     this.cancelKey,
-    @required this.cancelText,
+    required this.cancelText,
     this.cancelTextStyle,
-    @required this.isCancelDefaultAction,
-    @required this.isCancelDestructiveAction,
+    required this.isCancelDefaultAction,
+    required this.isCancelDestructiveAction,
     this.updateCallback,
     this.cancelCallback,
     this.downloadProgressCallback,
     this.downloadStatusCallback,
-    @required this.androidTitle,
-    @required this.cancel,
-    @required this.downloadTip,
+    required this.androidTitle,
+    required this.cancel,
+    required this.downloadTip,
   })  : assert(iOSAppId.isNotEmpty),
         assert(androidPackageName.isNotEmpty),
         super(key: key);
 
-  static Future<T> show<T>(
+  static Future<T?> show<T>(
     BuildContext context, {
-    Key key,
-    @required String iOSAppId,
-    @required AndroidUpgradeInfo androidUpgradeInfo,
-    String title,
-    TextStyle titleTextStyle,
-    StrutStyle titleStrutStyle,
-    String content,
-    TextStyle contentTextStyle,
-    StrutStyle contentStrutStyle,
+    Key? key,
+    required String iOSAppId,
+    required AndroidUpgradeInfo androidUpgradeInfo,
+    String? title,
+    TextStyle? titleTextStyle,
+    StrutStyle? titleStrutStyle,
+    String? content,
+    TextStyle? contentTextStyle,
+    StrutStyle? contentStrutStyle,
     TextAlign contentTextAlign = TextAlign.start,
-    ScrollController scrollController,
-    ScrollController actionScrollController,
+    ScrollController? scrollController,
+    ScrollController? actionScrollController,
     bool force = false,
-    Key updateKey,
-    String updateText,
-    TextStyle updateTextStyle,
+    Key? updateKey,
+    String? updateText,
+    TextStyle? updateTextStyle,
     bool isUpgradeDefaultAction = false,
     bool isUpgradeDestructiveAction = false,
-    Key cancelKey,
-    String cancelText,
-    TextStyle cancelTextStyle,
+    Key? cancelKey,
+    String? cancelText,
+    TextStyle? cancelTextStyle,
     bool isCancelDefaultAction = false,
     bool isCancelDestructiveAction = true,
-    VoidCallback updateCallback,
-    VoidCallback cancelCallback,
-    DownloadProgressCallback downloadProgressCallback,
-    DownloadStatusCallback downloadStatusCallback,
+    VoidCallback? updateCallback,
+    VoidCallback? cancelCallback,
+    DownloadProgressCallback? downloadProgressCallback,
+    DownloadStatusCallback? downloadStatusCallback,
   }) async {
     if (!(Platform.isIOS || Platform.isAndroid)) {
       throw UnimplementedError('Unsupported platform.');
@@ -161,58 +161,58 @@ class UpgradeDialog extends StatefulWidget {
   final AndroidMarket androidMarket;
 
   /// Package name for markets other than presets.
-  final List<String> otherMarkets;
+  final List<String>? otherMarkets;
 
   /// The [downloadUrl] is a link of download for Apk.
   final String downloadUrl;
 
   /// They are the saved information after the apk download is completed. For details, see the [AndroidUtil.getDownloadPath] method.
-  final String saveApkName;
-  final String savePrefixName;
+  final String? saveApkName;
+  final String? savePrefixName;
 
   final String title;
-  final TextStyle titleTextStyle;
-  final StrutStyle titleStrutStyle;
+  final TextStyle? titleTextStyle;
+  final StrutStyle? titleStrutStyle;
 
   final String content;
-  final TextStyle contentTextStyle;
-  final StrutStyle contentStrutStyle;
+  final TextStyle? contentTextStyle;
+  final StrutStyle? contentStrutStyle;
 
   /// The [contentTextAlign] is how to align text horizontally of [content].
   /// It is `TextAlign.start` by default.
   final TextAlign contentTextAlign;
 
-  final ScrollController scrollController;
-  final ScrollController actionScrollController;
+  final ScrollController? scrollController;
+  final ScrollController? actionScrollController;
 
   /// The [force] is Whether to force the update, there is no cancel button when forced.
   /// It is `false` by default.
   final bool force;
 
-  final Key updateKey;
+  final Key? updateKey;
   final String updateText;
-  final TextStyle updateTextStyle;
+  final TextStyle? updateTextStyle;
   final bool isUpgradeDefaultAction;
   final bool isUpgradeDestructiveAction;
-  final Key cancelKey;
+  final Key? cancelKey;
   final String cancelText;
-  final TextStyle cancelTextStyle;
+  final TextStyle? cancelTextStyle;
   final bool isCancelDefaultAction;
   final bool isCancelDestructiveAction;
 
   /// Use [updateCallback] to implement the event listener of clicking the update button.
   /// It is to close the dialog and open App Store and then jump to the details page of the app with application number [appId] by default.
-  final VoidCallback updateCallback;
+  final VoidCallback? updateCallback;
 
   /// Use [cancelCallback] to implement the event listener of clicking the cancel button.
   /// It is to close the dialog by default.
-  final VoidCallback cancelCallback;
+  final VoidCallback? cancelCallback;
 
   /// Use [downloadProgressCallback] to realize the listening event of download progress.
-  final DownloadProgressCallback downloadProgressCallback;
+  final DownloadProgressCallback? downloadProgressCallback;
 
   /// Use [downloadStatusCallback] to realize the listening event of download status.
-  final DownloadStatusCallback downloadStatusCallback;
+  final DownloadStatusCallback? downloadStatusCallback;
 
   final String androidTitle;
   final String cancel;
@@ -373,9 +373,11 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         throw ArgumentError('Both androidMarket and downloadUrl are empty');
       }
     } else {
-      final marketName =
+      final String? marketName =
           await ChooseMarket.chooseMarkets(context: context, markets: markets);
-      if (marketName.isEmpty) return;
+      if (marketName == null) {
+        return;
+      }
       await _jumpToMarket(marketName);
     }
   }
@@ -452,7 +454,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
   bool get force => widget.force;
 
-  VoidCallback get cancelCallback => widget.cancelCallback;
+  VoidCallback? get cancelCallback => widget.cancelCallback;
 
-  VoidCallback get updateCallback => widget.updateCallback;
+  VoidCallback? get updateCallback => widget.updateCallback;
 }

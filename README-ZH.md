@@ -17,7 +17,7 @@ Language: 中文 | [English](README.md)
 
 ```yaml
   sdk: ">=2.2.2 <3.0.0"
-  flutter: ">=1.12.13+hotfix.7 <2.0.0"
+  flutter: ">=1.12.13+hotfix.7"
 ```
 
 ### 添加依赖

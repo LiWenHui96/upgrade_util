@@ -17,7 +17,7 @@ At present, the plugin is only used by Android, iOS
 
 ```yaml
   sdk: ">=2.2.2 <3.0.0"
-  flutter: ">=1.12.13+hotfix.7 <2.0.0"
+  flutter: ">=1.12.13+hotfix.7"
 ```
 
 ### Rely

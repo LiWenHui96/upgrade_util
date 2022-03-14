@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:upgrade_util/upgrade_util.dart';
 
 /// @Describe: Upgrade dialog
@@ -31,7 +30,9 @@ class UpgradeDialog extends StatefulWidget {
     this.saveApkName,
     this.savePrefixName,
     @required this.title,
+    this.titleTextStyle,
     @required this.content,
+    this.contentTextStyle,
     @required this.contentTextAlign,
     this.scrollController,
     this.actionScrollController,
@@ -51,7 +52,7 @@ class UpgradeDialog extends StatefulWidget {
     this.downloadProgressCallback,
     this.downloadStatusCallback,
     @required this.androidTitle,
-    @required this.androidCancel,
+    @required this.cancel,
     @required this.downloadTip,
   })  : assert(iOSAppId.isNotEmpty),
         assert(androidPackageName.isNotEmpty),
@@ -63,7 +64,9 @@ class UpgradeDialog extends StatefulWidget {
     @required String iOSAppId,
     @required AndroidUpgradeInfo androidUpgradeInfo,
     String title,
+    TextStyle titleTextStyle,
     String content,
+    TextStyle contentTextStyle,
     TextAlign contentTextAlign = TextAlign.start,
     ScrollController scrollController,
     ScrollController actionScrollController,
@@ -99,7 +102,9 @@ class UpgradeDialog extends StatefulWidget {
       saveApkName: androidUpgradeInfo.saveApkName,
       savePrefixName: androidUpgradeInfo.savePrefixName,
       title: title ?? local.title,
+      titleTextStyle: titleTextStyle,
       content: content ?? local.content,
+      contentTextStyle: contentTextStyle,
       contentTextAlign: contentTextAlign,
       scrollController: scrollController,
       actionScrollController: actionScrollController,
@@ -119,7 +124,7 @@ class UpgradeDialog extends StatefulWidget {
       downloadProgressCallback: downloadProgressCallback,
       downloadStatusCallback: downloadStatusCallback,
       androidTitle: local.androidTitle,
-      androidCancel: local.androidCancel,
+      cancel: local.cancel,
       downloadTip: local.downloadTip,
     );
 
@@ -160,8 +165,10 @@ class UpgradeDialog extends StatefulWidget {
   final String savePrefixName;
 
   final String title;
+  final TextStyle titleTextStyle;
 
   final String content;
+  final TextStyle contentTextStyle;
 
   /// The [contentTextAlign] is how to align text horizontally of [content].
   /// It is `TextAlign.start` by default.
@@ -200,7 +207,7 @@ class UpgradeDialog extends StatefulWidget {
   final DownloadStatusCallback downloadStatusCallback;
 
   final String androidTitle;
-  final String androidCancel;
+  final String cancel;
   final String downloadTip;
 }
 
@@ -281,7 +288,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                 ),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(18.0),
-                  child: Center(child: Text(widget.androidCancel)),
+                  child: Center(child: Text(widget.cancel)),
                   onTap: () => Navigator.pop(context),
                 ),
               ),
@@ -295,8 +302,12 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         _downloadProgress > 0 ? downloadActions : baseActions;
 
     return CupertinoAlertDialog(
-      title: Text(widget.title),
-      content: Text(widget.content, textAlign: widget.contentTextAlign),
+      title: Text(widget.title, style: widget.titleTextStyle),
+      content: Text(
+        widget.content,
+        style: widget.contentTextStyle,
+        textAlign: widget.contentTextAlign,
+      ),
       scrollController: widget.scrollController,
       actionScrollController: widget.actionScrollController,
       actions: actions,
@@ -349,98 +360,12 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         throw ArgumentError('Both androidMarket and downloadUrl are empty');
       }
     } else {
-      if (markets.length == 1) {
-        await _jumpToMarket(markets.first.packageNameD);
-      } else if (markets.length > 1) {
-        await _chooseMarkets(markets);
-      }
+      final marketName = await ChooseMarket.chooseMarkets(
+        context: context,
+        markets: markets,
+      );
+      await _jumpToMarket(marketName);
     }
-  }
-
-  /// Choose Market
-  Future<void> _chooseMarkets(List<AndroidMarketModel> markets) async {
-    showModalBottomSheet<void>(
-      context: context,
-      barrierColor: CupertinoDynamicColor.resolve(
-        CupertinoDynamicColor.withBrightness(
-          color: Color(0x33000000),
-          darkColor: Color(0x7A000000),
-        ),
-        context,
-      ),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(14.0))),
-      builder: (BuildContext ctx) {
-        final BorderRadius radius = BorderRadius.circular(24.0);
-        const Color color = Color(0xFFDEDEDE);
-
-        Widget child = InkWell(
-          borderRadius: radius,
-          child: Center(child: Text(widget.androidCancel)),
-          onTap: () => Navigator.pop(ctx),
-        );
-
-        child = Ink(
-          width: double.infinity,
-          height: 48.0,
-          decoration: BoxDecoration(color: color, borderRadius: radius),
-          child: child,
-        );
-
-        child = Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(widget.androidTitle, style: const TextStyle(fontSize: 20.0)),
-            const SizedBox(height: 10.0),
-            Flexible(
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: markets.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  Widget child = AndroidView(
-                    viewType: viewName,
-                    creationParams: markets[index].packageName,
-                    creationParamsCodec: const StandardMessageCodec(),
-                    hitTestBehavior: PlatformViewHitTestBehavior.transparent,
-                  );
-
-                  child = ConstrainedBox(
-                    constraints:
-                        const BoxConstraints(maxWidth: 48.0, maxHeight: 48.0),
-                    child: child,
-                  );
-
-                  child = Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [child, Text(markets[index].showNameD)],
-                  );
-
-                  child =
-                      Padding(padding: const EdgeInsets.all(5.0), child: child);
-
-                  return GestureDetector(
-                    onTap: () async {
-                      Navigator.pop(context);
-                      await _jumpToMarket(markets[index].packageNameD);
-                    },
-                    child: child,
-                  );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            child,
-          ],
-        );
-
-        return Padding(padding: const EdgeInsets.all(15.0), child: child);
-      },
-    );
   }
 
   Future<void> _jumpToMarket(String marketPackageName) async {

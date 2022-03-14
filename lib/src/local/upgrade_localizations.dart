@@ -22,7 +22,7 @@ abstract class UpgradeLocalizationsBase {
 
   String get androidTitle => getItem('androidTitle').toString();
 
-  String get androidCancel => getItem('androidCancel').toString();
+  String get cancel => getItem('cancel').toString();
 
   String get downloadTip => getItem('downloadTip').toString();
 }
@@ -63,7 +63,7 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
       'cancelText': 'Not Updated',
       'updateText': 'Update Now',
       'androidTitle': 'Complete action using',
-      'androidCencel': 'Cancel',
+      'cancel': 'Cancel',
       'downloadTip': 'Downloading:',
     },
     'zh': <String, String>{
@@ -71,8 +71,8 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
       'content': '新功能已上线，立即更新',
       'cancelText': '以后再说',
       'updateText': '立即体验',
+      'cancel': '取消',
       'androidTitle': '选择要使用的应用',
-      'androidCancel': '取消',
       'downloadTip': '正在下载：',
     },
   };

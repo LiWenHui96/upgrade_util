@@ -1,10 +1,11 @@
 package io.upgrade
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.core.content.FileProvider
@@ -17,6 +18,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.ArrayList
 
 /** UpgradeUtilPlugin */
@@ -26,7 +28,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
-  private lateinit var mContext: Context
+  private lateinit var mActivity: Activity
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
@@ -38,10 +40,17 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
-      "apkDownloadPath" -> result.success(mContext.cacheDir.path)
+      "apkDownloadPath" -> result.success(mActivity.cacheDir.path)
       "installApk" -> {
         val path = call.argument<String>("path")
-        path?.also { result.success(installApk(path)) }
+        path?.also {
+          try {
+            installApk(path)
+            result.success(true)
+          } catch (e: Throwable) {
+            result.error(e.javaClass.simpleName, e.message, null)
+          }
+        }
       }
       "availableMarket" -> {
         val packages = call.argument<List<String>>("packages")
@@ -62,31 +71,52 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    * @param path The storage address of apk.
    * @return Boolean
    */
-  private fun installApk(path: String): Boolean {
+  private fun installApk(path: String) {
     val file = File(path)
-    if (!file.exists()) {
-      return false
-    }
-
-    val intent = Intent(Intent.ACTION_VIEW)
-    val url: Uri?
+    if (!file.exists()) throw FileNotFoundException("$path is not exist! or check permission")
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      val authority = "${mContext.packageName}.UpgradeUtilPlugin.fileprovider"
-      url = FileProvider.getUriForFile(mContext, authority, file)
-      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+      if (canRequestPackageInstalls()) install24(file)
+      else {
+        showSettingPackageInstall()
+        apkFile = file
+      }
     } else {
-      url = Uri.fromFile(file)
-      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      installBelow24(Uri.fromFile(file))
     }
+  }
 
-    if (url != null) {
-      intent.setDataAndType(url, "application/vnd.android.package-archive")
-      mContext.startActivity(intent)
-      return true
+  private fun canRequestPackageInstalls(): Boolean {
+    return Build.VERSION.SDK_INT <= Build.VERSION_CODES.O || pm().canRequestPackageInstalls()
+  }
+
+  private fun showSettingPackageInstall() { // todo to test with android 26
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+      intent.data = Uri.parse("package:" + mActivity.packageName)
+      mActivity.startActivityForResult(intent, installRequestCode)
+    } else {
+      throw RuntimeException("VERSION.SDK_INT < O")
     }
+  }
 
-    return false
+  private fun installBelow24(uri: Uri?) {
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.setDataAndType(uri, downloadType)
+    mActivity.startActivity(intent)
+  }
+
+  private fun install24(file: File?) {
+    if (file == null) throw NullPointerException("file is null!")
+
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    val authority = "${mActivity.packageName}.UpgradeUtilPlugin.fileprovider"
+    val uri: Uri = FileProvider.getUriForFile(mActivity, authority, file)
+    intent.setDataAndType(uri, downloadType)
+    mActivity.startActivity(intent)
   }
 
   /**
@@ -142,13 +172,13 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    */
   private fun jumpToMarket(packageName: String?, marketPackageName: String?) {
     return try {
-      val mPackageInfo = pm().getPackageInfo(mContext.packageName, 0)
+      val mPackageInfo = pm().getPackageInfo(mActivity.packageName, 0)
       val mPackageName = packageName ?: mPackageInfo.packageName
       val uri = Uri.parse("${getUriString(marketPackageName)}${mPackageName}")
       val intent = Intent(Intent.ACTION_VIEW, uri)
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       if (!TextUtils.isEmpty(marketPackageName)) intent.setPackage(marketPackageName)
-      mContext.startActivity(intent)
+      mActivity.startActivity(intent)
     } catch (e: Exception) {
       e.printStackTrace()
     }
@@ -169,7 +199,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   private fun pm(): PackageManager {
-    return mContext.packageManager
+    return mActivity.packageManager
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -179,10 +209,22 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   companion object {
     const val channelName = "upgrade_util.io.channel/method"
     const val viewName = "upgrade_util.io.view/android"
+    const val downloadType = "application/vnd.android.package-archive"
+
+    private const val installRequestCode = 9989
+    private var apkFile: File? = null
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    mContext = binding.activity
+    mActivity = binding.activity
+
+    binding.addActivityResultListener { requestCode, resultCode, intent ->
+      if (resultCode == Activity.RESULT_OK && requestCode == installRequestCode) {
+        install24(apkFile)
+        true
+      } else
+        false
+    }
   }
 
   override fun onDetachedFromActivityForConfigChanges() {}

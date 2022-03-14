@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Daily upgrade.
+
 ## 2.0.0
 
 * Welcome to a brand new version.

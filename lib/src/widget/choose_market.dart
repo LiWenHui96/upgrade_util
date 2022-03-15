@@ -64,7 +64,8 @@ class ChooseMarket {
                     creationParamsCodec: const StandardMessageCodec(),
                     hitTestBehavior: PlatformViewHitTestBehavior.translucent,
                     onPlatformViewCreated: (int id) {
-                      final MethodChannel _channel = MethodChannel('${viewChannelName}_$id');
+                      final MethodChannel _channel =
+                          MethodChannel('${viewChannelName}_$id');
                       _channel.setMethodCallHandler((MethodCall call) async {
                         if (call.method == 'OnClickListener') {
                           Navigator.pop(context, markets[index].packageNameD);

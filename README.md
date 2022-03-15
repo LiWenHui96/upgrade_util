@@ -77,7 +77,11 @@ Parameter names and descriptions of `UpgradeDialog`:
 | iOSAppId                   | `String`                   | App Store number for iOS                                   | Required                                      |
 | androidUpgradeInfo         | `AndroidUpgradeInfo`       | The upgrade info for Android                               | Required                                      |
 | title                      | `String`                   | Title                                                      | `UpgradeLocalizations.of(context).title`      |
+| titleTextStyle             | `TextStyle`                | TitleTextStyle                                             | `null`                                        |
+| titleStrutStyle            | `StrutStyle`               | TitleStrutStyle                                            | `null`                                        |
 | content                    | `String`                   | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
+| contentTextStyle           | `TextStyle`                | ContentTextStyle                                           | `null`                                        |
+| contentStrutStyle          | `StrutStyle`               | ContentStrutStyle                                          | `null`                                        |
 | contentTextAlign           | `TextAlign`                | The alignment of `content`                                 | `TextAlign.start`                             |
 | scrollController           | `ScrollController`         | `CupertinoAlertDialog.scrollController`                    | `null`                                        |
 | actionScrollController     | `ScrollController`         | `CupertinoAlertDialog.actionScrollController`              | `null`                                        |

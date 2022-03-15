@@ -31,8 +31,10 @@ class UpgradeDialog extends StatefulWidget {
     this.savePrefixName,
     @required this.title,
     this.titleTextStyle,
+    this.titleStrutStyle,
     @required this.content,
     this.contentTextStyle,
+    this.contentStrutStyle,
     @required this.contentTextAlign,
     this.scrollController,
     this.actionScrollController,
@@ -65,8 +67,10 @@ class UpgradeDialog extends StatefulWidget {
     @required AndroidUpgradeInfo androidUpgradeInfo,
     String title,
     TextStyle titleTextStyle,
+    StrutStyle titleStrutStyle,
     String content,
     TextStyle contentTextStyle,
+    StrutStyle contentStrutStyle,
     TextAlign contentTextAlign = TextAlign.start,
     ScrollController scrollController,
     ScrollController actionScrollController,
@@ -103,8 +107,10 @@ class UpgradeDialog extends StatefulWidget {
       savePrefixName: androidUpgradeInfo.savePrefixName,
       title: title ?? local.title,
       titleTextStyle: titleTextStyle,
+      titleStrutStyle: titleStrutStyle,
       content: content ?? local.content,
       contentTextStyle: contentTextStyle,
+      contentStrutStyle: contentStrutStyle,
       contentTextAlign: contentTextAlign,
       scrollController: scrollController,
       actionScrollController: actionScrollController,
@@ -166,9 +172,11 @@ class UpgradeDialog extends StatefulWidget {
 
   final String title;
   final TextStyle titleTextStyle;
+  final StrutStyle titleStrutStyle;
 
   final String content;
   final TextStyle contentTextStyle;
+  final StrutStyle contentStrutStyle;
 
   /// The [contentTextAlign] is how to align text horizontally of [content].
   /// It is `TextAlign.start` by default.
@@ -302,10 +310,15 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         _downloadProgress > 0 ? downloadActions : baseActions;
 
     return CupertinoAlertDialog(
-      title: Text(widget.title, style: widget.titleTextStyle),
+      title: Text(
+        widget.title,
+        style: widget.titleTextStyle,
+        strutStyle: widget.titleStrutStyle,
+      ),
       content: Text(
         widget.content,
         style: widget.contentTextStyle,
+        strutStyle: widget.contentStrutStyle,
         textAlign: widget.contentTextAlign,
       ),
       scrollController: widget.scrollController,

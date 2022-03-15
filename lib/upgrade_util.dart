@@ -9,4 +9,5 @@ export 'src/upgrade_util.dart';
 export 'src/widget/choose_market.dart';
 
 const String channelName = 'upgrade_util.io.channel/method';
+final String viewChannelName = 'upgrade_util.io.view.channel/method';
 const String viewName = 'upgrade_util.io.view/android';

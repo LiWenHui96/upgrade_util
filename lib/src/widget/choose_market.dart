@@ -65,7 +65,15 @@ class ChooseMarket {
                     viewType: viewName,
                     creationParams: markets[index].packageName,
                     creationParamsCodec: const StandardMessageCodec(),
-                    hitTestBehavior: PlatformViewHitTestBehavior.transparent,
+                    hitTestBehavior: PlatformViewHitTestBehavior.translucent,
+                    onPlatformViewCreated: (int id) {
+                      final _channel = MethodChannel('${viewChannelName}_$id');
+                      _channel.setMethodCallHandler((call) async {
+                        if (call.method == 'OnClickListener') {
+                          Navigator.pop(context, markets[index].packageNameD);
+                        }
+                      });
+                    },
                   );
 
                   child = ConstrainedBox(
@@ -83,6 +91,7 @@ class ChooseMarket {
                       Padding(padding: const EdgeInsets.all(5.0), child: child);
 
                   return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: () async {
                       Navigator.pop(context, markets[index].packageNameD);
                     },

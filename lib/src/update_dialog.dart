@@ -360,10 +360,9 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         throw ArgumentError('Both androidMarket and downloadUrl are empty');
       }
     } else {
-      final marketName = await ChooseMarket.chooseMarkets(
-        context: context,
-        markets: markets,
-      );
+      final marketName =
+          await ChooseMarket.chooseMarkets(context: context, markets: markets);
+      if (marketName.isEmpty) return;
       await _jumpToMarket(marketName);
     }
   }

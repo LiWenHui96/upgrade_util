@@ -1,6 +1,7 @@
 name: upgrade_util
 description: An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.
 version: 0.0.9+1
+author: LiWenHui96
 homepage: https://github.com/LiWenHui96/upgrade_util
 
 environment:
@@ -11,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^3.0.10
+  dio: ^3.0.0
 
 dev_dependencies:
   flutter_test:

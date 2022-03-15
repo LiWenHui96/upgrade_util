@@ -19,7 +19,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.ArrayList
 
 /** UpgradeUtilPlugin */
 class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -34,22 +33,23 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
     channel.setMethodCallHandler(this)
 
-    flutterPluginBinding.platformViewRegistry.registerViewFactory(viewName, MarketViewFactory())
+    flutterPluginBinding.platformViewRegistry.registerViewFactory(
+      viewName,
+      MarketViewFactory(flutterPluginBinding.binaryMessenger)
+    )
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
-      "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
+      "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
       "apkDownloadPath" -> result.success(mActivity.cacheDir.path)
       "installApk" -> {
         val path = call.argument<String>("path")
-        path?.also {
-          try {
-            installApk(path)
-            result.success(true)
-          } catch (e: Throwable) {
-            result.error(e.javaClass.simpleName, e.message, null)
-          }
+        try {
+          installApk(path)
+          result.success(true)
+        } catch (e: Throwable) {
+          result.error(e.javaClass.simpleName, e.message, null)
         }
       }
       "availableMarket" -> {
@@ -71,7 +71,9 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    * @param path The storage address of apk.
    * @return Boolean
    */
-  private fun installApk(path: String) {
+  private fun installApk(path: String?) {
+    if (path == null) throw NullPointerException("fillPath is null!")
+
     val file = File(path)
     if (!file.exists()) throw FileNotFoundException("$path is not exist! or check permission")
 
@@ -218,7 +220,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     mActivity = binding.activity
 
-    binding.addActivityResultListener { requestCode, resultCode, intent ->
+    binding.addActivityResultListener { requestCode, resultCode, _ ->
       if (resultCode == Activity.RESULT_OK && requestCode == installRequestCode) {
         install24(apkFile)
         true

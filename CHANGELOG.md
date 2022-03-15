@@ -1,3 +1,8 @@
+## 2.1.2
+
+* Add `AndroidView` click event.
+* Upgrade README.md
+
 ## 2.1.1
 
 * Raise score.

@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - upgrade_util (2.1.1):
+  - upgrade_util (2.1.2):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  upgrade_util: 18ea19c918ca8d5b2792098ab5569855cc0a0066
+  upgrade_util: c6e1e920208ac7b69b964aad0cfea59f5fae89e1
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

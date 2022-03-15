@@ -76,10 +76,10 @@ Parameter names and descriptions of `UpgradeDialog`:
 | key                        | `Key?`                      | Identifier of the component                                | `ObjectKey(context)`                          |
 | iOSAppId                   | `String`                    | App Store number for iOS                                   | Required                                      |
 | androidUpgradeInfo         | `AndroidUpgradeInfo`        | The upgrade info for Android                               | Required                                      |
-| title                      | `String`                    | Title                                                      | `UpgradeLocalizations.of(context).title`      |
+| title                      | `String?`                   | Title                                                      | `UpgradeLocalizations.of(context).title`      |
 | titleTextStyle             | `TextStyle?`                | TitleTextStyle                                             | `null`                                        |
 | titleStrutStyle            | `StrutStyle?`               | TitleStrutStyle                                            | `null`                                        |
-| content                    | `String`                    | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
+| content                    | `String?`                   | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
 | contentTextStyle           | `TextStyle?`                | ContentTextStyle                                           | `null`                                        |
 | contentStrutStyle          | `StrutStyle?`               | ContentStrutStyle                                          | `null`                                        |
 | contentTextAlign           | `TextAlign`                 | The alignment of `content`                                 | `TextAlign.start`                             |

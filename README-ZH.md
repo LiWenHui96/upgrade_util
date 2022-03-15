@@ -76,10 +76,10 @@ class MyApp extends StatelessWidget {
 | key                        | `Key?`                      | 组件标识符                                         | `ObjectKey(context)`                          |
 | iOSAppId                   | `String`                    | iOS应用商店编号                                     | 必填项                                           |
 | androidUpgradeInfo         | `AndroidUpgradeInfo`        | Android升级信息                                   | 必填项                                           |
-| title                      | `String`                    | 标题                                            | `UpgradeLocalizations.of(context).title`      |
+| title                      | `String?`                   | 标题                                            | `UpgradeLocalizations.of(context).title`      |
 | titleTextStyle             | `TextStyle?`                | 标题的文字样式                                             | `null`                                        |
 | titleStrutStyle            | `StrutStyle?`               | 标题的行样式                                            | `null`                                        |
-| content                    | `String`                    | 版本新增内容                                        | `UpgradeLocalizations.of(context).content`    |
+| content                    | `String?`                   | 版本新增内容                                        | `UpgradeLocalizations.of(context).content`    |
 | contentTextStyle           | `TextStyle?`                | 版本新增内容的文字样式                                   | `null`                                        |
 | contentStrutStyle          | `StrutStyle?`               | 版本新增内容的行样式                                    | `null`                                        |
 | contentTextAlign           | `TextAlign`                 | `content` 对齐方式                                | `TextAlign.start`                             |

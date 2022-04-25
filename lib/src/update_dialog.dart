@@ -138,6 +138,7 @@ class UpgradeDialog extends StatefulWidget {
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext ctx) => child,
+      barrierDismissible: true,
     );
   }
 

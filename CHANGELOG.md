@@ -1,3 +1,7 @@
+## 2.1.3
+
+* Fix [#1](https://github.com/LiWenHui96/upgrade_util/issues/1)
+
 ## 2.1.2
 
 * Add `AndroidView` click event.

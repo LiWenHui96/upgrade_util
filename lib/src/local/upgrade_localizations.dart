@@ -47,7 +47,9 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
 
   static UpgradeLocalizations of(BuildContext context) {
     return Localizations.of<UpgradeLocalizations>(
-            context, UpgradeLocalizations) ??
+          context,
+          UpgradeLocalizations,
+        ) ??
         _static;
   }
 

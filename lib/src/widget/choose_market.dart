@@ -25,12 +25,12 @@ class ChooseMarket {
         context,
       ),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14.0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
       ),
       builder: (BuildContext ctx) {
         final UpgradeLocalizations local = UpgradeLocalizations.of(ctx);
 
-        final BorderRadius radius = BorderRadius.circular(24.0);
+        final BorderRadius radius = BorderRadius.circular(24);
         const Color color = Color(0xFFDEDEDE);
 
         Widget child = InkWell(
@@ -41,7 +41,7 @@ class ChooseMarket {
 
         child = Ink(
           width: double.infinity,
-          height: 48.0,
+          height: 48,
           decoration: BoxDecoration(color: color, borderRadius: radius),
           child: child,
         );
@@ -49,8 +49,8 @@ class ChooseMarket {
         child = Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(local.androidTitle, style: const TextStyle(fontSize: 20.0)),
-            const SizedBox(height: 10.0),
+            Text(local.androidTitle, style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
             Flexible(
               child: GridView.builder(
                 shrinkWrap: true,
@@ -64,9 +64,8 @@ class ChooseMarket {
                     creationParamsCodec: const StandardMessageCodec(),
                     hitTestBehavior: PlatformViewHitTestBehavior.translucent,
                     onPlatformViewCreated: (int id) {
-                      final MethodChannel _channel =
-                          MethodChannel('${viewChannelName}_$id');
-                      _channel.setMethodCallHandler((MethodCall call) async {
+                      MethodChannel('${viewChannelName}_$id')
+                          .setMethodCallHandler((MethodCall call) async {
                         if (call.method == 'OnClickListener') {
                           Navigator.pop(context, markets[index].packageNameD);
                         }
@@ -76,7 +75,7 @@ class ChooseMarket {
 
                   child = ConstrainedBox(
                     constraints:
-                        const BoxConstraints(maxWidth: 48.0, maxHeight: 48.0),
+                        const BoxConstraints(maxWidth: 48, maxHeight: 48),
                     child: child,
                   );
 
@@ -86,7 +85,7 @@ class ChooseMarket {
                   );
 
                   child =
-                      Padding(padding: const EdgeInsets.all(5.0), child: child);
+                      Padding(padding: const EdgeInsets.all(5), child: child);
 
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -101,12 +100,12 @@ class ChooseMarket {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 10),
             child,
           ],
         );
 
-        return Padding(padding: const EdgeInsets.all(15.0), child: child);
+        return Padding(padding: const EdgeInsets.all(15), child: child);
       },
     );
   }

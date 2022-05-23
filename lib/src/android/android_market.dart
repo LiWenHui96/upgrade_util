@@ -124,8 +124,9 @@ class AndroidMarket {
       markets.add(MARKET_XIAOMI);
     }
     if (isOppo) {
-      markets.add(MARKET_OPPO);
-      markets.add(MARKET_OPPO_NEW);
+      markets
+        ..add(MARKET_OPPO)
+        ..add(MARKET_OPPO_NEW);
     }
     if (isVivo) {
       markets.add(MARKET_VIVO);

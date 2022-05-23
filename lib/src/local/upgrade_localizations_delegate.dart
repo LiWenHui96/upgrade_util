@@ -22,7 +22,8 @@ class UpgradeLocalizationsDelegate
   @override
   Future<UpgradeLocalizations> load(Locale locale) {
     return SynchronousFuture<UpgradeLocalizations>(
-        UpgradeLocalizations(locale));
+      UpgradeLocalizations(locale),
+    );
   }
 
   @override

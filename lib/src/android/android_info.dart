@@ -29,7 +29,8 @@ class AndroidUpgradeInfo {
   /// The [downloadUrl] is a link of download for Apk.
   final String? downloadUrl;
 
-  /// They are the saved information after the apk download is completed. For details, see the [UpgradeUtil.getDownloadPath] method.
+  /// They are the saved information after the apk download is completed.
+  /// For details, see the 'UpgradeUtil.getDownloadPath' method.
   final String? saveApkName;
   final String? savePrefixName;
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrade_util/upgrade_util.dart';
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         UpgradeLocalizationsDelegate.delegate,
       ],
-      supportedLocales: [Locale('en', 'US'), Locale('zh', 'CN')],
+      supportedLocales: <Locale>[Locale('en', 'US'), Locale('zh', 'CN')],
       home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
@@ -40,7 +39,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final list = <String>[
+  final List<String> list = <String>[
     'Android Test: Get the download of apk',
     'Android Test: Get Available Market',
     'WeChat: Jump To AppStore Reviews Page',
@@ -50,13 +49,13 @@ class _HomePageState extends State<HomePage> {
   ];
 
   /// The app number of WeChat.
-  final wechatAppID = '414478124';
+  final String wechatAppID = '414478124';
 
   /// The package name of WeChat.
-  final wechatPackageName = 'com.tencent.mm';
+  final String wechatPackageName = 'com.tencent.mm';
 
   @override
-  Widget build(context) => _platformWidget();
+  Widget build(BuildContext context) => _platformWidget();
 
   Widget _platformWidget() {
     Widget child = Center(
@@ -75,15 +74,15 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBodyWidget() {
     return ListView.builder(
-      itemBuilder: (context, index) {
-        final child = ElevatedButton(
+      itemBuilder: (BuildContext context, int index) {
+        final ElevatedButton child = ElevatedButton(
           onPressed: () async => onPressed(index),
           child: Text(list[index]),
         );
 
         return Container(
-          margin: const EdgeInsets.only(top: 10.0),
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          margin: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: child,
         );
       },
@@ -91,16 +90,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future onPressed(int index) async {
+  Future<void> onPressed(int index) async {
     switch (index) {
       case 0:
-        final result = await UpgradeUtil.getDownloadPath(apkName: 'app');
+        final String result = await UpgradeUtil.getDownloadPath(apkName: 'app');
         debugPrint(result);
         break;
       case 1:
         // Get a list of all the app markets in the phone.
-        final marketPackages = await UpgradeUtil.getAvailableMarket(
-            androidMarket: AndroidMarket.allTrue);
+        final List<AndroidMarketModel> marketPackages =
+            await UpgradeUtil.getAvailableMarket(
+          androidMarket: AndroidMarket.allTrue,
+        );
         debugPrint(marketPackages.toString());
         break;
       case 2:

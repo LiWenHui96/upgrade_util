@@ -66,8 +66,8 @@ class UpgradeUtil {
       throw UnimplementedError('Other platforms are not supported for now');
     }
 
-    final List<String> list = (androidMarket ?? AndroidMarket()).toMarkets();
-    list.addAll(otherMarkets ?? <String>[]);
+    final List<String> list = (androidMarket ?? AndroidMarket()).toMarkets()
+      ..addAll(otherMarkets ?? <String>[]);
 
     final List<dynamic>? result = await _channel.invokeMethod(
       'availableMarket',
@@ -79,8 +79,11 @@ class UpgradeUtil {
     }
 
     final List<AndroidMarketModel> markets = result
-        .map((dynamic e) => AndroidMarketModel.fromJson(
-            json.decode(json.encode(e)) as Map<String, dynamic>))
+        .map(
+          (dynamic e) => AndroidMarketModel.fromJson(
+            json.decode(json.encode(e)) as Map<String, dynamic>,
+          ),
+        )
         .toList();
 
     return markets;
@@ -88,10 +91,10 @@ class UpgradeUtil {
 
   /// The [jumpMode] is jump mode.
   ///
-  /// On iOS, the [appId] is App Store ID.
+  /// On iOS, the 'appId' is App Store ID.
   ///
-  /// On Android, the [appId] is package name.
-  /// On Android, the [marketPackageName] is the package name of market.
+  /// On Android, the 'appId' is package name.
+  /// On Android, the 'marketPackageName' is the package name of market.
   static Future<void> jumpToStore({
     required JumpMode jumpMode,
     String? iOSAppId,

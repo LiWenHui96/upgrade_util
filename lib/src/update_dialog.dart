@@ -15,8 +15,10 @@ import 'package:upgrade_util/upgrade_util.dart';
 typedef DownloadProgressCallback = Function(int count, int total);
 
 /// Listener - Download status
-typedef DownloadStatusCallback = Function(DownloadStatus downloadStatus,
-    {dynamic error});
+typedef DownloadStatusCallback = Function(
+  DownloadStatus downloadStatus, {
+  dynamic error,
+});
 
 class UpgradeDialog extends StatefulWidget {
   UpgradeDialog({
@@ -55,8 +57,8 @@ class UpgradeDialog extends StatefulWidget {
     required this.androidTitle,
     required this.cancel,
     required this.downloadTip,
-  })  : assert(iOSAppId.isNotEmpty),
-        assert(androidPackageName.isNotEmpty),
+  })  : assert(iOSAppId.isNotEmpty, 'iOSAppId Not empty'),
+        assert(androidPackageName.isNotEmpty, 'androidPackageName Not empty'),
         super(key: key);
 
   static Future<T?> show<T>(
@@ -166,7 +168,8 @@ class UpgradeDialog extends StatefulWidget {
   /// The [downloadUrl] is a link of download for Apk.
   final String downloadUrl;
 
-  /// They are the saved information after the apk download is completed. For details, see the [AndroidUtil.getDownloadPath] method.
+  /// They are the saved information after the apk download is completed.
+  /// For details, see the 'AndroidUtil.getDownloadPath' method.
   final String? saveApkName;
   final String? savePrefixName;
 
@@ -185,7 +188,9 @@ class UpgradeDialog extends StatefulWidget {
   final ScrollController? scrollController;
   final ScrollController? actionScrollController;
 
-  /// The [force] is Whether to force the update, there is no cancel button when forced.
+  /// The [force] is Whether to force the update, there is no cancel button
+  /// when forced.
+  ///
   /// It is `false` by default.
   final bool force;
 
@@ -200,18 +205,25 @@ class UpgradeDialog extends StatefulWidget {
   final bool isCancelDefaultAction;
   final bool isCancelDestructiveAction;
 
-  /// Use [updateCallback] to implement the event listener of clicking the update button.
-  /// It is to close the dialog and open App Store and then jump to the details page of the app with application number [appId] by default.
+  /// Use [updateCallback] to implement the event listener of clicking the
+  /// update button.
+  ///
+  /// It is to close the dialog and open App Store and then jump to the
+  /// details page of the app with application number 'appId' by default.
   final VoidCallback? updateCallback;
 
-  /// Use [cancelCallback] to implement the event listener of clicking the cancel button.
+  /// Use [cancelCallback] to implement the event listener of clicking the
+  /// cancel button.
+  ///
   /// It is to close the dialog by default.
   final VoidCallback? cancelCallback;
 
-  /// Use [downloadProgressCallback] to realize the listening event of download progress.
+  /// Use [downloadProgressCallback] to realize the listening event of
+  /// download progress.
   final DownloadProgressCallback? downloadProgressCallback;
 
-  /// Use [downloadStatusCallback] to realize the listening event of download status.
+  /// Use [downloadStatusCallback] to realize the listening event of
+  /// download status.
   final DownloadStatusCallback? downloadStatusCallback;
 
   final String androidTitle;
@@ -221,7 +233,7 @@ class UpgradeDialog extends StatefulWidget {
 
 class _UpgradeDialogState extends State<UpgradeDialog> {
   /// Download progress
-  double _downloadProgress = 0.0;
+  double _downloadProgress = 0;
 
   DownloadStatus _downloadStatus = DownloadStatus.none;
 
@@ -260,7 +272,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       if (!force) cancelAction,
       if (_isShowProgress)
         ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 45.0),
+          constraints: const BoxConstraints(minHeight: 45),
           child: const Center(child: CupertinoActivityIndicator()),
         )
       else
@@ -269,35 +281,35 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
     final List<Widget> downloadActions = <Widget>[
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         child: Material(
           color: Colors.transparent,
           child: Column(
             children: <Widget>[
               Text(widget.downloadTip),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 8),
               LinearProgressIndicator(value: _downloadProgress),
-              const SizedBox(height: 4.0),
+              const SizedBox(height: 4),
               Text(
                 '${(_downloadProgress * 100).toStringAsFixed(2)}%',
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  fontSize: 12.0,
+                  fontSize: 12,
                   fontStyle: FontStyle.italic,
                 ),
               ),
               if (!force)
                 Container(
-                  margin: const EdgeInsets.only(top: 14.0),
+                  margin: const EdgeInsets.only(top: 14),
                   child: Ink(
                     width: double.infinity,
-                    height: 36.0,
+                    height: 36,
                     decoration: BoxDecoration(
                       color: const Color(0xFFDEDEDE),
-                      borderRadius: BorderRadius.circular(18.0),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(18.0),
+                      borderRadius: BorderRadius.circular(18),
                       child: Center(child: Text(widget.cancel)),
                       onTap: () => Navigator.pop(context),
                     ),
@@ -399,7 +411,9 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         _downloadStatus == DownloadStatus.downloading ||
         _downloadStatus == DownloadStatus.done) {
       debugPrint(
-          'Current download status: $_downloadStatus, the download cannot be repeated.');
+        'Current download status: $_downloadStatus, the download cannot '
+        'be repeated.',
+      );
       return;
     }
 

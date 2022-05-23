@@ -1,3 +1,7 @@
+## 2.1.4
+
+* Fix where Android's cancellation button was incorrectly displayed when downloading in Stronger Mode.
+
 ## 2.1.3
 
 * Fix [#1](https://github.com/LiWenHui96/upgrade_util/issues/1)

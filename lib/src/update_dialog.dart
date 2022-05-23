@@ -286,20 +286,23 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
                   fontStyle: FontStyle.italic,
                 ),
               ),
-              const SizedBox(height: 14.0),
-              Ink(
-                width: double.infinity,
-                height: 36.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFDEDEDE),
-                  borderRadius: BorderRadius.circular(18.0),
+              if (!force)
+                Container(
+                  margin: const EdgeInsets.only(top: 14.0),
+                  child: Ink(
+                    width: double.infinity,
+                    height: 36.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDEDEDE),
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(18.0),
+                      child: Center(child: Text(widget.cancel)),
+                      onTap: () => Navigator.pop(context),
+                    ),
+                  ),
                 ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(18.0),
-                  child: Center(child: Text(widget.cancel)),
-                  onTap: () => Navigator.pop(context),
-                ),
-              ),
             ],
           ),
         ),

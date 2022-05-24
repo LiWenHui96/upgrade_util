@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -44,9 +45,8 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
       "downloadPath" -> result.success("${mActivity.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
       "installApk" -> {
-        val path = call.argument<String>("path")
         try {
-          installApk(path)
+          installApk(call.arguments<String>())
           result.success(true)
         } catch (e: Throwable) {
           result.error(e.javaClass.simpleName, e.message, null)
@@ -72,53 +72,41 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    * @return Boolean
    */
   private fun installApk(path: String?) {
-    if (path == null) throw NullPointerException("fillPath is null!")
+    if (path == null) throw NullPointerException("The path of file is null!")
 
     val file = File(path)
-    if (!file.exists()) throw FileNotFoundException("$path is not exist! or check permission")
+    if (!file.exists()) throw FileNotFoundException("$path is not exist or check permission")
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      if (canRequestPackageInstalls()) install24(file)
-      else {
-        showSettingPackageInstall()
-        apkFile = file
-      }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !pm().canRequestPackageInstalls()) {
+      showSettingPackageInstall()
+      apkFile = file
     } else {
-      installBelow24(Uri.fromFile(file))
+      install(file)
     }
   }
 
-  private fun canRequestPackageInstalls(): Boolean {
-    return Build.VERSION.SDK_INT <= Build.VERSION_CODES.O || pm().canRequestPackageInstalls()
-  }
+  private fun install(file: File?) {
+    if (file == null) throw NullPointerException("The file is null!")
 
-  private fun showSettingPackageInstall() { // todo to test with android 26
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-      intent.data = Uri.parse("package:" + mActivity.packageName)
-      mActivity.startActivityForResult(intent, installRequestCode)
-    } else {
-      throw RuntimeException("VERSION.SDK_INT < O")
-    }
-  }
-
-  private fun installBelow24(uri: Uri?) {
     val intent = Intent(Intent.ACTION_VIEW)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+    val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+      val authority = "${mActivity.packageName}.UpgradeUtilPlugin.fileprovider"
+      FileProvider.getUriForFile(mActivity, authority, file)
+    } else {
+      Uri.fromFile(file)
+    }
     intent.setDataAndType(uri, downloadType)
     mActivity.startActivity(intent)
   }
 
-  private fun install24(file: File?) {
-    if (file == null) throw NullPointerException("file is null!")
-
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    val authority = "${mActivity.packageName}.UpgradeUtilPlugin.fileprovider"
-    val uri: Uri = FileProvider.getUriForFile(mActivity, authority, file)
-    intent.setDataAndType(uri, downloadType)
-    mActivity.startActivity(intent)
+  @RequiresApi(Build.VERSION_CODES.O)
+  private fun showSettingPackageInstall() {
+    val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+    intent.data = Uri.parse("package:" + mActivity.packageName)
+    mActivity.startActivityForResult(intent, installRequestCode)
   }
 
   /**
@@ -222,7 +210,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     binding.addActivityResultListener { requestCode, resultCode, _ ->
       if (resultCode == Activity.RESULT_OK && requestCode == installRequestCode) {
-        install24(apkFile)
+        install(apkFile)
         true
       } else
         false

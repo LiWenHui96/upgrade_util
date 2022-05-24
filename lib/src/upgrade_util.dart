@@ -32,17 +32,15 @@ class UpgradeUtil {
 
   /// Install apk.
   ///
-  /// Jump to the APK installation page.
+  /// Jump to the installation page of the software.
   ///
   /// The [path] is the storage address of apk.
   static Future<bool?> installApk(String path) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Other platforms are not supported for now');
+      throw UnimplementedError('Only Android platforms are supported.');
     }
 
-    final Map<String, String> map = <String, String>{'path': path};
-    final bool? result = await _channel.invokeMethod('installApk', map);
-    return result;
+    return _channel.invokeMethod('installApk', path);
   }
 
   /// Gets the package name of the available market.

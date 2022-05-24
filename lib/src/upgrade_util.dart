@@ -12,31 +12,22 @@ import 'package:upgrade_util/upgrade_util.dart';
 class UpgradeUtil {
   static const MethodChannel _channel = MethodChannel(channelName);
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
+  static Future<String?> get platformVersion async =>
+      _channel.invokeMethod('getPlatformVersion');
 
-  /// Get the download path of the x.apk.
+  /// Get the download path of the software.
   ///
   /// This uses the `getCacheDir` API on the context.
-  /// It is `/data/data/xx.xx.xx/cache` by default.
   ///
-  /// The [apkName] is the saved name of apk.
-  ///
-  /// The [prefixName] is intermediate folder.
-  static Future<String> getDownloadPath({
-    String? apkName,
-    String? prefixName,
-  }) async {
+  /// Use [softwareName] as the software name.
+  /// It is `temp.apk` by default.
+  static Future<String> getDownloadPath({String? softwareName}) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Other platforms are not supported for now');
+      throw UnimplementedError('Only Android platforms are supported.');
     }
 
-    final String? result = await _channel.invokeMethod('apkDownloadPath');
-    apkName = '${apkName ?? 'temp'}.apk';
-    prefixName = '/${prefixName ?? 'libCacheApkDownload'}/';
-    return '$result$prefixName$apkName';
+    final String? result = await _channel.invokeMethod('downloadPath');
+    return '$result${softwareName ?? 'temp.apk'}';
   }
 
   /// Install apk.

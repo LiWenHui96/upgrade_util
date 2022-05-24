@@ -29,7 +29,6 @@ class UpgradeDialog extends StatefulWidget {
     this.otherMarkets,
     required this.downloadUrl,
     this.saveApkName,
-    this.savePrefixName,
     required this.title,
     this.titleTextStyle,
     this.titleStrutStyle,
@@ -105,7 +104,6 @@ class UpgradeDialog extends StatefulWidget {
       otherMarkets: androidUpgradeInfo.otherMarkets,
       downloadUrl: androidUpgradeInfo.downloadUrl ?? '',
       saveApkName: androidUpgradeInfo.saveApkName,
-      savePrefixName: androidUpgradeInfo.savePrefixName,
       title: title ?? local.title,
       titleTextStyle: titleTextStyle,
       titleStrutStyle: titleStrutStyle,
@@ -171,7 +169,6 @@ class UpgradeDialog extends StatefulWidget {
   /// They are the saved information after the apk download is completed.
   /// For details, see the 'AndroidUtil.getDownloadPath' method.
   final String? saveApkName;
-  final String? savePrefixName;
 
   final String title;
   final TextStyle? titleTextStyle;
@@ -421,10 +418,8 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
     try {
       final String urlPath = widget.downloadUrl;
-      final String savePath = await UpgradeUtil.getDownloadPath(
-        apkName: widget.saveApkName,
-        prefixName: widget.savePrefixName,
-      );
+      final String savePath =
+          await UpgradeUtil.getDownloadPath(softwareName: widget.saveApkName);
 
       final Dio dio = Dio();
       await dio.download(

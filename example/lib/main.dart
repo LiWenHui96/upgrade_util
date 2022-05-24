@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> onPressed(int index) async {
     switch (index) {
       case 0:
-        final String result = await UpgradeUtil.getDownloadPath(apkName: 'app');
+        final String result = await UpgradeUtil.getDownloadPath();
         debugPrint(result);
         break;
       case 1:

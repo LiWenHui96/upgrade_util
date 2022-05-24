@@ -42,7 +42,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
-      "apkDownloadPath" -> result.success(mActivity.cacheDir.path)
+      "downloadPath" -> result.success("${mActivity.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
       "installApk" -> {
         val path = call.argument<String>("path")
         try {

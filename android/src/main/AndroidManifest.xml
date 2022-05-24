@@ -16,7 +16,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/upgrade_plugin_file_paths" />
+                android:resource="@xml/upgrade_plugin_paths" />
         </provider>
     </application>
 </manifest>

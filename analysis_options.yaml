@@ -2,10 +2,6 @@
 # with minimal changes for this repository. The goal is to move toward using a
 # shared set of analysis options as much as possible, and eventually a shared
 # file.
-#
-# Plugins that have not yet switched from the previous set of options have a
-# local analysis_options.yaml that points to analysis_options_legacy.yaml
-# instead.
 
 # Specify analysis options.
 #
@@ -18,7 +14,8 @@
 #
 #   - analysis_options.yaml (this file)
 #   - packages/flutter/lib/analysis_options_user.yaml
-#   - https://github.com/flutter/flutter/blob/master/analysis_options.yaml
+#   - https://github.com/flutter/flutter/blob/main/analysis_options.yaml
+#   - https://github.com/flutter/plugins/blob/main/analysis_options.yaml
 #   - https://github.com/flutter/engine/blob/main/analysis_options.yaml
 #   - https://github.com/flutter/packages/blob/main/analysis_options.yaml
 #
@@ -54,8 +51,7 @@ analyzer:
   exclude:
     # Ignore generated files
 
-# these rules are documented on and in the same order as
-# the Dart Lint rules page to make maintenance easier
+# This list is derived from the list of all available lints located at
 # https://github.com/dart-lang/linter/blob/master/example/all.yaml
 linter:
   rules:

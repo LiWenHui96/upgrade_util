@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage> {
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.reviewsPage,
           iOSAppleId: wechatAppleID,
+          androidPackageName: wechatPackageName,
         );
         break;
       case 3:
@@ -116,6 +117,7 @@ class _HomePageState extends State<HomePage> {
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.writeReview,
           iOSAppleId: wechatAppleID,
+          androidPackageName: wechatPackageName,
         );
         break;
       case 4:

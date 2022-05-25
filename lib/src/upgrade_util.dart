@@ -84,7 +84,7 @@ class UpgradeUtil {
   }) async {
     if (Platform.isAndroid) {
       assert(
-        androidPackageName == null,
+        androidPackageName != null,
         'The name of the package cannot be empty.',
       );
 
@@ -93,7 +93,7 @@ class UpgradeUtil {
         'marketPackageName': androidMarketPackageName,
       });
     } else if (Platform.isIOS) {
-      assert(iOSAppleId == null, 'Apple ID cannot be empty.');
+      assert(iOSAppleId != null, 'Apple ID cannot be empty.');
 
       switch (jumpMode) {
         case JumpMode.detailPage:

@@ -20,46 +20,7 @@ typedef DownloadStatusCallback = Function(
   dynamic error,
 });
 
-class UpgradeDialog extends StatefulWidget {
-  UpgradeDialog({
-    Key? key,
-    required this.iOSAppId,
-    required this.androidPackageName,
-    required this.androidMarket,
-    this.otherMarkets,
-    required this.downloadUrl,
-    this.saveApkName,
-    required this.title,
-    this.titleTextStyle,
-    this.titleStrutStyle,
-    required this.content,
-    this.contentTextStyle,
-    this.contentStrutStyle,
-    required this.contentTextAlign,
-    this.scrollController,
-    this.actionScrollController,
-    required this.force,
-    this.updateKey,
-    required this.updateText,
-    this.updateTextStyle,
-    required this.isUpgradeDefaultAction,
-    required this.isUpgradeDestructiveAction,
-    this.cancelKey,
-    required this.cancelText,
-    this.cancelTextStyle,
-    required this.isCancelDefaultAction,
-    required this.isCancelDestructiveAction,
-    this.updateCallback,
-    this.cancelCallback,
-    this.downloadProgressCallback,
-    this.downloadStatusCallback,
-    required this.androidTitle,
-    required this.cancel,
-    required this.downloadTip,
-  })  : assert(iOSAppId.isNotEmpty, 'iOSAppId Not empty'),
-        assert(androidPackageName.isNotEmpty, 'androidPackageName Not empty'),
-        super(key: key);
-
+class UpgradeDialog {
   static Future<T?> show<T>(
     BuildContext context, {
     Key? key,
@@ -96,7 +57,7 @@ class UpgradeDialog extends StatefulWidget {
 
     final UpgradeLocalizations local = UpgradeLocalizations.of(context);
 
-    Widget child = UpgradeDialog(
+    Widget child = _UpgradeDialogWidget(
       key: key ?? ObjectKey(context),
       iOSAppId: iOSAppId,
       androidPackageName: androidUpgradeInfo.packageName,
@@ -141,9 +102,50 @@ class UpgradeDialog extends StatefulWidget {
       barrierDismissible: true,
     );
   }
+}
+
+class _UpgradeDialogWidget extends StatefulWidget {
+  _UpgradeDialogWidget({
+    Key? key,
+    required this.iOSAppId,
+    required this.androidPackageName,
+    required this.androidMarket,
+    this.otherMarkets,
+    required this.downloadUrl,
+    this.saveApkName,
+    required this.title,
+    this.titleTextStyle,
+    this.titleStrutStyle,
+    required this.content,
+    this.contentTextStyle,
+    this.contentStrutStyle,
+    required this.contentTextAlign,
+    this.scrollController,
+    this.actionScrollController,
+    required this.force,
+    this.updateKey,
+    required this.updateText,
+    this.updateTextStyle,
+    required this.isUpgradeDefaultAction,
+    required this.isUpgradeDestructiveAction,
+    this.cancelKey,
+    required this.cancelText,
+    this.cancelTextStyle,
+    required this.isCancelDefaultAction,
+    required this.isCancelDestructiveAction,
+    this.updateCallback,
+    this.cancelCallback,
+    this.downloadProgressCallback,
+    this.downloadStatusCallback,
+    required this.androidTitle,
+    required this.cancel,
+    required this.downloadTip,
+  })  : assert(iOSAppId.isNotEmpty, 'iOSAppId Not empty'),
+        assert(androidPackageName.isNotEmpty, 'androidPackageName Not empty'),
+        super(key: key);
 
   @override
-  State<UpgradeDialog> createState() => _UpgradeDialogState();
+  State<_UpgradeDialogWidget> createState() => _UpgradeDialogState();
 
   /// The [iOSAppId] is App Store ID.
   ///
@@ -228,7 +230,7 @@ class UpgradeDialog extends StatefulWidget {
   final String downloadTip;
 }
 
-class _UpgradeDialogState extends State<UpgradeDialog> {
+class _UpgradeDialogState extends State<_UpgradeDialogWidget> {
   /// Download progress
   double _downloadProgress = 0;
 
@@ -366,8 +368,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       }
     });
 
-    final List<AndroidMarketModel> markets =
-        await UpgradeUtil.getMarkets(
+    final List<AndroidMarketModel> markets = await UpgradeUtil.getMarkets(
       androidMarket: widget.androidMarket,
       otherMarkets: widget.otherMarkets,
     );

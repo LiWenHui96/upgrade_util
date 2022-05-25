@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         // Get a list of all the app markets in the phone.
         final List<AndroidMarketModel> marketPackages =
-            await UpgradeUtil.getAvailableMarket(
+            await UpgradeUtil.getMarkets(
           androidMarket: AndroidMarket.allTrue,
         );
         debugPrint(marketPackages.toString());

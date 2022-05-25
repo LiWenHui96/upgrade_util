@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -23,10 +22,10 @@ class UpgradeUtil {
   /// It is `temp.apk` by default.
   static Future<String> getDownloadPath({String? softwareName}) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Only Android platforms are supported.');
+      throw UnimplementedError('Only Android is currently supported.');
     }
 
-    final String? result = await _channel.invokeMethod('downloadPath');
+    final String? result = await _channel.invokeMethod('getDownloadPath');
     return '$result${softwareName ?? 'temp.apk'}';
   }
 
@@ -37,45 +36,38 @@ class UpgradeUtil {
   /// The [path] is the storage address of apk.
   static Future<bool?> installApk(String path) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Only Android platforms are supported.');
+      throw UnimplementedError('Only Android is currently supported.');
     }
 
     return _channel.invokeMethod('installApk', path);
   }
 
-  /// Gets the package name of the available market.
+  /// Get the software information of the application market included
+  /// in the mobile phone.
   ///
   /// When set to true, make sure your program is on the market.
   /// This plug-in does not verify that your program is on the shelf.
-  static Future<List<AndroidMarketModel>> getAvailableMarket({
+  static Future<List<AndroidMarketModel>> getMarkets({
     AndroidMarket? androidMarket,
     List<String>? otherMarkets,
   }) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Other platforms are not supported for now');
+      throw UnimplementedError('Only Android is currently supported.');
     }
 
-    final List<String> list = (androidMarket ?? AndroidMarket()).toMarkets()
+    final List<String> packages = (androidMarket ?? AndroidMarket()).toMarkets()
       ..addAll(otherMarkets ?? <String>[]);
 
-    final List<dynamic>? result = await _channel.invokeMethod(
-      'availableMarket',
-      <String, List<String>>{'packages': list},
-    );
+    final List<Map<dynamic, dynamic>>? markets =
+        await _channel.invokeListMethod('getMarkets', packages);
 
-    if (result == null) {
-      throw NullThrownError();
+    if (markets == null) {
+      return <AndroidMarketModel>[];
     }
 
-    final List<AndroidMarketModel> markets = result
-        .map(
-          (dynamic e) => AndroidMarketModel.fromJson(
-            json.decode(json.encode(e)) as Map<String, dynamic>,
-          ),
-        )
+    return markets
+        .map((Map<dynamic, dynamic> e) => AndroidMarketModel.fromJson(e))
         .toList();
-
-    return markets;
   }
 
   /// The [jumpMode] is jump mode.

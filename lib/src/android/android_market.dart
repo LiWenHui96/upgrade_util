@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 /// @Describe: Android Application market
 ///
 /// @Author: LiWeNHuI
@@ -252,19 +254,22 @@ class AndroidMarket {
 
 class AndroidMarketModel {
   AndroidMarketModel({
-    this.showName,
     this.packageName,
+    this.showName,
+    this.icon,
   });
 
-  AndroidMarketModel.fromJson(Map<String, dynamic> json) {
-    showName = json['showName'] as String?;
+  AndroidMarketModel.fromJson(Map<dynamic, dynamic> json) {
     packageName = json['packageName'] as String?;
+    showName = json['showName'] as String?;
+    icon = json['icon'] as Uint8List?;
   }
 
   String? showName;
   String? packageName;
-
-  String get showNameD => showName ?? '';
+  Uint8List? icon;
 
   String get packageNameD => packageName ?? '';
+
+  String get showNameD => showName ?? '';
 }

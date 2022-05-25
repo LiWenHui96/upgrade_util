@@ -367,7 +367,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     });
 
     final List<AndroidMarketModel> markets =
-        await UpgradeUtil.getAvailableMarket(
+        await UpgradeUtil.getMarkets(
       androidMarket: widget.androidMarket,
       otherMarkets: widget.otherMarkets,
     );

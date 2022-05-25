@@ -3,6 +3,8 @@ package io.upgrade
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -10,7 +12,6 @@ import android.text.TextUtils
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -18,6 +19,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -43,7 +45,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
-      "downloadPath" -> result.success("${mActivity.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
+      "getDownloadPath" -> result.success("${mActivity.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
       "installApk" -> {
         try {
           installApk(call.arguments<String>())
@@ -52,10 +54,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
           result.error(e.javaClass.simpleName, e.message, null)
         }
       }
-      "availableMarket" -> {
-        val packages = call.argument<List<String>>("packages")
-        result.success(getMarkets(packages))
-      }
+      "getMarkets" -> result.success(getMarkets(call.arguments<List<String>>()))
       "jumpToMarket" -> {
         val packageName = call.argument<String>("packageName")
         val marketPackageName = call.argument<String>("marketPackageName")
@@ -110,23 +109,27 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   /**
-   * Gets a list of installed app market package names
+   * Get a list of software information from the installed application market.
    *
    * @param packages List of package names to verify
-   * @return List<String>
+   * @return List<Map<String, Any>>
    */
-  private fun getMarkets(packages: List<String>?): List<Map<String, String>> {
-    val pkgs = ArrayList<Map<String, String>>()
+  private fun getMarkets(packages: List<String>?): List<Map<String, Any>> {
+    val pkgs = ArrayList<Map<String, Any>>()
     packages?.also {
       for (i in packages.indices) {
         val packageName = packages[i]
         if (isAppExist(packageName)) {
           val info = pm().getApplicationInfo(packageName, PackageManager.GET_META_DATA)
           val label = pm().getApplicationLabel(info).toString()
+          val bitmap = (pm().getApplicationIcon(info) as BitmapDrawable).bitmap
+          val icon = ByteArrayOutputStream()
+          bitmap.compress(Bitmap.CompressFormat.PNG, 100, icon)
           pkgs.add(
             mapOf(
               "packageName" to packageName,
-              "showName" to label
+              "showName" to label,
+              "icon" to icon.toByteArray()
             )
           )
         }
@@ -143,12 +146,8 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    */
   private fun isAppExist(packageName: String): Boolean {
     if (!TextUtils.isEmpty(packageName)) {
-      val list = pm().getInstalledPackages(0)
-      for (info in list) {
-        if (packageName.equals(info.packageName, ignoreCase = true)) {
-          return true
-        }
-      }
+      return pm().getInstalledPackages(0)
+        .any { packageName.equals(it.packageName, ignoreCase = true) }
     }
     return false
   }

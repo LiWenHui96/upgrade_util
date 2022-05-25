@@ -352,7 +352,7 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
       Navigator.pop(context);
       await UpgradeUtil.jumpToStore(
         jumpMode: JumpMode.detailPage,
-        iOSAppId: widget.iOSAppId,
+        iOSAppleId: widget.iOSAppId,
       );
     } else if (Platform.isAndroid) {
       await _androidUpgrade();

@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   /// The app number of WeChat.
-  final String wechatAppID = '414478124';
+  final String wechatAppleID = '414478124';
 
   /// The package name of WeChat.
   final String wechatPackageName = 'com.tencent.mm';
@@ -108,21 +108,21 @@ class _HomePageState extends State<HomePage> {
         // Jump to the AppStore review page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.reviewsPage,
-          iOSAppId: wechatAppID,
+          iOSAppleId: wechatAppleID,
         );
         break;
       case 3:
         // Jump to AppStore and comment, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.writeReview,
-          iOSAppId: wechatAppID,
+          iOSAppleId: wechatAppleID,
         );
         break;
       case 4:
         // Jump to the details page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.detailPage,
-          iOSAppId: wechatAppID,
+          iOSAppleId: wechatAppleID,
           androidPackageName: wechatPackageName,
         );
         break;
@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
         // Show update dialog, here we use WeChat as an example.
         await UpgradeDialog.show<void>(
           context,
-          iOSAppId: wechatAppID,
+          iOSAppId: wechatAppleID,
           androidUpgradeInfo: AndroidUpgradeInfo(
             packageName: wechatPackageName,
             androidMarket: AndroidMarket.allTrue,

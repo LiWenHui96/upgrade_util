@@ -72,67 +72,44 @@ class UpgradeUtil {
 
   /// The [jumpMode] is jump mode.
   ///
-  /// On iOS, the 'appId' is App Store ID.
+  /// On iOS, the [iOSAppleId] is Apple ID.
   ///
-  /// On Android, the 'appId' is package name.
-  /// On Android, the 'marketPackageName' is the package name of market.
+  /// On Android, the [androidPackageName] is package name.
+  /// the [androidMarketPackageName] is the package name of market.
   static Future<void> jumpToStore({
     required JumpMode jumpMode,
-    String? iOSAppId,
+    String? iOSAppleId,
     String? androidPackageName,
     String? androidMarketPackageName,
   }) async {
     if (Platform.isAndroid) {
-      if (jumpMode == JumpMode.detailPage) {
-        if (androidPackageName == null) {
-          throw ArgumentError('The package name are empty');
-        }
+      assert(
+        androidPackageName == null,
+        'The name of the package cannot be empty.',
+      );
 
-        await _channel.invokeMethod<void>('jumpToMarket', <String, dynamic>{
-          'packageName': androidPackageName,
-          'marketPackageName': androidMarketPackageName,
-        });
-      } else {
-        throw UnimplementedError('Other mode are not supported for now');
-      }
+      await _channel.invokeMethod<void>('jumpToMarket', <String, dynamic>{
+        'packageName': androidPackageName,
+        'marketPackageName': androidMarketPackageName,
+      });
     } else if (Platform.isIOS) {
-      if (iOSAppId == null) {
-        throw ArgumentError('The appId are empty');
-      }
+      assert(iOSAppleId == null, 'Apple ID cannot be empty.');
 
       switch (jumpMode) {
         case JumpMode.detailPage:
-          await _jumpToDetailPage(appId: iOSAppId);
+          await _launchUrl('$detailPageUrl$iOSAppleId');
           break;
         case JumpMode.reviewsPage:
-          await _jumpToReviewsPage(appId: iOSAppId);
+          await _launchUrl('$reviewsPageUrl$iOSAppleId');
           break;
         case JumpMode.writeReview:
-          await _jumpToWriteReviews(appId: iOSAppId);
+          await _launchUrl('$detailPageUrl$iOSAppleId$writeReviewUrl');
           break;
       }
     } else {
-      throw UnimplementedError('Other platforms are not supported for now');
+      throw UnimplementedError('Only Android and iOS is currently supported.');
     }
   }
-
-  /// Jump to the details page of App Store.
-  ///
-  /// The [appId] is App Store ID.
-  static Future<bool> _jumpToDetailPage({required String appId}) async =>
-      _launchUrl('$detailPageUrl$appId');
-
-  /// Jump to the reviews page of App Store.
-  ///
-  /// The [appId] is App Store ID.
-  static Future<bool> _jumpToReviewsPage({required String appId}) async =>
-      _launchUrl('$reviewsPageUrl$appId');
-
-  /// Jump to App Store and leave a review.
-  ///
-  /// The [appId] is App Store ID.
-  static Future<bool> _jumpToWriteReviews({required String appId}) async =>
-      _launchUrl('$detailPageUrl$appId$writeReviewUrl');
 
   /// On iOS, implement link jump.
   static Future<bool> _launchUrl(
@@ -148,7 +125,7 @@ class UpgradeUtil {
       'universalLinksOnly': universalLinksOnly,
     });
     if (result == null) {
-      throw UnimplementedError('Other platforms are not supported for now');
+      throw UnimplementedError('Only iOS is currently supported.');
     }
     return result;
   }

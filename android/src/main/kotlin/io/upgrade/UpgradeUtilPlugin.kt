@@ -157,10 +157,9 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    *
    * @param packageName The package name of the application
    * @param marketPackageName The package name of market.
-   * @return Boolean
    */
   private fun jumpToMarket(packageName: String?, marketPackageName: String?) {
-    return try {
+    try {
       val mPackageInfo = pm().getPackageInfo(mActivity.packageName, 0)
       val mPackageName = packageName ?: mPackageInfo.packageName
       val uri = Uri.parse("${getUriString(marketPackageName)}${mPackageName}")

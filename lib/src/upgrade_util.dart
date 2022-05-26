@@ -22,7 +22,11 @@ class UpgradeUtil {
   /// It is `temp.apk` by default.
   static Future<String> getDownloadPath({String? softwareName}) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Only Android is currently supported.');
+      throw PlatformException(
+        code: 'Unimplemented',
+        details:
+            'The `getDownloadPath` method of the upgrade_util plugin currently only supports Android.',
+      );
     }
 
     final String? result = await _channel.invokeMethod('getDownloadPath');
@@ -36,7 +40,11 @@ class UpgradeUtil {
   /// The [path] is the storage address of apk.
   static Future<bool?> installApk(String path) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Only Android is currently supported.');
+      throw PlatformException(
+        code: 'Unimplemented',
+        details:
+            'The `installApk` method of the upgrade_util plugin currently only supports Android.',
+      );
     }
 
     return _channel.invokeMethod('installApk', path);
@@ -52,7 +60,11 @@ class UpgradeUtil {
     List<String>? otherMarkets,
   }) async {
     if (!Platform.isAndroid) {
-      throw UnimplementedError('Only Android is currently supported.');
+      throw PlatformException(
+        code: 'Unimplemented',
+        details:
+            'The `getMarkets` method of the upgrade_util plugin currently only supports Android.',
+      );
     }
 
     final List<String> packages = (androidMarket ?? AndroidMarket()).toMarkets()
@@ -107,12 +119,16 @@ class UpgradeUtil {
           break;
       }
     } else {
-      throw UnimplementedError('Only Android and iOS is currently supported.');
+      throw PlatformException(
+        code: 'Unimplemented',
+        details:
+            'The `jumpToStore` method of the upgrade_util plugin currently only supports Android and iOS.',
+      );
     }
   }
 
   /// On iOS, implement link jump.
-  static Future<bool> _launchUrl(
+  static Future<bool?> _launchUrl(
     String url, {
     bool universalLinksOnly = false,
   }) async {
@@ -120,14 +136,10 @@ class UpgradeUtil {
     url += url.contains('?') ? '&' : '?';
     url += 'ls=1&mt=8';
 
-    final bool? result = await _channel.invokeMethod('launch', <String, Object>{
+    return await _channel.invokeMethod('launch', <String, dynamic>{
       'url': url,
       'universalLinksOnly': universalLinksOnly,
     });
-    if (result == null) {
-      throw UnimplementedError('Only iOS is currently supported.');
-    }
-    return result;
   }
 }
 

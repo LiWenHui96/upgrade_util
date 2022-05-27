@@ -82,16 +82,16 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
   Widget build(BuildContext context) {
     final CupertinoDialogAction cancelAction = CupertinoDialogAction(
       onPressed: widget.onCancelPressed,
-      isDestructiveAction: iOSUpgradeConfig.isCancelDestructiveAction,
-      isDefaultAction: iOSUpgradeConfig.isCancelDefaultAction,
+      isDestructiveAction: config.isCancelDestructiveAction,
+      isDefaultAction: config.isCancelDefaultAction,
       textStyle: widget.cancelTextStyle,
       child: Text(widget.cancelText),
     );
 
     final CupertinoDialogAction updateAction = CupertinoDialogAction(
       onPressed: widget.onUpgradePressed,
-      isDefaultAction: force ? force : iOSUpgradeConfig.isUpgradeDefaultAction,
-      isDestructiveAction: iOSUpgradeConfig.isUpgradeDestructiveAction,
+      isDefaultAction: force ? force : config.isUpgradeDefaultAction,
+      isDestructiveAction: config.isUpgradeDestructiveAction,
       textStyle: widget.updateTextStyle,
       child: Text(widget.updateText, ),
     );
@@ -99,8 +99,8 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
     return CupertinoAlertDialog(
       title: widget.title,
       content: widget.content,
-      scrollController: iOSUpgradeConfig.scrollController,
-      actionScrollController: iOSUpgradeConfig.actionScrollController,
+      scrollController: config.scrollController,
+      actionScrollController: config.actionScrollController,
       actions: <Widget>[
         if (!force) cancelAction,
         updateAction,
@@ -108,7 +108,7 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
     );
   }
 
-  IosUpgradeConfig get iOSUpgradeConfig => widget.iOSUpgradeConfig;
+  IosUpgradeConfig get config => widget.iOSUpgradeConfig;
 
   bool get force => widget.force;
 }

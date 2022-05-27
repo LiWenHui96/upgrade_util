@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 /// @Date: 2022/5/27
 
 class IosUpgradeConfig {
+  /// Externally provided
   IosUpgradeConfig({
     this.appleId,
     this.scrollController,

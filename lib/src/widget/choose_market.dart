@@ -35,7 +35,7 @@ class ChooseMarket {
 
         Widget child = InkWell(
           borderRadius: radius,
-          child: Center(child: Text(local.cancel)),
+          child: Center(child: Text(local.androidCancel)),
           onTap: () => Navigator.pop(ctx),
         );
 

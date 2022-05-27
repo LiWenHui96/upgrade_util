@@ -20,11 +20,9 @@ abstract class UpgradeLocalizationsBase {
 
   String get updateText => getItem('updateText').toString();
 
+  String get androidCancel => getItem('androidCancel').toString();
+
   String get androidTitle => getItem('androidTitle').toString();
-
-  String get cancel => getItem('cancel').toString();
-
-  String get downloadTip => getItem('downloadTip').toString();
 }
 
 /// localizations
@@ -64,18 +62,16 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
       'content': 'New features are live, update now.',
       'cancelText': 'Not Updated',
       'updateText': 'Update Now',
-      'cancel': 'Cancel',
+      'androidCancel': 'Cancel',
       'androidTitle': 'Complete action using',
-      'downloadTip': 'Downloading:',
     },
     'zh': <String, String>{
       'title': '发现新版本',
       'content': '新功能已上线，立即更新',
       'cancelText': '以后再说',
       'updateText': '立即体验',
-      'cancel': '取消',
+      'androidCancel': '取消',
       'androidTitle': '选择要使用的应用',
-      'downloadTip': '正在下载：',
     },
   };
 }

@@ -90,8 +90,9 @@ class UpgradeDialog {
       downloadProgressCallback: downloadProgressCallback,
       downloadStatusCallback: downloadStatusCallback,
       androidTitle: local.androidTitle,
-      cancel: local.cancel,
-      downloadTip: local.downloadTip,
+      cancel: local.androidCancel,
+      downloadTip: '',
+      // downloadTip: local.downloadTip,
     );
 
     child = WillPopScope(child: child, onWillPop: () async => false);
@@ -354,7 +355,7 @@ class _UpgradeDialogState extends State<_UpgradeDialogWidget> {
       Navigator.pop(context);
       await UpgradeUtil.jumpToStore(
         jumpMode: JumpMode.detailPage,
-        iOSAppleId: widget.iOSAppId,
+        appleId: widget.iOSAppId,
       );
     } else if (Platform.isAndroid) {
       await _androidUpgrade();
@@ -399,8 +400,8 @@ class _UpgradeDialogState extends State<_UpgradeDialogWidget> {
     Navigator.pop(context);
     await UpgradeUtil.jumpToStore(
       jumpMode: JumpMode.detailPage,
-      androidPackageName: widget.androidPackageName,
-      androidMarketPackageName: marketPackageName,
+      packageName: widget.androidPackageName,
+      marketPackageName: marketPackageName,
     );
   }
 

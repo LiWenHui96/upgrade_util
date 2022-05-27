@@ -108,24 +108,24 @@ class _HomePageState extends State<HomePage> {
         // Jump to the AppStore review page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.reviewsPage,
-          iOSAppleId: wechatAppleID,
-          androidPackageName: wechatPackageName,
+          appleId: wechatAppleID,
+          packageName: wechatPackageName,
         );
         break;
       case 3:
         // Jump to AppStore and comment, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.writeReview,
-          iOSAppleId: wechatAppleID,
-          androidPackageName: wechatPackageName,
+          appleId: wechatAppleID,
+          packageName: wechatPackageName,
         );
         break;
       case 4:
         // Jump to the details page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.detailPage,
-          iOSAppleId: wechatAppleID,
-          androidPackageName: wechatPackageName,
+          appleId: wechatAppleID,
+          packageName: wechatPackageName,
         );
         break;
       case 5:

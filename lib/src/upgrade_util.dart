@@ -54,7 +54,7 @@ class UpgradeUtil {
   /// in the mobile phone.
   ///
   /// When set to true, make sure your program is on the market.
-  /// This plug-in does not verify that your program is on the shelf.
+  /// This plugin does not verify that your program is on the shelf.
   static Future<List<AndroidMarketModel>> getMarkets({
     AndroidMarket? androidMarket,
     List<String>? otherMarkets,
@@ -84,38 +84,35 @@ class UpgradeUtil {
 
   /// The [jumpMode] is jump mode.
   ///
-  /// On iOS, the [iOSAppleId] is Apple ID.
+  /// On iOS, the [appleId] is Apple ID.
   ///
-  /// On Android, the [androidPackageName] is package name.
-  /// the [androidMarketPackageName] is the package name of market.
+  /// On Android, the [packageName] is package name.
+  /// the [marketPackageName] is the package name of market.
   static Future<void> jumpToStore({
     required JumpMode jumpMode,
-    String? iOSAppleId,
-    String? androidPackageName,
-    String? androidMarketPackageName,
+    String? appleId,
+    String? packageName,
+    String? marketPackageName,
   }) async {
     if (Platform.isAndroid) {
-      assert(
-        androidPackageName != null,
-        'The name of the package cannot be empty.',
-      );
+      assert(packageName != null, 'The name of the package cannot be empty.');
 
       await _channel.invokeMethod<void>('jumpToMarket', <String, dynamic>{
-        'packageName': androidPackageName,
-        'marketPackageName': androidMarketPackageName,
+        'packageName': packageName,
+        'marketPackageName': marketPackageName,
       });
     } else if (Platform.isIOS) {
-      assert(iOSAppleId != null, 'Apple ID cannot be empty.');
+      assert(appleId != null, 'Apple ID cannot be empty.');
 
       switch (jumpMode) {
         case JumpMode.detailPage:
-          await _launchUrl('$detailPageUrl$iOSAppleId');
+          await _launchUrl('$detailPageUrl$appleId');
           break;
         case JumpMode.reviewsPage:
-          await _launchUrl('$reviewsPageUrl$iOSAppleId');
+          await _launchUrl('$reviewsPageUrl$appleId');
           break;
         case JumpMode.writeReview:
-          await _launchUrl('$detailPageUrl$iOSAppleId$writeReviewUrl');
+          await _launchUrl('$detailPageUrl$appleId$writeReviewUrl');
           break;
       }
     } else {

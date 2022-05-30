@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:upgrade_util/upgrade_util.dart';
 /// @Date: 2022/2/23
 
 class UpgradeUtil {
-  static const MethodChannel _channel = MethodChannel(channelName);
+  static const MethodChannel _channel = MethodChannel(_channelName);
 
   static Future<String?> get platformVersion async =>
       _channel.invokeMethod('getPlatformVersion');
@@ -106,13 +107,13 @@ class UpgradeUtil {
 
       switch (jumpMode) {
         case JumpMode.detailPage:
-          await _launchUrl('$detailPageUrl$appleId');
+          await _launchUrl('$_detailPageUrl$appleId');
           break;
         case JumpMode.reviewsPage:
-          await _launchUrl('$reviewsPageUrl$appleId');
+          await _launchUrl('$_reviewsPageUrl$appleId');
           break;
         case JumpMode.writeReview:
-          await _launchUrl('$detailPageUrl$appleId$writeReviewUrl');
+          await _launchUrl('$_detailPageUrl$appleId$_writeReviewUrl');
           break;
       }
     } else {
@@ -142,12 +143,15 @@ class UpgradeUtil {
 
 /// iOS - Jump to the link address of the AppStore details page.
 /// Another link: itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=
-const String detailPageUrl =
+const String _detailPageUrl =
     'itms-apps://itunes.apple.com/cn/app/apple-store/id';
 
 /// iOS - Jump to the link address of the AppStore review page
-const String reviewsPageUrl =
+const String _reviewsPageUrl =
     'itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=';
 
 /// iOS - The suffix of the link to jump to the AppStore and comment.
-const String writeReviewUrl = '?action=write-review';
+const String _writeReviewUrl = '?action=write-review';
+
+/// MethodChannel's name
+const String _channelName = 'upgrade_util.io.channel/method';

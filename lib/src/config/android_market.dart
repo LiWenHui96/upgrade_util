@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 /// @Describe: Android Application market
@@ -262,7 +263,7 @@ class AndroidMarketModel {
   AndroidMarketModel.fromJson(Map<dynamic, dynamic> json) {
     packageName = json['packageName'] as String?;
     showName = json['showName'] as String?;
-    icon = json['icon'] as Uint8List?;
+    icon = base64Decode(json['icon'].toString());
   }
 
   String? showName;

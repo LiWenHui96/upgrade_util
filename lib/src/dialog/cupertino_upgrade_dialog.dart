@@ -68,7 +68,7 @@ class CupertinoUpgradeDialog extends StatefulWidget {
   final TextStyle? cancelTextStyle;
 
   /// Click event of Updates button.
-  final VoidCallback? onUpgradePressed;
+  final ValueChanged<String?>? onUpgradePressed;
 
   /// Click event of Cancel button.
   final VoidCallback? onCancelPressed;
@@ -89,7 +89,7 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
     );
 
     final CupertinoDialogAction updateAction = CupertinoDialogAction(
-      onPressed: widget.onUpgradePressed,
+      onPressed: () async => widget.onUpgradePressed,
       isDefaultAction: force ? force : config.isUpgradeDefaultAction,
       isDestructiveAction: config.isUpgradeDestructiveAction,
       textStyle: widget.updateTextStyle,

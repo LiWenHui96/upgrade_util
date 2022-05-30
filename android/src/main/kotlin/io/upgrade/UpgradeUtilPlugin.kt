@@ -1,14 +1,20 @@
 package io.upgrade
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Base64
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
@@ -30,22 +36,20 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
+  private lateinit var mContext: Context
   private lateinit var mActivity: Activity
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
     channel.setMethodCallHandler(this)
 
-    flutterPluginBinding.platformViewRegistry.registerViewFactory(
-      viewName,
-      MarketViewFactory(flutterPluginBinding.binaryMessenger)
-    )
+    mContext = flutterPluginBinding.applicationContext
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
-      "getDownloadPath" -> result.success("${mActivity.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
+      "getDownloadPath" -> result.success("${mContext.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
       "installApk" -> {
         try {
           installApk(call.arguments<String>())
@@ -92,50 +96,57 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-      val authority = "${mActivity.packageName}.UpgradeUtilPlugin.fileprovider"
-      FileProvider.getUriForFile(mActivity, authority, file)
+      val authority = "${mContext.packageName}.UpgradeUtilPlugin.fileprovider"
+      FileProvider.getUriForFile(mContext, authority, file)
     } else {
       Uri.fromFile(file)
     }
     intent.setDataAndType(uri, downloadType)
-    mActivity.startActivity(intent)
+    mContext.startActivity(intent)
   }
 
   @RequiresApi(Build.VERSION_CODES.O)
   private fun showSettingPackageInstall() {
     val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-    intent.data = Uri.parse("package:" + mActivity.packageName)
+    intent.data = Uri.parse("package:" + mContext.packageName)
     mActivity.startActivityForResult(intent, installRequestCode)
   }
 
   /**
-   * Get a list of software information from the installed application market.
+   * Get the software information of the application market included in the mobile phone.
    *
    * @param packages List of package names to verify
-   * @return List<Map<String, Any>>
    */
-  private fun getMarkets(packages: List<String>?): List<Map<String, Any>> {
-    val pkgs = ArrayList<Map<String, Any>>()
-    packages?.also {
-      for (i in packages.indices) {
-        val packageName = packages[i]
-        if (isAppExist(packageName)) {
-          val info = pm().getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-          val label = pm().getApplicationLabel(info).toString()
-          val bitmap = (pm().getApplicationIcon(info) as BitmapDrawable).bitmap
-          val icon = ByteArrayOutputStream()
-          bitmap.compress(Bitmap.CompressFormat.PNG, 100, icon)
-          pkgs.add(
-            mapOf(
-              "packageName" to packageName,
-              "showName" to label,
-              "icon" to icon.toByteArray()
-            )
+  private fun getMarkets(packages: List<String>?): ArrayList<Map<String, String>> {
+    val pkgs = ArrayList<Map<String, String>>()
+    packages?.forEach {
+      if (isAppExist(it)) {
+        val info = pm().getPackageInfo(it, 0)
+        pkgs.add(
+          mapOf(
+            "packageName" to it,
+            "showName" to info.applicationInfo.loadLabel(pm()).toString(),
+            "icon" to drawableToBitmap(pm().getApplicationIcon(info.packageName))
           )
-        }
+        )
       }
     }
     return pkgs
+  }
+
+  private fun drawableToBitmap(drawable: Drawable): String {
+    val bitmap = Bitmap.createBitmap(
+      drawable.intrinsicWidth,
+      drawable.intrinsicHeight,
+      Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
+    drawable.draw(canvas)
+
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+    return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.NO_WRAP)
   }
 
   /**
@@ -145,11 +156,12 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    * @return Boolean
    */
   private fun isAppExist(packageName: String): Boolean {
-    if (!TextUtils.isEmpty(packageName)) {
-      return pm().getInstalledPackages(0)
-        .any { packageName.equals(it.packageName, ignoreCase = true) }
+    return try {
+      pm().getPackageInfo(packageName, 0)
+      true
+    } catch (e: PackageManager.NameNotFoundException) {
+      false
     }
-    return false
   }
 
   /**
@@ -160,13 +172,13 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    */
   private fun jumpToMarket(packageName: String?, marketPackageName: String?) {
     try {
-      val mPackageInfo = pm().getPackageInfo(mActivity.packageName, 0)
+      val mPackageInfo = pm().getPackageInfo(mContext.packageName, 0)
       val mPackageName = packageName ?: mPackageInfo.packageName
       val uri = Uri.parse("${getUriString(marketPackageName)}${mPackageName}")
       val intent = Intent(Intent.ACTION_VIEW, uri)
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       if (!TextUtils.isEmpty(marketPackageName)) intent.setPackage(marketPackageName)
-      mActivity.startActivity(intent)
+      mContext.startActivity(intent)
     } catch (e: Exception) {
       e.printStackTrace()
     }
@@ -187,7 +199,20 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   private fun pm(): PackageManager {
-    return mActivity.packageManager
+    return mContext.packageManager
+  }
+
+  /**
+   * 回调给Flutter信息
+   */
+  private val handler: Handler = object : Handler(Looper.myLooper()!!) {
+    override fun dispatchMessage(msg: Message) {
+      super.dispatchMessage(msg)
+
+      when (msg.arg1) {
+        handlerMarket -> channel.invokeMethod("getMarkets", msg.obj as MutableList<*>)
+      }
+    }
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -195,9 +220,10 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   companion object {
-    const val channelName = "upgrade_util.io.channel/method"
-    const val viewName = "upgrade_util.io.view/android"
-    const val downloadType = "application/vnd.android.package-archive"
+    private const val channelName = "upgrade_util.io.channel/method"
+    private const val downloadType = "application/vnd.android.package-archive"
+
+    private const val handlerMarket = 1
 
     private const val installRequestCode = 9989
     private var apkFile: File? = null

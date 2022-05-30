@@ -1,5 +1,12 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:upgrade_util/src/config/android_market.dart';
 import 'package:upgrade_util/src/config/android_upgrade_config.dart';
+import 'package:upgrade_util/src/config/download_status.dart';
+import 'package:upgrade_util/src/local/upgrade_localizations.dart';
+import 'package:upgrade_util/src/upgrade_util.dart';
 
 /// @Describe: Displays a Material upgrade dialog above the current contents of the app.
 ///
@@ -35,8 +42,6 @@ class MaterialUpgradeDialog extends StatefulWidget {
     this.updateTextStyle,
     required this.cancelText,
     this.cancelTextStyle,
-    this.isShowIndicator = false,
-    this.downloadProgress = .0,
     required this.onUpgradePressed,
     required this.onCancelPressed,
   }) : super(key: key);
@@ -71,14 +76,8 @@ class MaterialUpgradeDialog extends StatefulWidget {
   /// The text style of [cancelText].
   final TextStyle? cancelTextStyle;
 
-  /// Whether the indicator is displayed
-  final bool isShowIndicator;
-
-  /// Download progress
-  final double downloadProgress;
-
   /// Click event of Updates button.
-  final VoidCallback? onUpgradePressed;
+  final ValueChanged<String?>? onUpgradePressed;
 
   /// Click event of Cancel button.
   final VoidCallback? onCancelPressed;
@@ -88,6 +87,24 @@ class MaterialUpgradeDialog extends StatefulWidget {
 }
 
 class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
+  /// Whether to show `CupertinoActivityIndicator`.
+  bool _isShowIndicator = false;
+
+  /// Download progress
+  double _downloadProgress = .0;
+
+  /// Download status
+  DownloadStatus _downloadStatus = DownloadStatus.none;
+
+  final CancelToken _cancelToken = CancelToken();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _cancelToken.cancel('Upgrade Dialog is closed.');
+  }
+
   @override
   Widget build(BuildContext context) {
     final Widget child = Column(
@@ -97,7 +114,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
         Flexible(child: _buildContent()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: widget.downloadProgress > 0
+          child: _downloadProgress > 0
               ? _buildDownloadAction()
               : _buildBasicActions(),
         ),
@@ -156,14 +173,14 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          onPressed: widget.isShowIndicator ? null : widget.onUpgradePressed,
+          onPressed: _isShowIndicator ? null : _update,
           style: ButtonStyle(
             minimumSize:
                 MaterialStateProperty.all(const Size(double.infinity, 40)),
             elevation: MaterialStateProperty.all(0),
           ),
           child: Text(
-            widget.isShowIndicator ? '正在跳转...' : widget.updateText,
+            _isShowIndicator ? '正在跳转...' : widget.updateText,
             style: widget.updateTextStyle,
           ),
         ),
@@ -202,7 +219,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(height)),
                   child: LinearProgressIndicator(
-                    value: downloadProgress,
+                    value: _downloadProgress,
                     backgroundColor: config.indicatorBackgroundColor,
                     color: config.indicatorColor,
                     valueColor: config.indicatorValueColor,
@@ -211,7 +228,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
               ),
               Center(
                 child: Text(
-                  '${(downloadProgress * 100).toStringAsFixed(2)}%',
+                  '${(_downloadProgress * 100).toStringAsFixed(2)}%',
                   style: TextStyle(
                     color: config.indicatorTextColor ?? Colors.white,
                     fontSize: 8,
@@ -243,7 +260,190 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     );
   }
 
-  double get downloadProgress => widget.downloadProgress;
+  Future<void> _update() async {
+    setState(() {
+      if (mounted) {
+        _isShowIndicator = true;
+      }
+    });
+
+    final List<AndroidMarketModel> markets = await UpgradeUtil.getMarkets(
+      androidMarket: config.androidMarket,
+      otherMarkets: config.otherMarkets,
+    );
+
+    setState(() {
+      if (mounted) {
+        _isShowIndicator = false;
+      }
+    });
+
+    if (markets.isEmpty) {
+      final String? downloadUrl = config.downloadUrl;
+      if (downloadUrl != null && downloadUrl.isNotEmpty) {
+        await _download(downloadUrl);
+      } else {
+        throw ArgumentError('Both androidMarket and downloadUrl are empty');
+      }
+    } else {
+      widget.onUpgradePressed
+          ?.call(await _chooseMarkets(context: context, markets: markets));
+    }
+  }
+
+  /// Choose market
+  Future<String?> _chooseMarkets({
+    required BuildContext context,
+    required List<AndroidMarketModel> markets,
+  }) async {
+    if (markets.length == 1) {
+      return Future<String>.value(markets.first.packageName);
+    }
+
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      ),
+      builder: (_) => ChooseMarketsDialog(markets: markets),
+    );
+  }
+
+  /// Download
+  Future<void> _download(String downloadUrl) async {
+    if (_downloadStatus == DownloadStatus.start ||
+        _downloadStatus == DownloadStatus.downloading ||
+        _downloadStatus == DownloadStatus.done) {
+      debugPrint(
+        'Current download status: $_downloadStatus, the download cannot '
+        'be repeated.',
+      );
+      return;
+    }
+
+    _updateStatus(DownloadStatus.start);
+
+    try {
+      final String urlPath = downloadUrl;
+      final String savePath =
+          await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
+
+      final Dio dio = Dio();
+      await dio.download(
+        urlPath,
+        savePath,
+        cancelToken: _cancelToken,
+        onReceiveProgress: (int count, int total) async {
+          if (total == -1) {
+            _updateProgress(0.01);
+          } else {
+            config.onDownloadProgressCallback?.call(count, total);
+            _updateProgress(count / total.toDouble());
+          }
+
+          if (_downloadProgress == 1) {
+            // After the download is complete, jump to the program installation
+            // interface.
+            _updateStatus(DownloadStatus.done);
+            await UpgradeUtil.installApk(savePath);
+            Navigator.pop(context);
+          } else {
+            _updateStatus(DownloadStatus.downloading);
+          }
+        },
+      );
+    } catch (e) {
+      debugPrint('$e');
+      _updateProgress(0);
+      _updateStatus(DownloadStatus.error, error: e);
+    }
+  }
+
+  void _updateProgress(double value) {
+    setState(() {
+      if (mounted) {
+        _downloadProgress = value;
+      }
+    });
+  }
+
+  void _updateStatus(DownloadStatus downloadStatus, {dynamic error}) {
+    _downloadStatus = downloadStatus;
+    config.onDownloadStatusCallback?.call(_downloadStatus, error: error);
+  }
 
   AndroidUpgradeConfig get config => widget.androidUpgradeConfig;
+}
+
+/// Choose Market
+@protected
+class ChooseMarketsDialog extends StatefulWidget {
+  const ChooseMarketsDialog({
+    Key? key,
+    required this.markets,
+  }) : super(key: key);
+
+  final List<AndroidMarketModel> markets;
+
+  @override
+  State<ChooseMarketsDialog> createState() => _ChooseMarketsDialogState();
+}
+
+class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
+  @override
+  Widget build(BuildContext context) {
+    final UpgradeLocalizations local = UpgradeLocalizations.of(context);
+    const double cancelHeight = 48;
+
+    Widget child = GridView.builder(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      itemCount: widget.markets.length,
+      itemBuilder: (BuildContext context, int index) {
+        final AndroidMarketModel market = widget.markets[index];
+        Widget child =
+            market.icon != null ? Image.memory(market.icon!) : Container();
+
+        child = Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            SizedBox(width: 48, height: 48, child: child),
+            Text(market.showNameD),
+          ],
+        );
+
+        return GestureDetector(
+          onTap: () async => Navigator.pop(context, market.packageNameD),
+          child: Padding(padding: const EdgeInsets.all(5), child: child),
+        );
+      },
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+      ),
+    );
+
+    child = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(local.androidTitle, style: const TextStyle(fontSize: 18)),
+        Flexible(child: child),
+        Ink(
+          width: double.infinity,
+          height: cancelHeight,
+          decoration: BoxDecoration(
+            color: const Color(0xFFDEDEDE),
+            borderRadius: BorderRadius.circular(cancelHeight),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(cancelHeight),
+            child: Center(child: Text(local.androidCancel)),
+            onTap: () => Navigator.pop(context),
+          ),
+        )
+      ],
+    );
+
+    return Padding(padding: const EdgeInsets.all(15), child: child);
+  }
 }

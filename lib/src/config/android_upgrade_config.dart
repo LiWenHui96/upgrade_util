@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'android_market.dart';
+import 'download_status.dart';
 
 /// @Describe: Android Upgrade Config
 ///
@@ -20,6 +21,8 @@ class AndroidUpgradeConfig {
     this.indicatorColor,
     this.indicatorValueColor,
     this.indicatorTextColor,
+    this.onDownloadProgressCallback,
+    this.onDownloadStatusCallback,
   });
 
   /// /// The name of package.
@@ -53,4 +56,19 @@ class AndroidUpgradeConfig {
   ///
   /// It is [Colors.white] by default.
   final Color? indicatorTextColor;
+
+  /// Realize the listening event of download progress.
+  final DownloadProgressCallback? onDownloadProgressCallback;
+
+  /// Realize the listening event of download status.
+  final DownloadStatusCallback? onDownloadStatusCallback;
 }
+
+/// Listener - Download progress
+typedef DownloadProgressCallback = Function(int count, int total);
+
+/// Listener - Download status
+typedef DownloadStatusCallback = Function(
+  DownloadStatus status, {
+  dynamic error,
+});

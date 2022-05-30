@@ -1,3 +1,8 @@
+## 2.2.0-alpha.2
+
+* Use stricter judgment criteria.
+* The default `content` is no longer used.
+
 ## 2.2.0-alpha.1
 
 * We've ushered in major changes, not just method changes, but more performance improvements.

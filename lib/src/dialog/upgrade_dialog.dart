@@ -1,17 +1,17 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:upgrade_util/src/config/android_market.dart';
+import 'package:upgrade_util/src/config/android_upgrade_config.dart';
+import 'package:upgrade_util/src/config/ios_upgrade_config.dart';
+import 'package:upgrade_util/src/config/jump_mode.dart';
 import 'package:upgrade_util/src/config/ui_upgrade_config.dart';
+import 'package:upgrade_util/src/local/upgrade_localizations.dart';
+import 'package:upgrade_util/src/upgrade_util.dart';
 
-import 'config/android_market.dart';
-import 'config/android_upgrade_config.dart';
-import 'config/download_status.dart';
-import 'config/ios_upgrade_config.dart';
-import 'dialog/cupertino_upgrade_dialog.dart';
-import 'dialog/material_upgrade_dialog.dart';
-import 'local/upgrade_localizations.dart';
+import 'cupertino_upgrade_dialog.dart';
+import 'material_upgrade_dialog.dart';
 
 /// @Describe: Upgrade Dialog
 ///
@@ -54,10 +54,6 @@ Future<T?> showUpgradeDialog<T>(
     uiUpgradeConfig: uiUpgradeConfig,
     iOSUpgradeConfig: iOSUpgradeConfig,
     androidUpgradeConfig: androidUpgradeConfig,
-    updateCallback: updateCallback,
-    cancelCallback: cancelCallback,
-    downloadProgressCallback: downloadProgressCallback,
-    downloadStatusCallback: downloadStatusCallback,
   );
 
   child = WillPopScope(child: child, onWillPop: () async => false);
@@ -124,10 +120,6 @@ class UpgradeDialog extends StatefulWidget {
     required this.uiUpgradeConfig,
     required this.iOSUpgradeConfig,
     required this.androidUpgradeConfig,
-    this.updateCallback,
-    this.cancelCallback,
-    this.downloadProgressCallback,
-    this.downloadStatusCallback,
   }) : super(key: key);
 
   /// ui upgrade config.
@@ -147,46 +139,13 @@ class UpgradeDialog extends StatefulWidget {
   /// It is required.
   final AndroidUpgradeConfig androidUpgradeConfig;
 
-  /// Implement the event listener of clicking the update button.
-  final VoidCallback? updateCallback;
-
-  /// Implement the event listener of clicking the cancel button.
-  final VoidCallback? cancelCallback;
-
-  /// Realize the listening event of download progress.
-  final DownloadProgressCallback? downloadProgressCallback;
-
-  /// Realize the listening event of download status.
-  final DownloadStatusCallback? downloadStatusCallback;
-
   @override
   State<UpgradeDialog> createState() => _UpgradeDialogState();
 }
 
 class _UpgradeDialogState extends State<UpgradeDialog> {
-  /// Whether to show `CupertinoActivityIndicator`.
-  bool _isShowIndicator = false;
-
-  /// Download progress
-  double _downloadProgress = .1;
-
-  /// Download status
-  DownloadStatus _downloadStatus = DownloadStatus.none;
-
-  final CancelToken _cancelToken = CancelToken();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _cancelToken.cancel('Upgrade Dialog is closed.');
-  }
-
   @override
   Widget build(BuildContext context) {
-    print(uiUpgradeConfig.updateText);
-    print(uiUpgradeConfig.cancelText);
-
     switch (Theme.of(context).platform) {
       case TargetPlatform.android:
         return MaterialUpgradeDialog(
@@ -198,8 +157,6 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
           updateTextStyle: uiUpgradeConfig.updateTextStyle,
           cancelText: cancelText,
           cancelTextStyle: uiUpgradeConfig.cancelTextStyle,
-          isShowIndicator: _isShowIndicator,
-          downloadProgress: _downloadProgress,
           onUpgradePressed: _update,
           onCancelPressed: _cancel,
         );
@@ -228,13 +185,21 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
     }
   }
 
-  void _cancel() {
-    widget.cancelCallback?.call();
+  void _cancel() => Navigator.pop(context);
+
+  Future<void> _update(String? marketPackageName) async {
+    if (Platform.isAndroid && marketPackageName == null) {
+      return;
+    }
 
     Navigator.pop(context);
+    await UpgradeUtil.jumpToStore(
+      jumpMode: JumpMode.detailPage,
+      appleId: widget.iOSUpgradeConfig.appleId,
+      packageName: widget.androidUpgradeConfig.packageName,
+      marketPackageName: marketPackageName,
+    );
   }
-
-  Future<void> _update() async {}
 
   bool get force => uiUpgradeConfig.force;
 
@@ -257,12 +222,3 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
 
   UiUpgradeConfig get uiUpgradeConfig => widget.uiUpgradeConfig;
 }
-
-/// Listener - Download progress
-typedef DownloadProgressCallback = Function(int count, int total);
-
-/// Listener - Download status
-typedef DownloadStatusCallback = Function(
-  DownloadStatus status, {
-  dynamic error,
-});

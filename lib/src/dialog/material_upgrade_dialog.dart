@@ -324,18 +324,17 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     _updateStatus(DownloadStatus.start);
 
     try {
-      final String urlPath = downloadUrl;
       final String savePath =
           await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
 
       final Dio dio = Dio();
       await dio.download(
-        urlPath,
+        downloadUrl,
         savePath,
         cancelToken: _cancelToken,
         onReceiveProgress: (int count, int total) async {
-          if (total == -1) {
-            _updateProgress(0.01);
+          if (total < 0) {
+            _updateProgress(0);
           } else {
             config.onDownloadProgressCallback?.call(count, total);
             _updateProgress(count / total.toDouble());

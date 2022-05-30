@@ -1,3 +1,13 @@
+## 2.2.0
+
+* We've ushered in major changes, not just method changes, but more performance improvements.
+
+### Breaking changes
+
+* Use `showUpgradeDialog<T>()` instead of `UpgradeDialog.show<T>()`.
+* Organize trivial parameters. Use `UiUpgradeConfig`, `IosUpgradeConfig`, `AndroidUpgradeConfig`.
+* For details on how to use it, see [README.md](README.md).
+
 ## 2.1.4
 
 * Fix where Android's cancellation button was incorrectly displayed when downloading in Stronger Mode.

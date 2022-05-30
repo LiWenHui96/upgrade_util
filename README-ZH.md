@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
 |-------------------------|-------------------------|--------------|-----------|
 | context                 | BuildContext            | 上下文          | 必填项     |
 | key                     | `Key?`                  | 组件标识符       | `null`    |
-| uiUpgradeConfig         | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, content: UpgradeLocalizations.of(context).content, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)`    |
+| uiUpgradeConfig         | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)`    |
 | iOSUpgradeConfig        | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`    |
 | androidUpgradeConfig    | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`    |
 | barrierLabel            | `String?`               | 屏障标签    | `null`    |
@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
 | title             | `String?`     | 版本更新标题               | `UpgradeLocalizations.of(context).title`      |
 | titleTextStyle    | `TextStyle?`  | `title` 的文本样式        | `null`                                        |
 | titleStrutStyle   | `StrutStyle?` | `title` 的支柱风格        | `null`                                        |
-| content           | `String?`     | 版本更新内容               | `UpgradeLocalizations.of(context).content`    |
+| content           | `String?`     | 版本更新内容               | `null`                                        |
 | contentTextStyle  | `TextStyle?`  | `content` 的文本样式      | `null`                                        |
 | contentStrutStyle | `StrutStyle?` | `content ` 的支柱风格     | `null`                                        |
 | updateText        | `String?`     | 升级按钮的文本              | `UpgradeLocalizations.of(context).updateText` |

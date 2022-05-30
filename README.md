@@ -75,7 +75,7 @@ Popups are implemented by using `showUpgradeDialog`.
 |----------------------|-------------------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | context              | BuildContext            | Context                            | Required                                                                                                                                                                                                                              |
 | key                  | `Key?`                  | Identifier of the component        | `null`                                                                                                                                                                                                                                |
-| uiUpgradeConfig      | `UiUpgradeConfig?`      | Dialog style                       | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, content: UpgradeLocalizations.of(context).content, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
+| uiUpgradeConfig      | `UiUpgradeConfig?`      | Dialog style                       | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
 | iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS upgrade config                 | `IosUpgradeConfig()`                                                                                                                                                                                                                  |
 | androidUpgradeConfig | `AndroidUpgradeConfig?` | Android upgrade config             | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                                                                            |
 | barrierLabel         | `String?`               | barrierLabel                       | `null`                                                                                                                                                                                                                                |
@@ -85,19 +85,19 @@ Popups are implemented by using `showUpgradeDialog`.
 
 Popups are implemented by using `UiUpgradeConfig`.
 
-| Name              | Type          | Description                       | Default                                        |
-|-------------------|---------------|-----------------------------------|------------------------------------------------|
-| force             | `bool`        | Whether to force the update       | `false`                                        |
-| title             | `String?`     | A title of the version.           | `UpgradeLocalizations.of(context).title`       |
-| titleTextStyle    | `TextStyle?`  | The text style of `title`         | `null`                                         |
-| titleStrutStyle   | `StrutStyle?` | The strut style of `title`        | `null`                                         |
-| content           | `String?`     | A description of the version      | `UpgradeLocalizations.of(context).content`     |
-| contentTextStyle  | `TextStyle?`  | The text style of `content`       | `null`                                         |
-| contentStrutStyle | `StrutStyle?` | The strut style of `content`      | `null`                                         |
-| updateText        | `String?`     | Text message of the update button | `UpgradeLocalizations.of(context).updateText`  |
-| updateTextStyle   | `TextStyle?`  | The text style of `updateText`    | `null`                                         |
-| cancelText        | `String?`     | Text message of cancel button     | `UpgradeLocalizations.of(context).cancelText`  |
-| cancelTextStyle   | `TextStyle?`  | The text style of `cancelText`    | `null`                                         |
+| Name              | Type          | Description                       | Default                                       |
+|-------------------|---------------|-----------------------------------|-----------------------------------------------|
+| force             | `bool`        | Whether to force the update       | `false`                                       |
+| title             | `String?`     | A title of the version.           | `UpgradeLocalizations.of(context).title`      |
+| titleTextStyle    | `TextStyle?`  | The text style of `title`         | `null`                                        |
+| titleStrutStyle   | `StrutStyle?` | The strut style of `title`        | `null`                                        |
+| content           | `String?`     | A description of the version      | `null`                                        |
+| contentTextStyle  | `TextStyle?`  | The text style of `content`       | `null`                                        |
+| contentStrutStyle | `StrutStyle?` | The strut style of `content`      | `null`                                        |
+| updateText        | `String?`     | Text message of the update button | `UpgradeLocalizations.of(context).updateText` |
+| updateTextStyle   | `TextStyle?`  | The text style of `updateText`    | `null`                                        |
+| cancelText        | `String?`     | Text message of cancel button     | `UpgradeLocalizations.of(context).cancelText` |
+| cancelTextStyle   | `TextStyle?`  | The text style of `cancelText`    | `null`                                        |
 
 ### IosUpgradeConfig
 

@@ -25,7 +25,7 @@ class AndroidUpgradeConfig {
     this.onDownloadStatusCallback,
   });
 
-  /// /// The name of package.
+  /// The name of package.
   final String? packageName;
 
   /// The settings of app market for Android.

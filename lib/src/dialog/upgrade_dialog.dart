@@ -24,10 +24,6 @@ Future<T?> showUpgradeDialog<T>(
   UiUpgradeConfig? uiUpgradeConfig,
   IosUpgradeConfig? iOSUpgradeConfig,
   AndroidUpgradeConfig? androidUpgradeConfig,
-  VoidCallback? updateCallback,
-  VoidCallback? cancelCallback,
-  DownloadProgressCallback? downloadProgressCallback,
-  DownloadStatusCallback? downloadStatusCallback,
   String? barrierLabel,
   Object? arguments,
 }) {

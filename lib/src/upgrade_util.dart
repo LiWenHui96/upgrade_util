@@ -16,7 +16,7 @@ class UpgradeUtil {
   static Future<String?> get platformVersion async =>
       _channel.invokeMethod('getPlatformVersion');
 
-  /// Get the download path of the software.
+  /// Get the save path of the software download.
   ///
   /// This uses the `getCacheDir` API on the context.
   ///
@@ -53,8 +53,8 @@ class UpgradeUtil {
     return _channel.invokeMethod('installApk', path);
   }
 
-  /// Get the software information of the application market included
-  /// in the mobile phone.
+  /// Get a list of software information for the application market contained
+  /// in the mobile phone
   ///
   /// When set to true, make sure your program is on the market.
   /// This plugin does not verify that your program is on the shelf.

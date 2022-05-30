@@ -1,4 +1,4 @@
-## 2.2.0
+## 2.2.0-alpha.1
 
 * We've ushered in major changes, not just method changes, but more performance improvements.
 

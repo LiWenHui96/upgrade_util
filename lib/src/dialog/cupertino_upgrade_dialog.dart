@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:upgrade_util/src/config/ios_upgrade_config.dart';
 
-/// @Describe: Displays an iOS-style upgrade dialog above the current contents of the app.
+/// @Describe: Displays an iOS-style upgrade dialog above the current contents
+///            of the app.
 ///
 /// @Author: LiWeNHuI
 /// @Date: 2022/5/27
@@ -23,6 +24,7 @@ Future<T?> showCupertinoUpgradeDialog<T>(
 /// The widget of iOS-style upgrade dialog.
 @protected
 class CupertinoUpgradeDialog extends StatefulWidget {
+  /// Externally provided
   const CupertinoUpgradeDialog({
     Key? key,
     required this.iOSUpgradeConfig,

@@ -8,18 +8,19 @@
 # which should be kept in sync with this file:
 #
 #   - analysis_options.yaml (this file)
+#   - packages/flutter/lib/analysis_options_user.yaml
 #   - https://github.com/flutter/flutter/blob/main/analysis_options.yaml
 #   - https://github.com/flutter/plugins/blob/main/analysis_options.yaml
 #   - https://github.com/flutter/engine/blob/main/analysis_options.yaml
 #   - https://github.com/flutter/packages/blob/main/analysis_options.yaml
 #
-# This file contains the analysis options used for code in the flutter/flutter
+# This file contains the analysis options used for code in the flutter/plugins
 # repository.
 
 analyzer:
-  language:
-    strict-casts: true
-    strict-raw-types: true
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
   errors:
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: error
@@ -30,6 +31,9 @@ analyzer:
     # allow self-reference to deprecated members (we do this because otherwise we have
     # to annotate every member in every test, assert, etc, when we deprecate something)
     deprecated_member_use_from_same_package: info
+    # TODO(ianh): https://github.com/flutter/flutter/issues/74381
+    # Clean up existing unnecessary imports, and remove line to ignore.
+    unnecessary_import: info
     # Turned off until null-safe rollout is complete.
     unnecessary_null_comparison: info
   exclude:

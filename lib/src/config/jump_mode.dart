@@ -3,4 +3,13 @@
 /// @Author: LiWeNHuI
 /// @Date: 2022/2/25
 
-enum JumpMode { detailPage, reviewsPage, writeReview }
+enum JumpMode {
+  /// Product page
+  detailPage,
+
+  /// Evaluation page
+  reviewsPage,
+
+  /// Write an evaluation
+  writeReview,
+}

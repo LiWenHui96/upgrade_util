@@ -8,7 +8,8 @@ import 'package:upgrade_util/src/config/download_status.dart';
 import 'package:upgrade_util/src/local/upgrade_localizations.dart';
 import 'package:upgrade_util/src/upgrade_util.dart';
 
-/// @Describe: Displays a Material upgrade dialog above the current contents of the app.
+/// @Describe: Displays a Material upgrade dialog above the current contents
+///            of the app.
 ///
 /// @Author: LiWeNHuI
 /// @Date: 2022/5/27
@@ -32,6 +33,7 @@ Future<T?> showMaterialUpgradeDialog<T>(
 /// The widget of Material upgrade dialog.
 @protected
 class MaterialUpgradeDialog extends StatefulWidget {
+  /// Externally provided
   const MaterialUpgradeDialog({
     Key? key,
     required this.androidUpgradeConfig,
@@ -91,7 +93,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
   bool _isShowIndicator = false;
 
   /// Download progress
-  double _downloadProgress = .0;
+  double _downloadProgress = 0;
 
   /// Download status
   DownloadStatus _downloadStatus = DownloadStatus.none;
@@ -138,7 +140,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
         DefaultTextStyle(
           style: TextStyle(
             color: Colors.black.withOpacity(.95),
-            fontSize: 18.0,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             height: 1.5,
             textBaseline: TextBaseline.alphabetic,
@@ -205,7 +207,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
   }
 
   Widget _buildDownloadAction() {
-    const double height = 10.0;
+    const double height = 10;
 
     return Column(
       children: <Widget>[
@@ -245,13 +247,16 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
               onPressed: () async => Navigator.pop(context),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith(
-                    (Set<MaterialState> states) => const Color(0xFFDFDFDF)),
+                  (Set<MaterialState> states) => const Color(0xFFDFDFDF),
+                ),
                 elevation: MaterialStateProperty.all(0),
                 minimumSize:
                     MaterialStateProperty.all(const Size(double.infinity, 32)),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                ),
               ),
               child: Text(config.downloadCancelText ?? ''),
             ),
@@ -344,8 +349,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
             // After the download is complete, jump to the program installation
             // interface.
             _updateStatus(DownloadStatus.done);
-            await UpgradeUtil.installApk(savePath);
             Navigator.pop(context);
+            await UpgradeUtil.installApk(savePath);
           } else {
             _updateStatus(DownloadStatus.downloading);
           }
@@ -377,11 +382,14 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 /// Choose Market
 @protected
 class ChooseMarketsDialog extends StatefulWidget {
+  /// Externally provided
   const ChooseMarketsDialog({
     Key? key,
     required this.markets,
   }) : super(key: key);
 
+  /// Get the software information of the application market included in
+  /// the mobile phone.
   final List<AndroidMarketModel> markets;
 
   @override
@@ -408,12 +416,12 @@ class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             SizedBox(width: 48, height: 48, child: child),
-            Text(market.showNameD),
+            Text(market.showName ?? ''),
           ],
         );
 
         return GestureDetector(
-          onTap: () async => Navigator.pop(context, market.packageNameD),
+          onTap: () async => Navigator.pop(context, market.packageName ?? ''),
           child: Padding(padding: const EdgeInsets.all(5), child: child),
         );
       },

@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
         break;
       case 5:
         // Show update dialog, here we use WeChat as an example.
-        await showUpgradeDialog(
+        await showUpgradeDialog<void>(
           context,
           uiUpgradeConfig: UiUpgradeConfig(
             title: '发现新版本V8.8.8.414174360',

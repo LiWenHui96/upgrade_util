@@ -6,27 +6,37 @@ import 'package:flutter/material.dart';
 /// @Date: 2022/1/12
 
 abstract class UpgradeLocalizationsBase {
+  /// Externally provided
   const UpgradeLocalizationsBase(this.locale);
 
+  // ignore: public_member_api_docs
   final Locale? locale;
 
+  // ignore: public_member_api_docs
   Object? getItem(String key);
 
+  /// Default Title
   String get title => getItem('title').toString();
 
+  /// Default Escalation
   String get content => getItem('content').toString();
 
+  /// Text of default cancel button
   String get cancelText => getItem('cancelText').toString();
 
+  /// Text of the default upgrade button
   String get updateText => getItem('updateText').toString();
 
+  ///
   String get androidCancel => getItem('androidCancel').toString();
 
+  ///
   String get androidTitle => getItem('androidTitle').toString();
 }
 
 /// localizations
 class UpgradeLocalizations extends UpgradeLocalizationsBase {
+  /// Externally provided
   const UpgradeLocalizations(Locale? locale) : super(locale);
 
   static const UpgradeLocalizations _static = UpgradeLocalizations(null);
@@ -43,6 +53,7 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
     return localData[key];
   }
 
+  /// Internally available
   static UpgradeLocalizations of(BuildContext context) {
     return Localizations.of<UpgradeLocalizations>(
           context,

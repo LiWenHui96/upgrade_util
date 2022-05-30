@@ -23,7 +23,7 @@ class IosUpgradeConfig {
   final String? appleId;
 
   /// A scroll controller that can be used to control the scrolling of the
-  /// [content] in the dialog.
+  /// `content` in the dialog.
   ///
   /// Defaults to null, and is typically not needed, since most alert messages
   /// are short.
@@ -41,7 +41,7 @@ class IosUpgradeConfig {
   ///
   /// See also:
   ///
-  ///  * [scrollController], which can be used for controlling the [content]
+  ///  * [scrollController], which can be used for controlling the `content`
   ///    section when it is long.
   final ScrollController? actionScrollController;
 

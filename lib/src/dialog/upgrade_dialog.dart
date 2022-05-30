@@ -107,7 +107,8 @@ void _platformAssert({
       androidUpgradeConfig.packageName == null &&
       androidUpgradeConfig.downloadUrl == null) {
     throw ArgumentError(
-        'On Android, it cannot be used when `androidUpgradeConfig` is empty.');
+      'On Android, it cannot be used when `androidUpgradeConfig` is empty.',
+    );
   }
 }
 
@@ -180,7 +181,8 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         throw PlatformException(
           code: 'Unimplemented',
           details:
-              'The upgrade_util plugin currently only supports Android and iOS.',
+              'The upgrade_util plugin currently only supports Android and '
+              'iOS.',
         );
     }
   }

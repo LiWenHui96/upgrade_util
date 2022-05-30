@@ -10,8 +10,10 @@ import 'upgrade_localizations.dart';
 
 class UpgradeLocalizationsDelegate
     extends LocalizationsDelegate<UpgradeLocalizations> {
+  /// Externally provided
   const UpgradeLocalizationsDelegate();
 
+  /// Provided to [MaterialApp] for use.
   static const UpgradeLocalizationsDelegate delegate =
       UpgradeLocalizationsDelegate();
 

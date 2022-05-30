@@ -7,6 +7,7 @@ import 'dart:typed_data';
 /// @Date: 2022/1/17
 
 class AndroidMarket {
+  /// Externally provided
   AndroidMarket({
     this.isGooglePlay = false,
     this.isHuawei = false,
@@ -30,90 +31,130 @@ class AndroidMarket {
     this.isMM = false,
   });
 
+  // ignore: public_member_api_docs
   late bool isGooglePlay;
+
+  // ignore: public_member_api_docs
   late bool isHuawei;
+
+  // ignore: public_member_api_docs
   late bool isXiaomi;
+
+  // ignore: public_member_api_docs
   late bool isOppo;
+
+  // ignore: public_member_api_docs
   late bool isVivo;
+
+  // ignore: public_member_api_docs
   late bool isMeizu;
+
+  // ignore: public_member_api_docs
   late bool isZte;
+
+  // ignore: public_member_api_docs
   late bool isSamsung;
+
+  // ignore: public_member_api_docs
   late bool isLenovo;
+
+  // ignore: public_member_api_docs
   late bool isNubia;
+
+  // ignore: public_member_api_docs
   late bool isTencent;
+
+  // ignore: public_member_api_docs
   late bool is360;
+
+  // ignore: public_member_api_docs
   late bool isBaidu;
+
+  // ignore: public_member_api_docs
   late bool isWanDouJia;
+
+  // ignore: public_member_api_docs
   late bool is91;
+
+  // ignore: public_member_api_docs
   late bool isPp;
+
+  // ignore: public_member_api_docs
   late bool isAnZhi;
+
+  // ignore: public_member_api_docs
   late bool isYingYongHui;
+
+  // ignore: public_member_api_docs
   late bool isCool;
+
+  // ignore: public_member_api_docs
   late bool isMM;
 
-  // Google Play Store - https://play.google.com/
+  /// Google Play Store - https://play.google.com/
   static const String MARKET_GOOGLE = 'com.android.vending';
 
-  // 华为 - 华为应用市场 - http://app.hicloud.com/
+  /// 华为 - 华为应用市场 - http://app.hicloud.com/
   static const String MARKET_HUAWEI = 'com.huawei.appmarket';
 
-  // 小米 - 小米应用商店 - https://app.mi.com/
+  /// 小米 - 小米应用商店 - https://app.mi.com/
   static const String MARKET_XIAOMI = 'com.xiaomi.market';
 
-  // OPPO/realme/OnePlus - OPPO软件商店（Android 9及以下） - https://store.oppomobile.com/
+  /// OPPO/realme/OnePlus - OPPO软件商店（Android 9及以下） - https://store.oppomobile.com/
   static const String MARKET_OPPO = 'com.oppo.market';
 
-  // OPPO/realme/OnePlus - OPPO软件商店（Android 9及以上，新版本，支持全家桶手机）- https://store.oppomobile.com/
+  /// OPPO/realme/OnePlus - OPPO软件商店（Android 9及以上，新版本，支持全家桶手机）- https://store.oppomobile.com/
   static const String MARKET_OPPO_NEW = 'com.heytap.market';
 
-  // vivo/iqoo - vivo应用商店 - http://zs.vivo.com.cn/
+  /// vivo/iqoo - vivo应用商店 - http://zs.vivo.com.cn/
   static const String MARKET_VIVO = 'com.bbk.appstore';
 
-  // 魅族 - 魅族应用商店 - http://app.flyme.cn/
+  /// 魅族 - 魅族应用商店 - http://app.flyme.cn/
   static const String MARKET_MEIZU = 'com.meizu.mstore';
 
-  // ZTE - 中兴应用商店 - https://apps.ztems.com/
+  /// ZTE - 中兴应用商店 - https://apps.ztems.com/
   static const String MARKET_ZTE = 'zte.com.market';
 
-  // Samsung - 三星应用商店 - https://seller.samsungapps.com/
+  /// Samsung - 三星应用商店 - https://seller.samsungapps.com/
   static const String MARKET_SANSUNG = 'com.sec.android.app.samsungapps';
 
-  // Lenovo - 联想应用中心 - https://www.lenovomm.com/
+  /// Lenovo - 联想应用中心 - https://www.lenovomm.com/
   static const String MARKET_LENOVO = 'com.lenovo.leos.appstore';
 
-  // 努比亚 - 努比亚应用中心 - https://ui.nubia.cn/app/
+  /// 努比亚 - 努比亚应用中心 - https://ui.nubia.cn/app/
   static const String MARKET_NUBIA = 'cn.nubia.neostore';
 
-  // 腾讯 - 应用宝 - https://sj.qq.com/
+  /// 腾讯 - 应用宝 - https://sj.qq.com/
   static const String MARKET_TENCENT = 'com.tencent.android.qqdownloader';
 
-  // 360 - 360手机助手 - http://zhushou.360.cn/
+  /// 360 - 360手机助手 - http://zhushou.360.cn/
   static const String MARKET_360 = 'com.qihoo.appstore';
 
-  // 百度 - 百度手机助手 - https://shouji.baidu.com/
+  /// 百度 - 百度手机助手 - https://shouji.baidu.com/
   static const String MARKET_BAIDU = 'com.baidu.appsearch';
 
-  // 阿里 - 豌豆荚 - https://www.wandoujia.com/
+  /// 阿里 - 豌豆荚 - https://www.wandoujia.com/
   static const String MARKET_WANDOUJIA = 'com.wandoujia.phoenix2';
 
-  // 91手机助手 - http://zs.91.com/
+  /// 91手机助手 - http://zs.91.com/
   static const String MARKET_91 = 'com.dragon.android.pandaspace';
 
-  // 阿里 - PP助手 - https://www.25pp.com/
+  /// 阿里 - PP助手 - https://www.25pp.com/
   static const String MARKET_PP = 'com.pp.assistant';
 
-  // 安智 - 安智市场 - http://www.anzhi.com/
+  /// 安智 - 安智市场 - http://www.anzhi.com/
   static const String MARKET_ANZHI = 'cn.goapk.market';
 
-  // 掌汇天下 - 应用汇 - http://www.appchina.com/
+  /// 掌汇天下 - 应用汇 - http://www.appchina.com/
   static const String MARKET_YINGYONGHUI = 'com.yingyonghui.market';
 
-  // 酷安 - https://www.coolapk.com/
+  /// 酷安 - https://www.coolapk.com/
   static const String MARKET_COOL = 'com.coolapk.market';
 
-  // 移动 - MM应用商城 - http://mm.10086.cn/store
+  /// 移动 - MM应用商城 - http://mm.10086.cn/store
   static const String MARKET_MM = 'com.aspire.mm';
 
+  /// Gets a list of package names set to `true'
   List<String> toMarkets() {
     final List<String> markets = <String>[];
 
@@ -183,27 +224,6 @@ class AndroidMarket {
     return markets;
   }
 
-  bool get isAllFalse => !(isGooglePlay ||
-      isHuawei ||
-      isXiaomi ||
-      isOppo ||
-      isVivo ||
-      isMeizu ||
-      isZte ||
-      isSamsung ||
-      isLenovo ||
-      isNubia ||
-      isTencent ||
-      is360 ||
-      isBaidu ||
-      isWanDouJia ||
-      is91 ||
-      isPp ||
-      isAnZhi ||
-      isYingYongHui ||
-      isCool ||
-      isMM);
-
   /// Google Play
   static AndroidMarket get gp => AndroidMarket(isGooglePlay: true);
 
@@ -253,24 +273,28 @@ class AndroidMarket {
       );
 }
 
+/// Software information in the Android application market
 class AndroidMarketModel {
+  /// Externally provided
   AndroidMarketModel({
     this.packageName,
     this.showName,
     this.icon,
   });
 
+  // ignore: public_member_api_docs
   AndroidMarketModel.fromJson(Map<dynamic, dynamic> json) {
     packageName = json['packageName'] as String?;
     showName = json['showName'] as String?;
     icon = base64Decode(json['icon'].toString());
   }
 
+  /// The name of the software.
   String? showName;
+
+  /// The name of the package of the software.
   String? packageName;
+
+  /// The icon of software.
   Uint8List? icon;
-
-  String get packageNameD => packageName ?? '';
-
-  String get showNameD => showName ?? '';
 }

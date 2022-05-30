@@ -46,10 +46,10 @@ class AndroidUpgradeConfig {
   /// It is [LinearProgressIndicator.backgroundColor].
   final Color? indicatorBackgroundColor;
 
-  /// It is [LinearProgressIndicator.color].
+  /// It is `LinearProgressIndicator.color`.
   final Color? indicatorColor;
 
-  /// It is [LinearProgressIndicator.valueColor].
+  /// It is `LinearProgressIndicator.valueColor`.
   final Animation<Color?>? indicatorValueColor;
 
   /// The text color of the indicator.

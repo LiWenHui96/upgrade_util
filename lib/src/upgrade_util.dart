@@ -12,6 +12,7 @@ import 'package:upgrade_util/upgrade_util.dart';
 class UpgradeUtil {
   static const MethodChannel _channel = MethodChannel(_channelName);
 
+  ///
   static Future<String?> get platformVersion async =>
       _channel.invokeMethod('getPlatformVersion');
 
@@ -26,7 +27,8 @@ class UpgradeUtil {
       throw PlatformException(
         code: 'Unimplemented',
         details:
-            'The `getDownloadPath` method of the upgrade_util plugin currently only supports Android.',
+            'The `getDownloadPath` method of the upgrade_util plugin currently '
+            'only supports Android.',
       );
     }
 
@@ -43,8 +45,8 @@ class UpgradeUtil {
     if (!Platform.isAndroid) {
       throw PlatformException(
         code: 'Unimplemented',
-        details:
-            'The `installApk` method of the upgrade_util plugin currently only supports Android.',
+        details: 'The `installApk` method of the upgrade_util plugin currently '
+            'only supports Android.',
       );
     }
 
@@ -63,8 +65,8 @@ class UpgradeUtil {
     if (!Platform.isAndroid) {
       throw PlatformException(
         code: 'Unimplemented',
-        details:
-            'The `getMarkets` method of the upgrade_util plugin currently only supports Android.',
+        details: 'The `getMarkets` method of the upgrade_util plugin currently '
+            'only supports Android.',
       );
     }
 
@@ -120,7 +122,8 @@ class UpgradeUtil {
       throw PlatformException(
         code: 'Unimplemented',
         details:
-            'The `jumpToStore` method of the upgrade_util plugin currently only supports Android and iOS.',
+            'The `jumpToStore` method of the upgrade_util plugin currently '
+            'only supports Android and iOS.',
       );
     }
   }
@@ -134,7 +137,7 @@ class UpgradeUtil {
     url += url.contains('?') ? '&' : '?';
     url += 'ls=1&mt=8';
 
-    return await _channel.invokeMethod('launch', <String, dynamic>{
+    return _channel.invokeMethod('launch', <String, dynamic>{
       'url': url,
       'universalLinksOnly': universalLinksOnly,
     });

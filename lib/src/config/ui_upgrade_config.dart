@@ -9,7 +9,7 @@ class UiUpgradeConfig {
   /// Externally provided
   UiUpgradeConfig({
     this.force = false,
-    this.title,
+    required this.title,
     this.titleTextStyle,
     this.titleStrutStyle,
     this.content,

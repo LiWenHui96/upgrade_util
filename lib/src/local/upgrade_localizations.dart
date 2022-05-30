@@ -18,9 +18,6 @@ abstract class UpgradeLocalizationsBase {
   /// Default Title
   String get title => getItem('title').toString();
 
-  /// Default Escalation
-  String get content => getItem('content').toString();
-
   /// Text of default cancel button
   String get cancelText => getItem('cancelText').toString();
 
@@ -70,7 +67,6 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
       <String, Map<String, Object>>{
     'en': <String, String>{
       'title': 'Discover new versions',
-      'content': 'New features are live, update now.',
       'cancelText': 'Not Updated',
       'updateText': 'Update Now',
       'androidCancel': 'Cancel',
@@ -78,7 +74,6 @@ class UpgradeLocalizations extends UpgradeLocalizationsBase {
     },
     'zh': <String, String>{
       'title': '发现新版本',
-      'content': '新功能已上线，立即更新',
       'cancelText': '以后再说',
       'updateText': '立即体验',
       'androidCancel': '取消',

@@ -39,7 +39,7 @@ class MaterialUpgradeDialog extends StatefulWidget {
     required this.androidUpgradeConfig,
     required this.force,
     required this.title,
-    required this.content,
+    this.content,
     required this.updateText,
     this.updateTextStyle,
     required this.cancelText,
@@ -64,7 +64,7 @@ class MaterialUpgradeDialog extends StatefulWidget {
   final Widget title;
 
   /// A description of the version.
-  final Widget content;
+  final Widget? content;
 
   /// Text message of the update button.
   final String updateText;
@@ -148,16 +148,17 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
           textAlign: TextAlign.center,
           child: widget.title,
         ),
-        const SizedBox(height: 2),
-        DefaultTextStyle(
-          style: TextStyle(
-            color: Colors.black.withOpacity(.9),
-            height: 1.5,
-            textBaseline: TextBaseline.alphabetic,
+        if (widget.content != null) const SizedBox(height: 2),
+        if (widget.content != null)
+          DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.black.withOpacity(.9),
+              height: 1.5,
+              textBaseline: TextBaseline.alphabetic,
+            ),
+            textAlign: TextAlign.center,
+            child: widget.content!,
           ),
-          textAlign: TextAlign.center,
-          child: widget.content,
-        ),
       ],
     );
 

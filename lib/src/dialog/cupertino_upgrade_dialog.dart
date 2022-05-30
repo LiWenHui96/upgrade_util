@@ -30,7 +30,7 @@ class CupertinoUpgradeDialog extends StatefulWidget {
     required this.iOSUpgradeConfig,
     required this.force,
     required this.title,
-    required this.content,
+    this.content,
     required this.updateText,
     this.updateTextStyle,
     required this.cancelText,
@@ -55,7 +55,7 @@ class CupertinoUpgradeDialog extends StatefulWidget {
   final Widget title;
 
   /// A description of the version.
-  final Widget content;
+  final Widget? content;
 
   /// Text message of the update button.
   final String updateText;
@@ -95,7 +95,7 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
       isDefaultAction: force ? force : config.isUpgradeDefaultAction,
       isDestructiveAction: config.isUpgradeDestructiveAction,
       textStyle: widget.updateTextStyle,
-      child: Text(widget.updateText, ),
+      child: Text(widget.updateText),
     );
 
     return CupertinoAlertDialog(

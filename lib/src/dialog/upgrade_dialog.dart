@@ -39,13 +39,11 @@ Future<T?> showUpgradeDialog<T>(
   androidUpgradeConfig.androidMarket ??= AndroidMarket();
   androidUpgradeConfig.downloadCancelText ??= local.androidCancel;
 
-  uiUpgradeConfig ??= UiUpgradeConfig();
-  uiUpgradeConfig.title ??= local.title;
-  uiUpgradeConfig.content ??= local.content;
+  uiUpgradeConfig ??= UiUpgradeConfig(title: local.title);
   uiUpgradeConfig.updateText ??= local.updateText;
   uiUpgradeConfig.cancelText ??= local.cancelText;
 
-  Widget child = UpgradeDialog(
+  Widget child = _UpgradeDialog(
     key: key,
     uiUpgradeConfig: uiUpgradeConfig,
     iOSUpgradeConfig: iOSUpgradeConfig,
@@ -95,24 +93,25 @@ void _platformAssert({
     );
   }
 
-  if (Platform.isIOS && iOSUpgradeConfig.appleId == null) {
+  if (Platform.isIOS && (iOSUpgradeConfig.appleId ?? '').isEmpty) {
     throw ArgumentError('On iOS, it cannot be used when `appleId` is empty.');
   }
 
   if (Platform.isAndroid &&
-      androidUpgradeConfig.packageName == null &&
-      androidUpgradeConfig.downloadUrl == null) {
+      (androidUpgradeConfig.packageName ?? '').isEmpty &&
+      (androidUpgradeConfig.downloadUrl ?? '').isEmpty) {
     throw ArgumentError(
-      'On Android, it cannot be used when `androidUpgradeConfig` is empty.',
+      'On Android, it cannot be used when `packageName` is empty and '
+      '`downloadUrl` is empty.',
     );
   }
 }
 
 /// The widget of the upgrade dialog.
 @protected
-class UpgradeDialog extends StatefulWidget {
+class _UpgradeDialog extends StatefulWidget {
   /// Externally provided
-  const UpgradeDialog({
+  const _UpgradeDialog({
     Key? key,
     required this.uiUpgradeConfig,
     required this.iOSUpgradeConfig,
@@ -137,10 +136,10 @@ class UpgradeDialog extends StatefulWidget {
   final AndroidUpgradeConfig androidUpgradeConfig;
 
   @override
-  State<UpgradeDialog> createState() => _UpgradeDialogState();
+  State<_UpgradeDialog> createState() => _UpgradeDialogState();
 }
 
-class _UpgradeDialogState extends State<UpgradeDialog> {
+class _UpgradeDialogState extends State<_UpgradeDialog> {
   @override
   Widget build(BuildContext context) {
     switch (Theme.of(context).platform) {
@@ -207,12 +206,14 @@ class _UpgradeDialogState extends State<UpgradeDialog> {
         strutStyle: uiUpgradeConfig.titleStrutStyle,
       );
 
-  Widget get content => Text(
-        uiUpgradeConfig.content ?? '',
-        style: uiUpgradeConfig.contentTextStyle,
-        strutStyle: uiUpgradeConfig.contentStrutStyle,
-        textAlign: TextAlign.start,
-      );
+  Widget? get content => uiUpgradeConfig.content != null
+      ? Text(
+          uiUpgradeConfig.content!,
+          style: uiUpgradeConfig.contentTextStyle,
+          strutStyle: uiUpgradeConfig.contentStrutStyle,
+          textAlign: TextAlign.start,
+        )
+      : null;
 
   String get updateText => uiUpgradeConfig.updateText ?? '';
 

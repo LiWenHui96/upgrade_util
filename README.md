@@ -5,7 +5,7 @@
 
 Language: [中文](README-ZH.md) | English
 
-At present, the plugin is only used by Android, iOS
+At present, the plugin is only used by Android, iOS.
 
 ### Use of third-party
 
@@ -67,81 +67,89 @@ class MyApp extends StatelessWidget {
 
 ## Usage
 
-Popups are implemented by using `CupertinoAlertDialog`.
+### showUpgradeDialog
 
-Parameter names and descriptions of `UpgradeDialog`:
+Popups are implemented by using `showUpgradeDialog`.
 
-| Name                       | Type                        | Description                                                | Default                                       |
-|----------------------------|-----------------------------|------------------------------------------------------------|-----------------------------------------------|
-| key                        | `Key?`                      | Identifier of the component                                | `ObjectKey(context)`                          |
-| iOSAppId                   | `String`                    | App Store number for iOS                                   | Required                                      |
-| androidUpgradeInfo         | `AndroidUpgradeInfo`        | The upgrade info for Android                               | Required                                      |
-| title                      | `String?`                   | Title                                                      | `UpgradeLocalizations.of(context).title`      |
-| titleTextStyle             | `TextStyle?`                | TitleTextStyle                                             | `null`                                        |
-| titleStrutStyle            | `StrutStyle?`               | TitleStrutStyle                                            | `null`                                        |
-| content                    | `String?`                   | What's new in the version                                  | `UpgradeLocalizations.of(context).content`    |
-| contentTextStyle           | `TextStyle?`                | ContentTextStyle                                           | `null`                                        |
-| contentStrutStyle          | `StrutStyle?`               | ContentStrutStyle                                          | `null`                                        |
-| contentTextAlign           | `TextAlign`                 | The alignment of `content`                                 | `TextAlign.start`                             |
-| scrollController           | `ScrollController?`         | `CupertinoAlertDialog.scrollController`                    | `null`                                        |
-| actionScrollController     | `ScrollController?`         | `CupertinoAlertDialog.actionScrollController`              | `null`                                        |
-| force                      | `bool`                      | Is it a mandatory update                                   | `false`                                       |
-| updateKey                  | `Key?`                      | The component identifier for the OK (upgrade) button       | `null`                                        |
-| updateText                 | `String?`                   | Text of OK (Upgrade) button                                | `UpgradeLocalizations.of(context).updateText` |
-| updateTextStyle            | `TextStyle?`                | Text style for OK (Upgrade) button                         | `null`                                        |
-| isUpgradeDefaultAction     | `bool`                      | Determine if the OK (Upgrade) button is the default option | `false`                                       |
-| isUpgradeDestructiveAction | `bool`                      | Determine if the OK (Upgrade) button is a destroy action   | `false`                                       |
-| cancelKey                  | `Key?`                      | The component identifier for the cancel button             | `null`                                        |
-| cancelText                 | `String?`                   | Text of Cancel button                                      | `UpgradeLocalizations.of(context).cancelText` |
-| cancelTextStyle            | `TextStyle?`                | Text style for Cancel button                               | `null`                                        |
-| isCancelDefaultAction      | `bool`                      | Determine if the Cancel button is the default option       | `false`                                       |
-| isCancelDestructiveAction  | `bool`                      | Determine if the Cancel button is a destroy action         | `true`                                        |
-| updateCallback             | `VoidCallback?`             | Click event listener for OK (upgrade) button               | `null`                                        |
-| cancelCallback             | `VoidCallback?`             | Click event listener for Cancel button                     | `null`                                        |
-| downloadProgressCallback   | `DownloadProgressCallback?` | Progress monitoring of download events                     | `null`                                        |
-| downloadStatusCallback     | `DownloadStatusCallback?`   | Status listener of download events                         | `null`                                        |
+| Name                 | Type                    | Description                        | Default                                                                                                                                                                                                                               |
+|----------------------|-------------------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| context              | BuildContext            | Context                            | Required                                                                                                                                                                                                                              |
+| key                  | `Key?`                  | Identifier of the component        | `null`                                                                                                                                                                                                                                |
+| uiUpgradeConfig      | `UiUpgradeConfig?`      | Dialog style                       | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, content: UpgradeLocalizations.of(context).content, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
+| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS upgrade config                 | `IosUpgradeConfig()`                                                                                                                                                                                                                  |
+| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android upgrade config             | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                                                                            |
+| barrierLabel         | `String?`               | barrierLabel                       | `null`                                                                                                                                                                                                                                |
+| arguments            | `Object?`               | The arguments passed to this route | `null`                                                                                                                                                                                                                                |
 
-### iOS
+### UiUpgradeConfig
 
-* `iOSAppId` is the application number of the App Store, please make sure the app is published and available;
-* `androidUpgradeInfo`, are invalid on iOS platform.
+Popups are implemented by using `UiUpgradeConfig`.
 
-### Android
+| Name              | Type          | Description                       | Default                                        |
+|-------------------|---------------|-----------------------------------|------------------------------------------------|
+| force             | `bool`        | Whether to force the update       | `false`                                        |
+| title             | `String?`     | A title of the version.           | `UpgradeLocalizations.of(context).title`       |
+| titleTextStyle    | `TextStyle?`  | The text style of `title`         | `null`                                         |
+| titleStrutStyle   | `StrutStyle?` | The strut style of `title`        | `null`                                         |
+| content           | `String?`     | A description of the version      | `UpgradeLocalizations.of(context).content`     |
+| contentTextStyle  | `TextStyle?`  | The text style of `content`       | `null`                                         |
+| contentStrutStyle | `StrutStyle?` | The strut style of `content`      | `null`                                         |
+| updateText        | `String?`     | Text message of the update button | `UpgradeLocalizations.of(context).updateText`  |
+| updateTextStyle   | `TextStyle?`  | The text style of `updateText`    | `null`                                         |
+| cancelText        | `String?`     | Text message of cancel button     | `UpgradeLocalizations.of(context).cancelText`  |
+| cancelTextStyle   | `TextStyle?`  | The text style of `cancelText`    | `null`                                         |
 
-Field description of `AndroidUpgradeInfo`
+### IosUpgradeConfig
 
-| Name           | Type             | Description                                                              | Default               |
-|----------------|------------------|--------------------------------------------------------------------------|-----------------------|
-| packageName    | `String`         | The package name for Android                                             | Required              |
-| androidMarket  | `AndroidMarket?` | The App Market Configuration for Android                                 | `AndroidMarket()`     |
-| otherMarkets   | `List<String>?`  | The package name of the app market that is not preset in `AndroidMarket` | `null`                |
-| downloadUrl    | `String?`        | The download link for apk                                                | ` `                   |
-| saveApkName    | `String?`        | The save name of the apk file                                            | `temp`                |
-| savePrefixName | `String?`        | The folder where the apk file is saved                                   | `libCacheApkDownload` |
+Popups are implemented by using `IosUpgradeConfig`.
+
+| Name                       | Type                | Description                                                                                  | Default |
+|----------------------------|---------------------|----------------------------------------------------------------------------------------------|---------|
+| appleId                    | `String?`           | Apple ID                                                                                     | `null`  |
+| scrollController           | `ScrollController?` | A scroll controller that can be used to control the scrolling of the `content` in the dialog | `null`  |
+| actionScrollController     | `ScrollController?` | A scroll controller that can be used to control the scrolling of the `actions` in the dialog | `null`  |
+| isUpgradeDefaultAction     | `bool`              | Set to true if button is the default choice in the dialog                                    | `false` |
+| isUpgradeDestructiveAction | `bool`              | Whether this action destroys an object                                                       | `false` |
+| isCancelDefaultAction      | `bool`              | Set to true if button is the default choice in the dialog                                    | `false` |
+| isCancelDestructiveAction  | `bool`              | Whether this action destroys an object                                                       | `true`  |
+
+### AndroidUpgradeConfig
+
+Popups are implemented by using `AndroidUpgradeConfig`.
+
+| Name                       | Type                        | Description                                                              | Default                                          |
+|----------------------------|-----------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
+| packageName                | `String?`                   | The name of package for Android                                          | `null`                                           |
+| androidMarket              | `AndroidMarket?`            | The settings of app market for Android                                   | `AndroidMarket()`                                |
+| otherMarkets               | `List<String>?`             | The package name of the app market that is not preset in `AndroidMarket` | `null`                                           |
+| downloadUrl                | `String?`                   | A link of download for Apk                                               | `null`                                           |
+| saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
+| downloadCancelText         | `String?`                   | Cancel text when downloading                                             | `UpgradeLocalizations.of(context).androidCancel` |
+| indicatorBackgroundColor   | `Color?`                    | It is `LinearProgressIndicator.backgroundColor`                          | `null`                                           |
+| indicatorColor             | `Color?`                    | It is `LinearProgressIndicator.color`                                    | `null`                                           |
+| indicatorValueColor        | `Color?`                    | It is `LinearProgressIndicator.valueColor`                               | `null`                                           |
+| indicatorTextColor         | `Color?`                    | The text color of the indicator                                          | `null`                                           |
+| onDownloadProgressCallback | `DownloadProgressCallback?` | Realize the listening event of download progress                         | `null`                                           |
+| onDownloadStatusCallback   | `DownloadStatusCallback?`   | Realize the listening event of download status                           | `null`                                           |
 
 * `androidMarket` application market detailed configuration can be
   viewed [AndroidMarket](lib/src/android/android_market.dart);
 * `androidMarket` and `downloadUrl` need to be configured; if both are configured, `androidMarket` is the priority;
-* `saveApkName` does not need to carry a suffix, the default setting is `.apk`;
-* `savePrefixName` does not need to concatenate `/`, the default configuration is `/${savePrefixName}/`.
 
 ## Method
-
-### iOS
 
 To jump to the App Store or the application market, use the `jumpToStore` method
 
 * The required item is `jumpMode`, so far, there are three modes;
     1. `JumpMode.detailPage`, jump to the application details page (ie the product introduction page);
-    2. `JumpMode.reviewsPage`, jump to the app review page (IOS unique mode);
-    3. `JumpMode.writeReview`, jump to the app review page and comment (IOS unique mode).
-* `iOSAppId` is required for iOS, which is the application number of the App Store；
-* `androidPackageName` is required for Android, this is the app package name；
-* `androidMarketPackageName` is the package name of the application market that Android jumps to, not required.
+    2. `JumpMode.reviewsPage`, jump to the app review page;
+    3. `JumpMode.writeReview`, jump to the app review page and comment.
+* `appleId` is required for iOS, which is the application number of the App Store；
+* `packageName` is required for Android, this is the app package name；
+* `marketPackageName` is the package name of the application market that Android jumps to, not required.
 
 ### Android unique method
 
-1. `getDownloadPath`, get the download address of the apk;
-2. `installApk`, install the apk, and jump to the installation guide page;
-3. `getAvailableMarket`, get the currently available application market.
-
+1. `getDownloadPath`, get the save path of the software download；
+2. `installApk`, install the apk, and jump to the installation guide page；
+3. `getMarkets` get a list of software information for the application market contained in the mobile phone.

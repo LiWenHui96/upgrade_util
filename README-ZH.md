@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
 | uiUpgradeConfig         | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, content: UpgradeLocalizations.of(context).content, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)`    |
 | iOSUpgradeConfig        | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`    |
 | androidUpgradeConfig    | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`    |
-| barrierLabel            | `String?`               | 标题的文字样式    | `null`    |
+| barrierLabel            | `String?`               | 屏障标签    | `null`    |
 | arguments               | `Object?`               | 传递参数         | `null`    |
 
 ### UiUpgradeConfig
@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
 
 | 参数名                        | 类型                  | 描述                         | 默认值    |
 |----------------------------|---------------------|----------------------------|--------|
-| appleId                    | `String?`           | Apple id                   | `null` |
+| appleId                    | `String?`           | Apple ID                   | `null` |
 | scrollController           | `ScrollController?` | 可用于控制对话框中“内容”滚动的滚动控制器      | `null` |
 | actionScrollController     | `ScrollController?` | 可用于控制对话框中操作滚动的滚动控制器        | `null` |
 | isUpgradeDefaultAction     | `bool`              | 如果升级按钮是对话框中的默认选项，则设置为true  | `false` |

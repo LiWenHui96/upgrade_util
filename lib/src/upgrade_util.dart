@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:upgrade_util/src/config/enum.dart';
 import 'package:upgrade_util/upgrade_util.dart';
 
 /// @Describe: Upgrade function class

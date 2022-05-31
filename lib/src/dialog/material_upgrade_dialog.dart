@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:upgrade_util/src/config/android_market.dart';
 import 'package:upgrade_util/src/config/android_upgrade_config.dart';
-import 'package:upgrade_util/src/config/download_status.dart';
+import 'package:upgrade_util/src/config/enum.dart';
 import 'package:upgrade_util/src/local/upgrade_localizations.dart';
 import 'package:upgrade_util/src/upgrade_util.dart';
 
@@ -372,9 +372,13 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     });
   }
 
-  void _updateStatus(DownloadStatus downloadStatus, {dynamic error}) {
-    _downloadStatus = downloadStatus;
-    config.onDownloadStatusCallback?.call(_downloadStatus, error: error);
+  void _updateStatus(DownloadStatus status, {dynamic error}) {
+    setState(() {
+      if (mounted) {
+        _downloadStatus = status;
+      }
+    });
+    config.onDownloadStatusCallback?.call(status, error: error);
   }
 
   AndroidUpgradeConfig get config => widget.androidUpgradeConfig;

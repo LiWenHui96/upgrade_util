@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'android_market.dart';
-import 'download_status.dart';
+import 'enum.dart';
 
 /// @Describe: Android Upgrade Config
 ///

@@ -7,7 +7,7 @@ import 'package:upgrade_util/src/config/android_market.dart';
 import 'package:upgrade_util/src/config/android_upgrade_config.dart';
 import 'package:upgrade_util/src/config/enum.dart';
 import 'package:upgrade_util/src/config/ios_upgrade_config.dart';
-import 'package:upgrade_util/src/config/ui_upgrade_config.dart';
+import 'package:upgrade_util/src/config/upgrade_config.dart';
 import 'package:upgrade_util/src/local/upgrade_localizations.dart';
 import 'package:upgrade_util/src/upgrade_util.dart';
 
@@ -22,7 +22,7 @@ import 'material_upgrade_dialog.dart';
 Future<T?> showUpgradeDialog<T>(
   BuildContext context, {
   Key? key,
-  UiUpgradeConfig? uiUpgradeConfig,
+  UpgradeConfig? upgradeConfig,
   IosUpgradeConfig? iOSUpgradeConfig,
   AndroidUpgradeConfig? androidUpgradeConfig,
   bool isDebugLog = false,
@@ -41,13 +41,13 @@ Future<T?> showUpgradeDialog<T>(
   androidUpgradeConfig.androidMarket ??= AndroidMarket();
   androidUpgradeConfig.downloadCancelText ??= local.androidCancel;
 
-  uiUpgradeConfig ??= UiUpgradeConfig(title: local.title);
-  uiUpgradeConfig.updateText ??= local.updateText;
-  uiUpgradeConfig.cancelText ??= local.cancelText;
+  upgradeConfig ??= UpgradeConfig(title: local.title);
+  upgradeConfig.updateText ??= local.updateText;
+  upgradeConfig.cancelText ??= local.cancelText;
 
   Widget child = _UpgradeDialog(
     key: key,
-    uiUpgradeConfig: uiUpgradeConfig,
+    upgradeConfig: upgradeConfig,
     iOSUpgradeConfig: iOSUpgradeConfig,
     androidUpgradeConfig: androidUpgradeConfig,
     isDebugLog: isDebugLog,
@@ -116,7 +116,7 @@ class _UpgradeDialog extends StatefulWidget {
   /// Externally provided
   const _UpgradeDialog({
     Key? key,
-    required this.uiUpgradeConfig,
+    required this.upgradeConfig,
     required this.iOSUpgradeConfig,
     required this.androidUpgradeConfig,
     required this.isDebugLog,
@@ -125,7 +125,7 @@ class _UpgradeDialog extends StatefulWidget {
   /// ui upgrade config.
   ///
   /// It is required.
-  final UiUpgradeConfig uiUpgradeConfig;
+  final UpgradeConfig upgradeConfig;
 
   /// iOS upgrade config.
   /// Only iOS is supported.
@@ -156,9 +156,9 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
           title: title,
           content: content,
           updateText: updateText,
-          updateTextStyle: uiUpgradeConfig.updateTextStyle,
+          updateTextStyle: upgradeConfig.updateTextStyle,
           cancelText: cancelText,
-          cancelTextStyle: uiUpgradeConfig.cancelTextStyle,
+          cancelTextStyle: upgradeConfig.cancelTextStyle,
           onUpgradePressed: _update,
           onCancelPressed: _cancel,
           isDebugLog: widget.isDebugLog,
@@ -170,9 +170,9 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
           title: title,
           content: content,
           updateText: updateText,
-          updateTextStyle: uiUpgradeConfig.updateTextStyle,
+          updateTextStyle: upgradeConfig.updateTextStyle,
           cancelText: cancelText,
-          cancelTextStyle: uiUpgradeConfig.cancelTextStyle,
+          cancelTextStyle: upgradeConfig.cancelTextStyle,
           onUpgradePressed: _update,
           onCancelPressed: _cancel,
         );
@@ -205,26 +205,26 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
     );
   }
 
-  bool get force => uiUpgradeConfig.force;
+  bool get force => upgradeConfig.force;
 
   Widget get title => Text(
-        uiUpgradeConfig.title ?? '',
-        style: uiUpgradeConfig.titleTextStyle,
-        strutStyle: uiUpgradeConfig.titleStrutStyle,
+        upgradeConfig.title ?? '',
+        style: upgradeConfig.titleTextStyle,
+        strutStyle: upgradeConfig.titleStrutStyle,
       );
 
-  Widget? get content => uiUpgradeConfig.content != null
+  Widget? get content => upgradeConfig.content != null
       ? Text(
-          uiUpgradeConfig.content!,
-          style: uiUpgradeConfig.contentTextStyle,
-          strutStyle: uiUpgradeConfig.contentStrutStyle,
+          upgradeConfig.content!,
+          style: upgradeConfig.contentTextStyle,
+          strutStyle: upgradeConfig.contentStrutStyle,
           textAlign: TextAlign.start,
         )
       : null;
 
-  String get updateText => uiUpgradeConfig.updateText ?? '';
+  String get updateText => upgradeConfig.updateText ?? '';
 
-  String get cancelText => uiUpgradeConfig.cancelText ?? '';
+  String get cancelText => upgradeConfig.cancelText ?? '';
 
-  UiUpgradeConfig get uiUpgradeConfig => widget.uiUpgradeConfig;
+  UpgradeConfig get upgradeConfig => widget.upgradeConfig;
 }

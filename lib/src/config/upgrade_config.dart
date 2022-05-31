@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// @Describe: UI Upgrade Config
+/// @Describe: Upgrade Config
 ///
 /// @Author: LiWeNHuI
 /// @Date: 2022/5/27
 
-class UiUpgradeConfig {
+class UpgradeConfig {
   /// Externally provided
-  UiUpgradeConfig({
+  UpgradeConfig({
     this.force = false,
     required this.title,
     this.titleTextStyle,

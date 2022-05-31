@@ -33,8 +33,15 @@ class UpgradeUtil {
       );
     }
 
+    /// Data processing.
+    softwareName ??= 'temp.apk';
+    softwareName.replaceAll('.', '_');
+    if (!softwareName.contains('.apk') && !softwareName.contains('.aab')) {
+      throw ArgumentError('The softwareName must contain `.apk` or `.aab`');
+    }
+
     final String? result = await _channel.invokeMethod('getDownloadPath');
-    return '$result${softwareName ?? 'temp.apk'}';
+    return '$result$softwareName';
   }
 
   /// Install apk.

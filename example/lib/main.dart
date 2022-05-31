@@ -133,7 +133,6 @@ class _HomePageState extends State<HomePage> {
         await showUpgradeDialog<void>(
           context,
           upgradeConfig: UpgradeConfig(
-            force: true,
             title: '发现新版本V8.8.8.414174360',
             content: '1.修复已知Bug\n2.优化软件性能，提升用户体验效果\n3.更多新功能等待您的探索',
           ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -182,7 +183,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       children: <Widget>[
         ElevatedButton(
           onPressed: _isShowIndicator ? null : _update,
-          style: ButtonStyle(
+          style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
             minimumSize:
                 MaterialStateProperty.all(const Size(double.infinity, 40)),
             elevation: MaterialStateProperty.all(0),
@@ -202,8 +203,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Text(
                   widget.cancelText,
-                  style: widget.cancelTextStyle?.copyWith(color: Colors.grey) ??
-                      const TextStyle(color: Colors.grey),
+                  style: (widget.cancelTextStyle ?? const TextStyle())
+                      .copyWith(color: Colors.grey),
                 ),
               ),
             ),
@@ -213,24 +214,26 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
   }
 
   Widget _buildDownloadAction() {
-    const double height = 10;
+    final double iHeight = config.indicatorHeight ?? 10;
+    final double tHeight = config.indicatorTextSize ?? 8;
 
     return Column(
       children: <Widget>[
         Container(
-          height: height,
-          margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
+          height: max(iHeight, tHeight) + 2,
+          margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 2)
+              .add(const EdgeInsets.only(bottom: 5)),
           child: Stack(
             children: <Widget>[
-              SizedBox(
-                height: height,
+              Center(
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(height)),
+                  borderRadius: BorderRadius.all(Radius.circular(iHeight)),
                   child: LinearProgressIndicator(
                     value: _downloadProgress,
                     backgroundColor: config.indicatorBackgroundColor,
                     color: config.indicatorColor,
                     valueColor: config.indicatorValueColor,
+                    minHeight: iHeight,
                   ),
                 ),
               ),
@@ -239,7 +242,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
                   '${(_downloadProgress * 100).toStringAsFixed(2)}%',
                   style: TextStyle(
                     color: config.indicatorTextColor ?? Colors.white,
-                    fontSize: 8,
+                    fontSize: tHeight,
                   ),
                 ),
               ),
@@ -247,25 +250,22 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
           ),
         ),
         if (!widget.force)
-          Container(
-            margin: const EdgeInsets.only(top: 5),
-            child: ElevatedButton(
-              onPressed: () async => Navigator.pop(context),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) => const Color(0xFFDFDFDF),
-                ),
-                elevation: MaterialStateProperty.all(0),
-                minimumSize:
-                    MaterialStateProperty.all(const Size(double.infinity, 32)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
+          ElevatedButton(
+            onPressed: () async => Navigator.pop(context),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith(
+                (Set<MaterialState> states) => const Color(0xFFDFDFDF),
+              ),
+              elevation: MaterialStateProperty.all(0),
+              minimumSize:
+                  MaterialStateProperty.all(const Size(double.infinity, 32)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32),
                 ),
               ),
-              child: Text(config.downloadCancelText ?? ''),
             ),
+            child: Text(config.downloadCancelText ?? ''),
           ),
       ],
     );
@@ -332,14 +332,18 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     final String savePath =
         await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
 
+    final File file = File(savePath);
     if (File(savePath).existsSync()) {
-      await _install(savePath);
-      return;
+      if (config.isExistsFile) {
+        await _install(savePath);
+        return;
+      } else {
+        file.deleteSync();
+      }
     }
 
     if (_downloadStatus == DownloadStatus.start ||
-        _downloadStatus == DownloadStatus.downloading ||
-        _downloadStatus == DownloadStatus.done) {
+        _downloadStatus == DownloadStatus.downloading) {
       log(
         'Current download status: $_downloadStatus, the download cannot '
         'be repeated.',

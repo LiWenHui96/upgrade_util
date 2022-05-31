@@ -71,11 +71,11 @@ class MyApp extends StatelessWidget {
 
 `showUpgradeDialog` 参数名及描述：
 
-| 参数名                | 类型                     | 描述           | 默认值                                                                                                                                                                            |
+| 参数名                  | 类型                      | 描述           | 默认值                                                                                                                                                                            |
 |----------------------|-------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | context              | BuildContext            | 上下文          | 必填项                                                                                                                                                                              |
 | key                  | `Key?`                  | 组件标识符       | `null`                                                                                                                                                                             |
-| uiUpgradeConfig      | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
+| upgradeConfig        | `UpgradeConfig?`        | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
 | iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`                                                                                                                                                               |
 | androidUpgradeConfig | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                         |
 | isDebugLog           | `bool`                  | 是否打印日志      | `false`                                                                                                                                                                            |
@@ -118,20 +118,24 @@ class MyApp extends StatelessWidget {
 
 `AndroidUpgradeConfig` 字段说明：
 
-| 参数名                        | 类型                          | 描述                             | 默认值                                               |
-|----------------------------|-----------------------------|--------------------------------|---------------------------------------------------|
-| packageName                | `String?`                   | Android应用包名                    | `null`                                            |
-| androidMarket              | `AndroidMarket?`            | Android应用市场配置                  | `AndroidMarket()`                                 |
-| otherMarkets               | `List<String>?`             | 未在 `AndroidMarket` 内预置的应用市场包名  | `null`                                            |
-| downloadUrl                | `String?`                   | apk下载链接                        | `null`                                            |
-| saveName                   | `String?`                   | apk文件保存名称                      | `temp.apk`                                        |
-| downloadCancelText         | `String?`                   | 下载时的取消按钮的文本                    | `UpgradeLocalizations.of(context).androidCancel`  |
-| indicatorBackgroundColor   | `Color?`                    | 下载时进度条的背景色                     | `null`                                            |
-| indicatorColor             | `Color?`                    | 下载时进度条的进度颜色                    | `null`                                            |
-| indicatorValueColor        | `Color?`                    | 下载时进度条的进度颜色                    | `null`                                            |
-| indicatorTextColor         | `Color?`                    | 下载时进度条的文字颜色                    | `null`                                            |
-| onDownloadProgressCallback | `DownloadProgressCallback?` | 下载事件的进度监听                      | `null`                                            |
-| onDownloadStatusCallback   | `DownloadStatusCallback?`   | 下载事件的状态监听                      | `null`                                            |
+| 参数名                        | 类型                          | 描述                            | 默认值                                               |
+|----------------------------|-----------------------------|-------------------------------|---------------------------------------------------|
+| packageName                | `String?`                   | Android应用包名                   | `null`                                            |
+| androidMarket              | `AndroidMarket?`            | Android应用市场配置                 | `AndroidMarket()`                                 |
+| otherMarkets               | `List<String>?`             | 未在 `AndroidMarket` 内预置的应用市场包名 | `null`                                            |
+| downloadUrl                | `String?`                   | apk下载链接                       | `null`                                            |
+| saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                        |
+| updateButtonStyle          | `ButtonStyle?`              | 升级按钮的样式                       | `null`                                           |
+| downloadCancelText         | `String?`                   | 下载时的取消按钮的文本                   | `UpgradeLocalizations.of(context).androidCancel`  |
+| isExistsFile               | `bool`                      | 验证是否存在文件。                     | `false`                                          |
+| indicatorHeight            | `double?`                   | 下载时进度条的的高度                    | `10px`                                           |
+| indicatorBackgroundColor   | `Color?`                    | 下载时进度条的背景色                    | `null`                                            |
+| indicatorColor             | `Color?`                    | 下载时进度条的进度颜色                   | `null`                                            |
+| indicatorValueColor        | `Color?`                    | 下载时进度条的进度颜色                   | `null`                                            |
+| indicatorTextSize          | `double?`                   | 下载时进度条的文字大小                   | `8px`                                            |
+| indicatorTextColor         | `Color?`                    | 下载时进度条的文字颜色                   | `null`                                            |
+| onDownloadProgressCallback | `DownloadProgressCallback?` | 下载事件的进度监听                     | `null`                                            |
+| onDownloadStatusCallback   | `DownloadStatusCallback?`   | 下载事件的状态监听                     | `null`                                            |
 
 * `androidMarket` 应用市场详细配置可查看 [AndroidMarket](lib/src/android/android_market.dart)；
 * `androidMarket` 与 `downloadUrl`，需配置其一；均配置的情况下，优先以 `androidMarket` 为主；
@@ -141,9 +145,9 @@ class MyApp extends StatelessWidget {
 跳转到 AppStore 或 应用市场，使用 `jumpToStore` 方法
 
 * 必填项为 `jumpMode`，目前为止三种模式；
-  1. `JumpMode.detailPage`，跳转到应用详情页面（即产品介绍页）；
-  2. `JumpMode.reviewsPage`，跳转到应用评论页面；
-  3. `JumpMode.writeReview`，跳转到应用评论页面并进行评论。
+    1. `JumpMode.detailPage`，跳转到应用详情页面（即产品介绍页）；
+    2. `JumpMode.reviewsPage`，跳转到应用评论页面；
+    3. `JumpMode.writeReview`，跳转到应用评论页面并进行评论。
 * `appleId` 为 iOS 的必填项，此为App Store的应用编号；
 * `packageName` 为 Android 的必填项，此为应用包名；
 * `marketPackageName` 为 Android 跳转的应用市场的包名，非必填项。

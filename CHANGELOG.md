@@ -1,3 +1,8 @@
+## 2.2.0-alpha.4
+
+* Add `updateButtonStyle`、`isExistsFile`、`indicatorHeight`、`indicatorTextSize` to the config of Android.
+* Change `UiUpgradeConfig` to `UpgradeConfig`.
+
 ## 2.2.0-alpha.3
 
 * Add logs.

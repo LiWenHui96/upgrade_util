@@ -1,3 +1,8 @@
+## 2.2.0-alpha.3
+
+* Add logs.
+* Optimize the download process.
+
 ## 2.2.0-alpha.2
 
 * Use stricter judgment criteria.

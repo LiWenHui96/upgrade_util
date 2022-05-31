@@ -1,3 +1,14 @@
+## 2.2.0
+
+* We've ushered in major changes, not just method changes, but more performance improvements.
+
+### Breaking changes
+
+* Use `showUpgradeDialog<T>()` instead of `UpgradeDialog.show<T>()`.
+* Organize trivial parameters. Use `UpgradeConfig`, `IosUpgradeConfig`, `AndroidUpgradeConfig`.
+* The default `content` is no longer used.
+* For details on how to use it, see [README.md](README.md).
+
 ## 2.2.0-alpha.4
 
 * Add `updateButtonStyle`、`isExistsFile`、`indicatorHeight`、`indicatorTextSize` to the config of Android.

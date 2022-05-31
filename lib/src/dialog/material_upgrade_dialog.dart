@@ -121,7 +121,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
         Flexible(child: _buildContent()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: _downloadProgress > 0
+          child: _downloadProgress > 0 && _downloadProgress < 1
               ? _buildDownloadAction()
               : _buildBasicActions(),
         ),
@@ -329,68 +329,83 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 
   /// Download
   Future<void> _download(String downloadUrl) async {
+    final String savePath =
+        await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
+
+    if (File(savePath).existsSync()) {
+      await _install(savePath);
+      return;
+    }
+
     if (_downloadStatus == DownloadStatus.start ||
         _downloadStatus == DownloadStatus.downloading ||
         _downloadStatus == DownloadStatus.done) {
-      debugPrint(
+      log(
         'Current download status: $_downloadStatus, the download cannot '
         'be repeated.',
       );
       return;
     }
 
-    _updateStatus(DownloadStatus.start);
+    _updateDownload(0, DownloadStatus.start, d: 'Start download.');
 
     try {
-      final String savePath =
-          await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
-
       final Dio dio = Dio();
       await dio.download(
         downloadUrl,
         savePath,
         cancelToken: _cancelToken,
         onReceiveProgress: (int count, int total) async {
-          if (total < 0) {
-            _updateProgress(0);
-          } else {
-            config.onDownloadProgressCallback?.call(count, total);
-            _updateProgress(count / total.toDouble());
-          }
+          config.onDownloadProgressCallback?.call(count, total);
 
-          if (_downloadProgress == 1) {
+          if (total <= 0) {
+            _updateDownload(0, DownloadStatus.error, d: 'Download failed.');
+          } else if (count >= total) {
             // After the download is complete, jump to the program installation
             // interface.
-            _updateStatus(DownloadStatus.done);
-            Navigator.pop(context);
-            await UpgradeUtil.installApk(savePath);
+            _updateDownload(1, DownloadStatus.done, d: 'Download completed.');
+            await _install(savePath);
           } else {
-            _updateStatus(DownloadStatus.downloading);
+            _updateDownload(
+              count / total.toDouble(),
+              DownloadStatus.downloading,
+            );
           }
         },
       );
     } catch (e) {
       debugPrint('$e');
-      _updateProgress(0);
-      _updateStatus(DownloadStatus.error, error: e);
+      _updateDownload(0, DownloadStatus.error, d: 'Download failed.', error: e);
     }
   }
 
-  void _updateProgress(double value) {
-    setState(() {
-      if (mounted) {
-        _downloadProgress = value;
-      }
-    });
+  Future<void> _install(String savePath) async {
+    if (!widget.force && mounted) {
+      Navigator.pop(context);
+    }
+    await UpgradeUtil.installApk(savePath);
   }
 
-  void _updateStatus(DownloadStatus status, {dynamic error}) {
+  void _updateDownload(
+    double progress,
+    DownloadStatus status, {
+    String? d,
+    dynamic error,
+  }) {
     setState(() {
       if (mounted) {
+        _downloadProgress = progress;
         _downloadStatus = status;
       }
     });
+    log(d);
     config.onDownloadStatusCallback?.call(status, error: error);
+  }
+
+  void log(String? d) {
+    if (widget.isDebugLog && d != null) {
+      debugPrint('Upgrade Util - ${DateTime.now()} - $d');
+    }
   }
 
   AndroidUpgradeConfig get config => widget.androidUpgradeConfig;

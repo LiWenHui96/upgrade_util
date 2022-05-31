@@ -13,7 +13,6 @@
 *.ipr
 *.iws
 .idea/
-gradle.properties
 
 # Visual Studio Code related
 .vscode/

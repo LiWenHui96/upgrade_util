@@ -118,15 +118,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     final Widget child = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Flexible(child: _buildContent()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: _downloadProgress > 0 && _downloadProgress < 1
-              ? _buildDownloadAction()
-              : _buildBasicActions(),
-        ),
-      ],
+      children: <Widget>[Flexible(child: _buildContent()), _buildActions()],
     );
 
     return Dialog(
@@ -178,96 +170,115 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     );
   }
 
-  Widget _buildBasicActions() {
-    return Column(
-      children: <Widget>[
-        ElevatedButton(
-          onPressed: _isShowIndicator ? null : _update,
-          style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
-            minimumSize:
-                MaterialStateProperty.all(const Size(double.infinity, 40)),
-            elevation: MaterialStateProperty.all(0),
-          ),
-          child: Text(
-            _isShowIndicator ? '正在跳转...' : widget.updateText,
-            style: widget.updateTextStyle,
-          ),
-        ),
-        if (!widget.force)
-          Container(
-            margin: const EdgeInsets.only(top: 5),
-            child: InkWell(
-              onTap: widget.onCancelPressed,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: Text(
-                  widget.cancelText,
-                  style: (widget.cancelTextStyle ?? const TextStyle())
-                      .copyWith(color: Colors.grey),
-                ),
-              ),
-            ),
-          ),
-      ],
+  Widget _buildActions() {
+    final List<Widget> children = <Widget>[
+      _buildTopAction(),
+      if (!widget.force) _buildBottomAction(),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(children: children),
     );
   }
 
-  Widget _buildDownloadAction() {
+  Widget _buildTopAction() {
     final double iHeight = config.indicatorHeight ?? 10;
     final double tHeight = config.indicatorTextSize ?? 8;
 
-    return Column(
-      children: <Widget>[
-        Container(
-          height: max(iHeight, tHeight) + 2,
-          margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 2)
-              .add(const EdgeInsets.only(bottom: 5)),
-          child: Stack(
-            children: <Widget>[
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(iHeight)),
-                  child: LinearProgressIndicator(
-                    value: _downloadProgress,
-                    backgroundColor: config.indicatorBackgroundColor,
-                    color: config.indicatorColor,
-                    valueColor: config.indicatorValueColor,
-                    minHeight: iHeight,
-                  ),
-                ),
-              ),
-              Center(
-                child: Text(
-                  '${(_downloadProgress * 100).toStringAsFixed(2)}%',
-                  style: TextStyle(
-                    color: config.indicatorTextColor ?? Colors.white,
-                    fontSize: tHeight,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (!widget.force)
-          ElevatedButton(
-            onPressed: () async => Navigator.pop(context),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith(
-                (Set<MaterialState> states) => const Color(0xFFDFDFDF),
-              ),
-              elevation: MaterialStateProperty.all(0),
-              minimumSize:
-                  MaterialStateProperty.all(const Size(double.infinity, 32)),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
+    final Widget firstChild = Container(
+      height: max(iHeight, tHeight) + 2,
+      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(iHeight)),
+              child: LinearProgressIndicator(
+                value: _downloadProgress,
+                backgroundColor: config.indicatorBackgroundColor,
+                color: config.indicatorColor,
+                valueColor: config.indicatorValueColor,
+                minHeight: iHeight,
               ),
             ),
-            child: Text(config.downloadCancelText ?? ''),
           ),
-      ],
+          Center(
+            child: Text(
+              '${(_downloadProgress * 100).toStringAsFixed(2)}%',
+              style: TextStyle(
+                color: config.indicatorTextColor ?? Colors.white,
+                fontSize: tHeight,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final Widget secondChild = ElevatedButton(
+      onPressed: _isShowIndicator ? null : _update,
+      style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
+        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 40)),
+        elevation: MaterialStateProperty.all(0),
+      ),
+      child: Text(
+        _isShowIndicator ? '正在跳转...' : widget.updateText,
+        style: widget.updateTextStyle,
+      ),
+    );
+
+    final Widget child = AnimatedCrossFade(
+      duration: const Duration(milliseconds: 200),
+      crossFadeState: _downloadProgress > 0 && _downloadProgress < 1
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      alignment: Alignment.center,
+      firstChild: firstChild,
+      secondChild: secondChild,
+    );
+
+    return Container(margin: const EdgeInsets.only(bottom: 5), child: child);
+  }
+
+  Widget _buildBottomAction() {
+    final Widget firstChild = ElevatedButton(
+      onPressed: () async => Navigator.pop(context),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> states) => const Color(0xFFDFDFDF),
+        ),
+        elevation: MaterialStateProperty.all(0),
+        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 32)),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+        ),
+      ),
+      child: Text(config.downloadCancelText ?? ''),
+    );
+
+    final Widget secondChild = InkWell(
+      onTap: widget.onCancelPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Text(
+          widget.cancelText,
+          style: (widget.cancelTextStyle ?? const TextStyle())
+              .copyWith(color: Colors.grey),
+        ),
+      ),
+    );
+
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 200),
+      crossFadeState: _downloadProgress > 0 && _downloadProgress < 1
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      alignment: Alignment.center,
+      firstChild: firstChild,
+      secondChild: secondChild,
     );
   }
 

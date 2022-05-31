@@ -16,6 +16,9 @@ class AndroidUpgradeConfig {
     this.otherMarkets,
     this.downloadUrl,
     this.saveName,
+    this.dialogBorderRadius,
+    this.topImageProvider,
+    this.topImageHeight,
     this.updateButtonStyle,
     this.downloadCancelText,
     this.isExistsFile = false,
@@ -43,6 +46,15 @@ class AndroidUpgradeConfig {
 
   /// The name of the file after the apk download is completed.
   final String? saveName;
+
+  /// The dialog's borderRadius.
+  final BorderRadius? dialogBorderRadius;
+
+  /// Picture at the top of the dialog.
+  final ImageProvider? topImageProvider;
+
+  /// Height of the image.
+  final double? topImageHeight;
 
   /// The style of the upgrade button.
   final ButtonStyle? updateButtonStyle;

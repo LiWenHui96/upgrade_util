@@ -115,18 +115,37 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = Column(
+    Widget child = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[Flexible(child: _buildContent()), _buildActions()],
     );
 
+    child = Container(
+      color: const Color(0xFFFEFEFE),
+      child: Padding(padding: const EdgeInsets.all(8), child: child),
+    );
+
+    if (config.topImageProvider != null) {
+      child = Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Image(
+            image: config.topImageProvider!,
+            width: double.infinity,
+            height: config.topImageHeight,
+            fit: BoxFit.fill,
+          ),
+          child,
+        ],
+      );
+    }
+
     return Dialog(
-      backgroundColor: const Color(0xFFFEFEFE),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: SizedBox(
-        width: 270,
-        child: Padding(padding: const EdgeInsets.all(8), child: child),
+      backgroundColor: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: config.dialogBorderRadius ?? BorderRadius.circular(10),
+        child: SizedBox(width: 270, child: child),
       ),
     );
   }
@@ -193,7 +212,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
         children: <Widget>[
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(iHeight)),
+              borderRadius: BorderRadius.circular(iHeight),
               child: LinearProgressIndicator(
                 value: _downloadProgress,
                 backgroundColor: config.indicatorBackgroundColor,

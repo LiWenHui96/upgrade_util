@@ -71,15 +71,16 @@ class MyApp extends StatelessWidget {
 
 `showUpgradeDialog` 参数名及描述：
 
-| 参数名                   | 类型                     | 描述           | 默认值                                                                                                                                                                                |
-|-------------------------|-------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| context                 | BuildContext            | 上下文          | 必填项                                                                                                                                                                                |
-| key                     | `Key?`                  | 组件标识符       | `null`                                                                                                                                                                             |
-| uiUpgradeConfig         | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
-| iOSUpgradeConfig        | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`                                                                                                                                                               |
-| androidUpgradeConfig    | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                         |
-| barrierLabel            | `String?`               | 屏障标签    | `null`                                                                                                                                                                             |
-| arguments               | `Object?`               | 传递参数         | `null`                                                                                                                                                                             |
+| 参数名                | 类型                     | 描述           | 默认值                                                                                                                                                                            |
+|----------------------|-------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| context              | BuildContext            | 上下文          | 必填项                                                                                                                                                                              |
+| key                  | `Key?`                  | 组件标识符       | `null`                                                                                                                                                                             |
+| uiUpgradeConfig      | `UiUpgradeConfig?`      | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
+| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`                                                                                                                                                               |
+| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                         |
+| isDebugLog           | `bool`                  | 是否打印日志      | `false`                                                                                                                                                                            |
+| barrierLabel         | `String?`               | 屏障标签         | `null`                                                                                                                                                                             |
+| arguments            | `Object?`               | 传递参数         | `null`                                                                                                                                                                             |
 
 ### UiUpgradeConfig
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:upgrade_util/src/config/android_market.dart';
@@ -54,7 +55,7 @@ Future<T?> showUpgradeDialog<T>(
 
   child = WillPopScope(child: child, onWillPop: () async => false);
 
-  switch (Theme.of(context).platform) {
+  switch (defaultTargetPlatform) {
     case TargetPlatform.android:
       return showMaterialUpgradeDialog(
         context,
@@ -147,7 +148,7 @@ class _UpgradeDialog extends StatefulWidget {
 class _UpgradeDialogState extends State<_UpgradeDialog> {
   @override
   Widget build(BuildContext context) {
-    switch (Theme.of(context).platform) {
+    switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return MaterialUpgradeDialog(
           androidUpgradeConfig: widget.androidUpgradeConfig,

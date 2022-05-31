@@ -24,6 +24,7 @@ Future<T?> showUpgradeDialog<T>(
   UiUpgradeConfig? uiUpgradeConfig,
   IosUpgradeConfig? iOSUpgradeConfig,
   AndroidUpgradeConfig? androidUpgradeConfig,
+  bool isDebugLog = false,
   String? barrierLabel,
   Object? arguments,
 }) {
@@ -48,6 +49,7 @@ Future<T?> showUpgradeDialog<T>(
     uiUpgradeConfig: uiUpgradeConfig,
     iOSUpgradeConfig: iOSUpgradeConfig,
     androidUpgradeConfig: androidUpgradeConfig,
+    isDebugLog: isDebugLog,
   );
 
   child = WillPopScope(child: child, onWillPop: () async => false);
@@ -116,6 +118,7 @@ class _UpgradeDialog extends StatefulWidget {
     required this.uiUpgradeConfig,
     required this.iOSUpgradeConfig,
     required this.androidUpgradeConfig,
+    required this.isDebugLog,
   }) : super(key: key);
 
   /// ui upgrade config.
@@ -134,6 +137,8 @@ class _UpgradeDialog extends StatefulWidget {
   ///
   /// It is required.
   final AndroidUpgradeConfig androidUpgradeConfig;
+
+  final bool isDebugLog;
 
   @override
   State<_UpgradeDialog> createState() => _UpgradeDialogState();
@@ -155,6 +160,7 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
           cancelTextStyle: uiUpgradeConfig.cancelTextStyle,
           onUpgradePressed: _update,
           onCancelPressed: _cancel,
+          isDebugLog: widget.isDebugLog,
         );
       case TargetPlatform.iOS:
         return CupertinoUpgradeDialog(

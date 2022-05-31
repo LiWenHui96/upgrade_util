@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class MaterialUpgradeDialog extends StatefulWidget {
     this.cancelTextStyle,
     required this.onUpgradePressed,
     required this.onCancelPressed,
+    required this.isDebugLog,
   }) : super(key: key);
 
   /// Android upgrade config.
@@ -83,6 +85,9 @@ class MaterialUpgradeDialog extends StatefulWidget {
 
   /// Click event of Cancel button.
   final VoidCallback? onCancelPressed;
+
+  // ignore: public_member_api_docs
+  final bool isDebugLog;
 
   @override
   State<MaterialUpgradeDialog> createState() => _MaterialUpgradeDialogState();
@@ -267,6 +272,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
   }
 
   Future<void> _update() async {
+    log('Start verifying the application market within the mobile phone.');
+
     setState(() {
       if (mounted) {
         _isShowIndicator = true;
@@ -283,6 +290,11 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
         _isShowIndicator = false;
       }
     });
+
+    log(
+      'After inspection, the number of currently available app stores is '
+      '${markets.length}.',
+    );
 
     if (markets.isEmpty) {
       final String? downloadUrl = config.downloadUrl;

@@ -71,20 +71,20 @@ class MyApp extends StatelessWidget {
 
 `showUpgradeDialog` 参数名及描述：
 
-| 参数名                  | 类型                      | 描述           | 默认值                                                                                                                                                                            |
-|----------------------|-------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| context              | BuildContext            | 上下文          | 必填项                                                                                                                                                                              |
-| key                  | `Key?`                  | 组件标识符       | `null`                                                                                                                                                                             |
-| upgradeConfig        | `UpgradeConfig?`        | 弹窗样式         | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
-| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`                                                                                                                                                               |
-| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                         |
-| isDebugLog           | `bool`                  | 是否打印日志      | `false`                                                                                                                                                                            |
-| barrierLabel         | `String?`               | 屏障标签         | `null`                                                                                                                                                                             |
-| arguments            | `Object?`               | 传递参数         | `null`                                                                                                                                                                             |
+| 参数名                  | 类型                      | 描述           | 默认值                                                                                                                                                                               |
+|----------------------|-------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| context              | BuildContext            | 上下文          | 必填项                                                                                                                                                                               |
+| key                  | `Key?`                  | 组件标识符       | `null`                                                                                                                                                                            |
+| upgradeConfig        | `UpgradeConfig?`        | 弹窗样式         | `UpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)`  |
+| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS升级信息      | `IosUpgradeConfig()`                                                                                                                                                              |
+| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android升级信息  | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                        |
+| isDebugLog           | `bool`                  | 是否打印日志      | `false`                                                                                                                                                                           |
+| barrierLabel         | `String?`               | 屏障标签         | `null`                                                                                                                                                                            |
+| arguments            | `Object?`               | 传递参数         | `null`                                                                                                                                                                            |
 
-### UiUpgradeConfig
+### UpgradeConfig
 
-`UiUpgradeConfig` 字段说明：
+`UpgradeConfig` 字段说明：
 
 | 参数名               | 类型            | 描述                   | 默认值                                           |
 |-------------------|---------------|----------------------|-----------------------------------------------|
@@ -125,6 +125,9 @@ class MyApp extends StatelessWidget {
 | otherMarkets               | `List<String>?`             | 未在 `AndroidMarket` 内预置的应用市场包名 | `null`                                            |
 | downloadUrl                | `String?`                   | apk下载链接                       | `null`                                            |
 | saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                        |
+| dialogBorderRadius         | `BorderRadius?`             | 弹窗的弧度                         | `BorderRadius.circular(10)`                      |
+| topImageProvider           | `ImageProvider?`            | 弹窗顶部的图片                       | `null`                                           |
+| topImageHeight             | `double?`                   | 弹窗顶部的图片的高度                    | `null`                                           |
 | updateButtonStyle          | `ButtonStyle?`              | 升级按钮的样式                       | `null`                                           |
 | downloadCancelText         | `String?`                   | 下载时的取消按钮的文本                   | `UpgradeLocalizations.of(context).androidCancel`  |
 | isExistsFile               | `bool`                      | 验证是否存在文件。                     | `false`                                          |

@@ -71,20 +71,20 @@ class MyApp extends StatelessWidget {
 
 Popups are implemented by using `showUpgradeDialog`.
 
-| Name                 | Type                    | Description                        | Default                                                                                                                                                                            |
-|----------------------|-------------------------|------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| context              | BuildContext            | Context                            | Required                                                                                                                                                                           |
-| key                  | `Key?`                  | Identifier of the component        | `null`                                                                                                                                                                             |
-| upgradeConfig        | `UpgradeConfig?`        | Dialog style                       | `UiUpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
-| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS upgrade config                 | `IosUpgradeConfig()`                                                                                                                                                               |
-| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android upgrade config             | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                         |
-| isDebugLog           | `bool`                  | Whether to print logs              | `false`                                                                                                                                                                            |
-| barrierLabel         | `String?`               | barrierLabel                       | `null`                                                                                                                                                                             |
-| arguments            | `Object?`               | The arguments passed to this route | `null`                                                                                                                                                                             |
+| Name                 | Type                    | Description                        | Default                                                                                                                                                                          |
+|----------------------|-------------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| context              | BuildContext            | Context                            | Required                                                                                                                                                                         |
+| key                  | `Key?`                  | Identifier of the component        | `null`                                                                                                                                                                           |
+| upgradeConfig        | `UpgradeConfig?`        | Dialog style                       | `UpgradeConfig(title: UpgradeLocalizations.of(context).title, updateText: UpgradeLocalizations.of(context).updateText, cancelText: UpgradeLocalizations.of(context).cancelText)` |
+| iOSUpgradeConfig     | `IosUpgradeConfig?`     | iOS upgrade config                 | `IosUpgradeConfig()`                                                                                                                                                             |
+| androidUpgradeConfig | `AndroidUpgradeConfig?` | Android upgrade config             | `AndroidUpgradeConfig(androidMarket: AndroidMarket(), downloadCancelText: UpgradeLocalizations.of(context).androidCancel)`                                                       |
+| isDebugLog           | `bool`                  | Whether to print logs              | `false`                                                                                                                                                                          |
+| barrierLabel         | `String?`               | barrierLabel                       | `null`                                                                                                                                                                           |
+| arguments            | `Object?`               | The arguments passed to this route | `null`                                                                                                                                                                           |
 
-### UiUpgradeConfig
+### UpgradeConfig
 
-Popups are implemented by using `UiUpgradeConfig`.
+Popups are implemented by using `UpgradeConfig`.
 
 | Name              | Type          | Description                       | Default                                       |
 |-------------------|---------------|-----------------------------------|-----------------------------------------------|
@@ -125,6 +125,9 @@ Popups are implemented by using `AndroidUpgradeConfig`.
 | otherMarkets               | `List<String>?`             | The package name of the app market that is not preset in `AndroidMarket` | `null`                                           |
 | downloadUrl                | `String?`                   | A link of download for Apk                                               | `null`                                           |
 | saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
+| dialogBorderRadius         | `BorderRadius?`             | The dialog's borderRadius.                                               | `BorderRadius.circular(10)`                      |
+| topImageProvider           | `ImageProvider?`            | Picture at the top of the dialog                                         | `null`                                           |
+| topImageHeight             | `double?`                   | Height of the image                                                      | `null`                                           |
 | updateButtonStyle          | `ButtonStyle?`              | The style of the upgrade button                                          | `null`                                           |
 | downloadCancelText         | `String?`                   | Cancel text when downloading                                             | `UpgradeLocalizations.of(context).androidCancel` |
 | isExistsFile               | `bool`                      | Verify the existence of the file named `saveName`                        | `false`                                          |

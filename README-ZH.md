@@ -161,3 +161,4 @@ class MyApp extends StatelessWidget {
 2. `installApk` 安装apk，跳转至安装引导页；
 3. `getMarkets` 获取手机中包含的应用市场的软件信息的列表。
 
+> 如果你喜欢我的项目，请在项目右上角 "Star" 一下。你的支持是我最大的鼓励！ ^_^

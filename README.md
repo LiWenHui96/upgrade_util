@@ -161,3 +161,5 @@ To jump to the App Store or the application market, use the `jumpToStore` method
 1. `getDownloadPath`, get the save path of the software download；
 2. `installApk`, install the apk, and jump to the installation guide page；
 3. `getMarkets` get a list of software information for the application market contained in the mobile phone.
+
+> If you like my project, please in the upper right corner of the project "Star". Your support is my biggest encouragement! ^_^

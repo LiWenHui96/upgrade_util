@@ -9,7 +9,7 @@ At present, the plugin is only used by Android, iOS.
 
 ### Use of third-party
 
-* Using `dio` to download the apk for Android;
+* Using `dio` to download the apk for Android, which is built-in in the plugin and does not need to be referenced;
 
 ## Preparing for use
 

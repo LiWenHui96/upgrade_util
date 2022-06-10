@@ -9,7 +9,7 @@ Language: 中文 | [English](README.md)
 
 ### 第三方使用
 
-* 使用 `dio` 实现Android的apk下载；
+* 使用 `dio` 实现Android的apk下载，插件内已内置，无需引用；
 
 ## 准备工作
 

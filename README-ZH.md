@@ -140,7 +140,7 @@ class MyApp extends StatelessWidget {
 | onDownloadProgressCallback | `DownloadProgressCallback?` | 下载事件的进度监听                     | `null`                                            |
 | onDownloadStatusCallback   | `DownloadStatusCallback?`   | 下载事件的状态监听                     | `null`                                            |
 
-* `androidMarket` 应用市场详细配置可查看 [AndroidMarket](lib/src/android/android_market.dart)；
+* `androidMarket` 应用市场详细配置可查看 [AndroidMarket](lib/src/config/android_market.dart)；
 * `androidMarket` 与 `downloadUrl`，需配置其一；均配置的情况下，优先以 `androidMarket` 为主；
 
 ## 方法

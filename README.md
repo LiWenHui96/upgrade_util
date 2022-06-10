@@ -141,7 +141,7 @@ Popups are implemented by using `AndroidUpgradeConfig`.
 | onDownloadStatusCallback   | `DownloadStatusCallback?`   | Realize the listening event of download status                           | `null`                                           |
 
 * `androidMarket` application market detailed configuration can be
-  viewed [AndroidMarket](lib/src/android/android_market.dart);
+  viewed [AndroidMarket](lib/src/config/android_market.dart);
 * `androidMarket` and `downloadUrl` need to be configured; if both are configured, `androidMarket` is the priority;
 
 ## Method

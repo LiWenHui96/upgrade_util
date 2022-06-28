@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'upgrade_util'
   s.version          = '2.2.1+2'
-  s.summary          = 'An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.'
+  s.summary          = 'A plugin for app upgrades. It can jump to the application store, and implement the function of downloading and installing APK on Android.'
   s.description      = <<-DESC
-An app upgrade plugin. It realizes the function of jumping to App Store or Market and installing after downloading APK.
+A plugin for app upgrades. It can jump to the application store, and implement the function of downloading and installing APK on Android.
                        DESC
   s.homepage         = 'https://github.com/LiWenHui96/upgrade_util'
   s.license          = { :file => '../LICENSE' }

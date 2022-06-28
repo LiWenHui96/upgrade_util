@@ -1,3 +1,8 @@
+## 2.2.2
+
+* Update description.
+* Minor fixes for new analysis options.
+
 ## 2.2.1+2
 
 * Update README.md.

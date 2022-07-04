@@ -1,3 +1,7 @@
+## 2.2.3
+
+* Modify the judgment method of the platform.
+
 ## 2.2.2
 
 * Update description.

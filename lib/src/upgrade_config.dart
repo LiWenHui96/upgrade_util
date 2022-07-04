@@ -127,9 +127,8 @@ class IosUpgradeConfig {
 class AndroidUpgradeConfig {
   // ignore: public_member_api_docs
   AndroidUpgradeConfig({
-    this.packageName,
     this.androidMarket,
-    this.otherMarkets,
+    this.otherMarkets = const <String>[],
     this.downloadUrl,
     this.saveName,
     this.dialogBorderRadius,
@@ -148,14 +147,11 @@ class AndroidUpgradeConfig {
     this.onDownloadStatusCallback,
   });
 
-  /// The name of package.
-  final String? packageName;
-
   /// The settings of app market for Android.
-  late AndroidMarket? androidMarket;
+  final AndroidMarket? androidMarket;
 
   /// The package name for markets other than presets.
-  final List<String>? otherMarkets;
+  final List<String> otherMarkets;
 
   /// A link of download for Apk.
   final String? downloadUrl;
@@ -213,6 +209,13 @@ class AndroidUpgradeConfig {
 
   /// Realize the listening event of download status.
   final DownloadStatusCallback? onDownloadStatusCallback;
+
+  /// All application markets before screening.
+  AndroidMarket get androidMarkets => androidMarket ?? AndroidMarket();
+
+  /// Package names of all application markets before screening.
+  List<String> get marketPackageNames =>
+      androidMarkets.toMarkets()..addAll(otherMarkets);
 }
 
 /// Listener - Download progress

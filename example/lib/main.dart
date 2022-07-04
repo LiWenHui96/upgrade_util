@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrade_util/upgrade_util.dart';
-
-import 'util_platform.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,27 +45,25 @@ class _HomePageState extends State<HomePage> {
   final List<String> list = <String>[
     'Android Test: Get the download of apk',
     'Android Test: Get Available Market',
-    'WeChat: Jump To AppStore Reviews Page',
-    'WeChat: Jump To AppStore and Write Review',
-    'WeChat: Jump To Detail Page',
-    'WeChat: Upgrade Dialog',
+    'Jump To AppStore Reviews Page',
+    'Jump To AppStore and Write Review',
+    'Jump To Detail Page',
+    'Upgrade Dialog',
   ];
 
   /// The app number of WeChat.
   final String wechatAppleID = '414478124';
-
-  /// The package name of WeChat.
-  final String wechatPackageName = 'com.tencent.mm';
 
   @override
   Widget build(BuildContext context) => _platformWidget();
 
   Widget _platformWidget() {
     Widget child = Center(
-      child: Text('不支持【 ${PlatformUtil.operatingSystem} 】平台'),
+      child: Text('不支持【 $operatingSystem 】平台'),
     );
 
-    if (Platform.isIOS || Platform.isAndroid) {
+    if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android) {
       child = _buildBodyWidget();
     }
 
@@ -103,9 +100,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         // Get a list of all the app markets in the phone.
         final List<AndroidMarketModel> marketPackages =
-            await UpgradeUtil.getMarkets(
-          androidMarket: AndroidMarket.allTrue,
-        );
+            await UpgradeUtil.getMarkets(AndroidMarket.allTrue.toMarkets());
         debugPrint(marketPackages.toString());
         break;
       case 2:
@@ -113,7 +108,6 @@ class _HomePageState extends State<HomePage> {
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.reviewsPage,
           appleId: wechatAppleID,
-          packageName: wechatPackageName,
         );
         break;
       case 3:
@@ -121,7 +115,6 @@ class _HomePageState extends State<HomePage> {
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.writeReview,
           appleId: wechatAppleID,
-          packageName: wechatPackageName,
         );
         break;
       case 4:
@@ -129,7 +122,6 @@ class _HomePageState extends State<HomePage> {
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.detailPage,
           appleId: wechatAppleID,
-          packageName: wechatPackageName,
         );
         break;
       case 5:
@@ -141,14 +133,33 @@ class _HomePageState extends State<HomePage> {
             content: '1.修复已知Bug\n2.优化软件性能，提升用户体验效果\n3.更多新功能等待您的探索',
           ),
           iOSUpgradeConfig: IosUpgradeConfig(appleId: wechatAppleID),
-          androidUpgradeConfig: AndroidUpgradeConfig(
-            packageName: wechatPackageName,
-            androidMarket: AndroidMarket.allTrue,
-          ),
+          androidUpgradeConfig:
+              AndroidUpgradeConfig(androidMarket: AndroidMarket.allTrue),
         );
         break;
       default:
         break;
     }
+  }
+
+  /// Operating system description
+  static String get operatingSystem {
+    if (Platform.isAndroid) {
+      return 'Android';
+    } else if (Platform.isIOS) {
+      return 'iOS';
+    } else if (Platform.isWindows) {
+      return 'Windows';
+    } else if (Platform.isMacOS) {
+      return 'macOS';
+    } else if (Platform.isLinux) {
+      return 'Linux';
+    } else if (Platform.isFuchsia) {
+      return 'Fuchsia OS';
+    } else if (kIsWeb) {
+      return 'Web';
+    }
+
+    return '';
   }
 }

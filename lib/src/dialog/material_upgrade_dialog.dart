@@ -309,10 +309,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       }
     });
 
-    final List<AndroidMarketModel> markets = await UpgradeUtil.getMarkets(
-      androidMarket: config.androidMarket,
-      otherMarkets: config.otherMarkets,
-    );
+    final List<AndroidMarketModel> markets =
+        await UpgradeUtil.getMarkets(config.marketPackageNames);
 
     setState(() {
       if (mounted) {

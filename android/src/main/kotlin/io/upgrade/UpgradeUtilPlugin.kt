@@ -59,11 +59,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
       }
       "getMarkets" -> result.success(getMarkets(call.arguments<List<String>>()))
-      "jumpToMarket" -> {
-        val packageName = call.argument<String>("packageName")
-        val marketPackageName = call.argument<String>("marketPackageName")
-        jumpToMarket(packageName, marketPackageName)
-      }
+      "jumpToMarket" -> jumpToMarket(call.arguments as String?)
       else -> result.notImplemented()
     }
   }
@@ -167,14 +163,11 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   /**
    * Jump to market
    *
-   * @param packageName The package name of the application
    * @param marketPackageName The package name of market.
    */
-  private fun jumpToMarket(packageName: String?, marketPackageName: String?) {
+  private fun jumpToMarket(marketPackageName: String?) {
     try {
-      val mPackageInfo = pm().getPackageInfo(mContext.packageName, 0)
-      val mPackageName = packageName ?: mPackageInfo.packageName
-      val uri = Uri.parse("${getUriString(marketPackageName)}${mPackageName}")
+      val uri = Uri.parse("${getUriString(marketPackageName)}${mContext.packageName}")
       val intent = Intent(Intent.ACTION_VIEW, uri)
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       if (!TextUtils.isEmpty(marketPackageName)) intent.setPackage(marketPackageName)

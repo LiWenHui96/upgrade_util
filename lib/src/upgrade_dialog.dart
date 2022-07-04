@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'android_market.dart';
 import 'dialog/cupertino_upgrade_dialog.dart';
 import 'dialog/material_upgrade_dialog.dart';
 import 'upgrade_config.dart';
@@ -35,7 +32,6 @@ Future<T?> showUpgradeDialog<T>(
   final RouteSettings routeSettings =
       RouteSettings(name: '/UpgradeDialog', arguments: arguments);
 
-  androidUpgradeConfig.androidMarket ??= AndroidMarket();
   androidUpgradeConfig.downloadCancelText ??= local.androidCancel;
 
   upgradeConfig ??= UpgradeConfig(title: local.title);
@@ -96,10 +92,10 @@ void _platformAssert({
   }
 
   if (defaultTargetPlatform == TargetPlatform.android &&
-      (androidUpgradeConfig.packageName ?? '').isEmpty &&
+      androidUpgradeConfig.marketPackageNames.isEmpty &&
       (androidUpgradeConfig.downloadUrl ?? '').isEmpty) {
     throw ArgumentError(
-      'On Android, it cannot be used when `packageName` is empty and '
+      'On Android, it cannot be used when markets is empty and '
       '`downloadUrl` is empty.',
     );
   }
@@ -186,7 +182,8 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
   void _cancel() => Navigator.pop(context);
 
   Future<void> _update(String? marketPackageName) async {
-    if (Platform.isAndroid && marketPackageName == null) {
+    if (defaultTargetPlatform == TargetPlatform.android &&
+        marketPackageName == null) {
       return;
     }
 
@@ -194,7 +191,6 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
     await UpgradeUtil.jumpToStore(
       jumpMode: JumpMode.detailPage,
       appleId: widget.iOSUpgradeConfig.appleId,
-      packageName: widget.androidUpgradeConfig.packageName,
       marketPackageName: marketPackageName,
     );
   }

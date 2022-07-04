@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:upgrade_util/upgrade_util.dart';
 
@@ -23,7 +23,7 @@ class UpgradeUtil {
   /// Use [softwareName] as the software name.
   /// It is `temp.apk` by default.
   static Future<String> getDownloadPath({String? softwareName}) async {
-    if (!Platform.isAndroid) {
+    if (defaultTargetPlatform != TargetPlatform.android) {
       throw PlatformException(
         code: 'Unimplemented',
         details:
@@ -49,7 +49,7 @@ class UpgradeUtil {
   ///
   /// The [path] is the storage address of apk.
   static Future<bool?> installApk(String path) async {
-    if (!Platform.isAndroid) {
+    if (defaultTargetPlatform != TargetPlatform.android) {
       throw PlatformException(
         code: 'Unimplemented',
         details: 'The `installApk` method of the upgrade_util plugin currently '
@@ -65,20 +65,16 @@ class UpgradeUtil {
   ///
   /// When set to true, make sure your program is on the market.
   /// This plugin does not verify that your program is on the shelf.
-  static Future<List<AndroidMarketModel>> getMarkets({
-    AndroidMarket? androidMarket,
-    List<String>? otherMarkets,
-  }) async {
-    if (!Platform.isAndroid) {
+  static Future<List<AndroidMarketModel>> getMarkets(
+    List<String> packages,
+  ) async {
+    if (defaultTargetPlatform != TargetPlatform.android) {
       throw PlatformException(
         code: 'Unimplemented',
         details: 'The `getMarkets` method of the upgrade_util plugin currently '
             'only supports Android.',
       );
     }
-
-    final List<String> packages = (androidMarket ?? AndroidMarket()).toMarkets()
-      ..addAll(otherMarkets ?? <String>[]);
 
     final List<Map<dynamic, dynamic>>? markets =
         await _channel.invokeListMethod('getMarkets', packages);
@@ -96,22 +92,16 @@ class UpgradeUtil {
   ///
   /// On iOS, the [appleId] is Apple ID.
   ///
-  /// On Android, the [packageName] is package name.
-  /// the [marketPackageName] is the package name of market.
+  /// On Android, the [marketPackageName] is the package name of the
+  /// application market to go to.
   static Future<void> jumpToStore({
     required JumpMode jumpMode,
     String? appleId,
-    String? packageName,
     String? marketPackageName,
   }) async {
-    if (Platform.isAndroid) {
-      assert(packageName != null, 'The name of the package cannot be empty.');
-
-      await _channel.invokeMethod<void>('jumpToMarket', <String, dynamic>{
-        'packageName': packageName,
-        'marketPackageName': marketPackageName,
-      });
-    } else if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await _channel.invokeMethod<void>('jumpToMarket', marketPackageName);
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       assert(appleId != null, 'Apple ID cannot be empty.');
 
       switch (jumpMode) {

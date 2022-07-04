@@ -7,7 +7,7 @@ import 'dart:typed_data';
 /// @Date: 2022/1/17
 
 class AndroidMarket {
-  /// Externally provided
+  // ignore: public_member_api_docs
   AndroidMarket({
     this.isGooglePlay = false,
     this.isHuawei = false,
@@ -275,7 +275,7 @@ class AndroidMarket {
 
 /// Software information in the Android application market
 class AndroidMarketModel {
-  /// Externally provided
+  // ignore: public_member_api_docs
   AndroidMarketModel({
     this.packageName,
     this.showName,

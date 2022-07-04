@@ -165,3 +165,15 @@ const String _writeReviewUrl = '?action=write-review';
 
 /// MethodChannel's name
 const String _channelName = 'upgrade_util.io.channel/method';
+
+/// How to jump to the store's page
+enum JumpMode {
+  /// Product page
+  detailPage,
+
+  /// Evaluation page
+  reviewsPage,
+
+  /// Write an evaluation
+  writeReview,
+}

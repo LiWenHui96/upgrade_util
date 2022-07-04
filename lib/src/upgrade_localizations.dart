@@ -1,12 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// @Describe: Localizations
+/// @Describe: LocalizationsDelegate
 ///
 /// @Author: LiWeNHuI
 /// @Date: 2022/1/12
 
+class UpgradeLocalizationsDelegate
+    extends LocalizationsDelegate<UpgradeLocalizations> {
+  // ignore: public_member_api_docs
+  const UpgradeLocalizationsDelegate();
+
+  /// Provided to [MaterialApp] for use.
+  static const UpgradeLocalizationsDelegate delegate =
+      UpgradeLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) =>
+      UpgradeLocalizations.languages.contains(locale.languageCode);
+
+  @override
+  Future<UpgradeLocalizations> load(Locale locale) {
+    return SynchronousFuture<UpgradeLocalizations>(
+      UpgradeLocalizations(locale),
+    );
+  }
+
+  @override
+  bool shouldReload(UpgradeLocalizationsDelegate old) => false;
+}
+
+/// Localizations
 abstract class UpgradeLocalizationsBase {
-  /// Externally provided
+  // ignore: public_member_api_docs
   const UpgradeLocalizationsBase(this.locale);
 
   // ignore: public_member_api_docs
@@ -33,7 +59,7 @@ abstract class UpgradeLocalizationsBase {
 
 /// localizations
 class UpgradeLocalizations extends UpgradeLocalizationsBase {
-  /// Externally provided
+  // ignore: public_member_api_docs
   const UpgradeLocalizations(Locale? locale) : super(locale);
 
   static const UpgradeLocalizations _static = UpgradeLocalizations(null);

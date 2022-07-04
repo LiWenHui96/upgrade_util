@@ -3,16 +3,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:upgrade_util/src/config/android_market.dart';
-import 'package:upgrade_util/src/config/android_upgrade_config.dart';
-import 'package:upgrade_util/src/config/enum.dart';
-import 'package:upgrade_util/src/config/ios_upgrade_config.dart';
-import 'package:upgrade_util/src/config/upgrade_config.dart';
-import 'package:upgrade_util/src/local/upgrade_localizations.dart';
-import 'package:upgrade_util/src/upgrade_util.dart';
 
-import 'cupertino_upgrade_dialog.dart';
-import 'material_upgrade_dialog.dart';
+import 'android_market.dart';
+import 'dialog/cupertino_upgrade_dialog.dart';
+import 'dialog/material_upgrade_dialog.dart';
+import 'upgrade_config.dart';
+import 'upgrade_localizations.dart';
+import 'upgrade_util.dart';
 
 /// @Describe: Upgrade Dialog
 ///
@@ -55,31 +52,27 @@ Future<T?> showUpgradeDialog<T>(
 
   child = WillPopScope(child: child, onWillPop: () async => false);
 
-  switch (defaultTargetPlatform) {
-    case TargetPlatform.android:
-      return showMaterialUpgradeDialog(
-        context,
-        child: child,
-        barrierColor: const Color.fromRGBO(0, 0, 0, .4),
-        barrierLabel: barrierLabel,
-        routeSettings: routeSettings,
-      );
-    case TargetPlatform.iOS:
-      return showCupertinoUpgradeDialog(
-        context,
-        child: child,
-        barrierLabel: barrierLabel,
-        routeSettings: routeSettings,
-      );
-    case TargetPlatform.fuchsia:
-    case TargetPlatform.linux:
-    case TargetPlatform.macOS:
-    case TargetPlatform.windows:
-      throw PlatformException(
-        code: 'Unimplemented',
-        details:
-            'The upgrade_util plugin currently only supports Android and iOS.',
-      );
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    return showMaterialUpgradeDialog(
+      context,
+      child: child,
+      barrierColor: const Color.fromRGBO(0, 0, 0, .4),
+      barrierLabel: barrierLabel,
+      routeSettings: routeSettings,
+    );
+  } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+    return showCupertinoUpgradeDialog(
+      context,
+      child: child,
+      barrierLabel: barrierLabel,
+      routeSettings: routeSettings,
+    );
+  } else {
+    throw PlatformException(
+      code: 'Unimplemented',
+      details:
+          'The upgrade_util plugin currently only supports Android and iOS.',
+    );
   }
 }
 
@@ -88,7 +81,8 @@ void _platformAssert({
   required IosUpgradeConfig iOSUpgradeConfig,
   required AndroidUpgradeConfig androidUpgradeConfig,
 }) {
-  if (!(Platform.isIOS || Platform.isAndroid)) {
+  if (!(defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.android)) {
     throw PlatformException(
       code: 'Unimplemented',
       details:
@@ -96,11 +90,12 @@ void _platformAssert({
     );
   }
 
-  if (Platform.isIOS && (iOSUpgradeConfig.appleId ?? '').isEmpty) {
+  if (defaultTargetPlatform == TargetPlatform.iOS &&
+      (iOSUpgradeConfig.appleId ?? '').isEmpty) {
     throw ArgumentError('On iOS, it cannot be used when `appleId` is empty.');
   }
 
-  if (Platform.isAndroid &&
+  if (defaultTargetPlatform == TargetPlatform.android &&
       (androidUpgradeConfig.packageName ?? '').isEmpty &&
       (androidUpgradeConfig.downloadUrl ?? '').isEmpty) {
     throw ArgumentError(
@@ -113,7 +108,6 @@ void _platformAssert({
 /// The widget of the upgrade dialog.
 @protected
 class _UpgradeDialog extends StatefulWidget {
-  /// Externally provided
   const _UpgradeDialog({
     Key? key,
     required this.upgradeConfig,

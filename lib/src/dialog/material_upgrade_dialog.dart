@@ -4,10 +4,9 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:upgrade_util/src/config/android_market.dart';
-import 'package:upgrade_util/src/config/android_upgrade_config.dart';
-import 'package:upgrade_util/src/config/enum.dart';
-import 'package:upgrade_util/src/local/upgrade_localizations.dart';
+import 'package:upgrade_util/src/android_market.dart';
+import 'package:upgrade_util/src/upgrade_config.dart';
+import 'package:upgrade_util/src/upgrade_localizations.dart';
 import 'package:upgrade_util/src/upgrade_util.dart';
 
 /// @Describe: Displays a Material upgrade dialog above the current contents
@@ -35,7 +34,7 @@ Future<T?> showMaterialUpgradeDialog<T>(
 /// The widget of Material upgrade dialog.
 @protected
 class MaterialUpgradeDialog extends StatefulWidget {
-  /// Externally provided
+  // ignore: public_member_api_docs
   const MaterialUpgradeDialog({
     Key? key,
     required this.androidUpgradeConfig,
@@ -448,7 +447,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 /// Choose Market
 @protected
 class ChooseMarketsDialog extends StatefulWidget {
-  /// Externally provided
+  // ignore: public_member_api_docs
   const ChooseMarketsDialog({
     Key? key,
     required this.markets,
@@ -519,4 +518,22 @@ class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
 
     return Padding(padding: const EdgeInsets.all(15), child: child);
   }
+}
+
+/// The download status of Apk.
+enum DownloadStatus {
+  /// Not downloaded
+  none,
+
+  /// Ready to start downloading
+  start,
+
+  /// Downloading
+  downloading,
+
+  /// Download complete
+  done,
+
+  /// Download exception
+  error
 }

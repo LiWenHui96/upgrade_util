@@ -120,9 +120,8 @@ class MyApp extends StatelessWidget {
 
 | 参数名                        | 类型                          | 描述                            | 默认值                                              |
 |----------------------------|-----------------------------|-------------------------------|--------------------------------------------------|
-| packageName                | `String?`                   | Android应用包名                   | `null`                                           |
 | androidMarket              | `AndroidMarket?`            | Android应用市场配置                 | `AndroidMarket()`                                |
-| otherMarkets               | `List<String>?`             | 未在 `AndroidMarket` 内预置的应用市场包名 | `null`                                           |
+| otherMarkets               | `List<String>`              | 未在 `AndroidMarket` 内预置的应用市场包名 | `<String>[]`                                     |
 | downloadUrl                | `String?`                   | apk下载链接                       | `null`                                           |
 | saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                       |
 | dialogBorderRadius         | `BorderRadius?`             | 弹窗的弧度                         | `BorderRadius.circular(10)`                      |
@@ -152,8 +151,8 @@ class MyApp extends StatelessWidget {
     2. `JumpMode.reviewsPage`，跳转到应用评论页面；
     3. `JumpMode.writeReview`，跳转到应用评论页面并进行评论。
 * `appleId` 为 iOS 的必填项，此为App Store的应用编号；
-* `packageName` 为 Android 的必填项，此为应用包名；
 * `marketPackageName` 为 Android 跳转的应用市场的包名，非必填项。
+* 不再提供 `packageName` 字段，因为统一使用项目的包名。
 
 ### Android 独有方法
 

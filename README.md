@@ -120,9 +120,8 @@ Popups are implemented by using `AndroidUpgradeConfig`.
 
 | Name                       | Type                        | Description                                                              | Default                                          |
 |----------------------------|-----------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
-| packageName                | `String?`                   | The name of package for Android                                          | `null`                                           |
 | androidMarket              | `AndroidMarket?`            | The settings of app market for Android                                   | `AndroidMarket()`                                |
-| otherMarkets               | `List<String>?`             | The package name of the app market that is not preset in `AndroidMarket` | `null`                                           |
+| otherMarkets               | `List<String>`              | The package name of the app market that is not preset in `AndroidMarket` | `<String>[]`                                     |
 | downloadUrl                | `String?`                   | A link of download for Apk                                               | `null`                                           |
 | saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
 | dialogBorderRadius         | `BorderRadius?`             | The dialog's borderRadius.                                               | `BorderRadius.circular(10)`                      |
@@ -153,8 +152,8 @@ To jump to the App Store or the application market, use the `jumpToStore` method
     2. `JumpMode.reviewsPage`, jump to the app review page;
     3. `JumpMode.writeReview`, jump to the app review page and comment.
 * `appleId` is required for iOS, which is the application number of the App Store；
-* `packageName` is required for Android, this is the app package name；
 * `marketPackageName` is the package name of the application market that Android jumps to, not required.
+* The `packageName` field is no longer provided because the package name of the project is used uniformly.
 
 ### Android unique method
 

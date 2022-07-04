@@ -1,3 +1,7 @@
+## 2.2.4
+
+* The `packageName` field is no longer provided because the package name of the project is used uniformly.
+
 ## 2.2.3
 
 * Modify the judgment method of the platform.

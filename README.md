@@ -122,13 +122,18 @@ Popups are implemented by using `AndroidUpgradeConfig`.
 |----------------------------|-----------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
 | androidMarket              | `AndroidMarket?`            | The settings of app market for Android                                   | `AndroidMarket()`                                |
 | otherMarkets               | `List<String>`              | The package name of the app market that is not preset in `AndroidMarket` | `<String>[]`                                     |
-| downloadUrl                | `String?`                   | A link of download for Apk                                               | `null`                                           |
-| saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
 | dialogBorderRadius         | `BorderRadius?`             | The dialog's borderRadius.                                               | `BorderRadius.circular(10)`                      |
 | topImageProvider           | `ImageProvider?`            | Picture at the top of the dialog                                         | `null`                                           |
 | topImageHeight             | `double?`                   | Height of the image                                                      | `null`                                           |
 | updateButtonStyle          | `ButtonStyle?`              | The style of the upgrade button                                          | `null`                                           |
 | downloadCancelText         | `String?`                   | Cancel text when downloading                                             | `UpgradeLocalizations.of(context).androidCancel` |
+| downloadUri                | `Uri?`                      | A link of download for Apk                                               | `null`                                           |
+| saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
+| downloadInterceptors       | `List<Interceptor>`         | Interceptors added to [Dio]                                              | `<Interceptor>[]`                                |
+| deleteOnError              | `bool`                      | Whether delete the file when error occurs                                | `true`                                           |
+| lengthHeader               | `String`                    | The real size of original file (not compressed)                          | `Headers.contentLengthHeader`                    |
+| data                       | `dynamic`                   | The request data                                                         | `null`                                           |
+| options                    | `Options?`                  | Every request can pass a [Options] object                                | `null`                                           |
 | isExistsFile               | `bool`                      | Verify the existence of the file named `saveName`                        | `false`                                          |
 | indicatorHeight            | `double?`                   | The height of the indicator                                              | `10px`                                           |
 | indicatorBackgroundColor   | `Color?`                    | It is `LinearProgressIndicator.backgroundColor`                          | `null`                                           |

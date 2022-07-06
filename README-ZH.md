@@ -122,13 +122,18 @@ class MyApp extends StatelessWidget {
 |----------------------------|-----------------------------|-------------------------------|--------------------------------------------------|
 | androidMarket              | `AndroidMarket?`            | Android应用市场配置                 | `AndroidMarket()`                                |
 | otherMarkets               | `List<String>`              | 未在 `AndroidMarket` 内预置的应用市场包名 | `<String>[]`                                     |
-| downloadUrl                | `String?`                   | apk下载链接                       | `null`                                           |
-| saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                       |
 | dialogBorderRadius         | `BorderRadius?`             | 弹窗的弧度                         | `BorderRadius.circular(10)`                      |
 | topImageProvider           | `ImageProvider?`            | 弹窗顶部的图片                       | `null`                                           |
 | topImageHeight             | `double?`                   | 弹窗顶部的图片的高度                    | `null`                                           |
 | updateButtonStyle          | `ButtonStyle?`              | 升级按钮的样式                       | `null`                                           |
 | downloadCancelText         | `String?`                   | 下载时的取消按钮的文本                   | `UpgradeLocalizations.of(context).androidCancel` |
+| downloadUri                | `Uri?`                      | apk下载链接                       | `null`                                           |
+| saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                       |
+| downloadInterceptors       | `List<Interceptor>`         | [Dio] 中添加的拦截器                 | `<Interceptor>[]`                                |
+| deleteOnError              | `bool`                      | 发生错误时是否删除文件                   | `true`                                           |
+| lengthHeader               | `String`                    | 原始文件的实际大小（未压缩）                | `Headers.contentLengthHeader`                    |
+| data                       | `dynamic`                   | 请求数据                          | `null`                                           |
+| options                    | `Options?`                  | 每个请求都可以传递一个 [Options] 对象      | `null`                                           |
 | isExistsFile               | `bool`                      | 验证是否存在文件。                     | `false`                                          |
 | indicatorHeight            | `double?`                   | 下载时进度条的的高度                    | `10px`                                           |
 | indicatorBackgroundColor   | `Color?`                    | 下载时进度条的背景色                    | `null`                                           |

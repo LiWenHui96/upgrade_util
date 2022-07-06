@@ -1,3 +1,10 @@
+## 2.3.0
+
+Introduces new `downloadUri` API; `downloadUrl` are now deprecated. These new APIs:
+
+* replace the `String` URL argument with a `Uri`, to prevent common issues with providing invalid URL strings.
+* Add `downloadInterceptors`, `deleteOnError`, `lengthHeader`, `data`, `options` to dio.
+
 ## 2.2.4
 
 * The `packageName` field is no longer provided because the package name of the project is used uniformly.

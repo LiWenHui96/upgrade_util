@@ -324,11 +324,11 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     );
 
     if (markets.isEmpty) {
-      final String? downloadUrl = config.downloadUrl;
-      if (downloadUrl != null && downloadUrl.isNotEmpty) {
-        await _download(downloadUrl);
+      final Uri? downloadUri = config.downloadUri;
+      if (downloadUri != null) {
+        await _download(downloadUri);
       } else {
-        throw ArgumentError('Both androidMarket and downloadUrl are empty');
+        throw ArgumentError('Both androidMarket and downloadUri are empty');
       }
     } else {
       widget.onUpgradePressed
@@ -355,7 +355,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
   }
 
   /// Download
-  Future<void> _download(String downloadUrl) async {
+  Future<void> _download(Uri downloadUri) async {
     final String savePath =
         await UpgradeUtil.getDownloadPath(softwareName: config.saveName);
 
@@ -382,10 +382,10 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 
     try {
       final Dio dio = Dio();
-      await dio.download(
-        downloadUrl,
+      dio.interceptors.addAll(config.downloadInterceptors);
+      await dio.downloadUri(
+        downloadUri,
         savePath,
-        cancelToken: _cancelToken,
         onReceiveProgress: (int count, int total) async {
           config.onDownloadProgressCallback?.call(count, total);
 
@@ -403,6 +403,11 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
             );
           }
         },
+        cancelToken: _cancelToken,
+        deleteOnError: config.deleteOnError,
+        lengthHeader: config.lengthHeader,
+        data: config.data,
+        options: config.options,
       );
     } catch (e) {
       debugPrint('$e');

@@ -93,10 +93,10 @@ void _platformAssert({
 
   if (defaultTargetPlatform == TargetPlatform.android &&
       androidUpgradeConfig.marketPackageNames.isEmpty &&
-      (androidUpgradeConfig.downloadUrl ?? '').isEmpty) {
+      androidUpgradeConfig.downloadUri == null) {
     throw ArgumentError(
       'On Android, it cannot be used when markets is empty and '
-      '`downloadUrl` is empty.',
+      '`downloadUri` is empty.',
     );
   }
 }

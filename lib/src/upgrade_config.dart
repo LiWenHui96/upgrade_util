@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'android_market.dart';
@@ -129,13 +130,18 @@ class AndroidUpgradeConfig {
   AndroidUpgradeConfig({
     this.androidMarket,
     this.otherMarkets = const <String>[],
-    this.downloadUrl,
-    this.saveName,
     this.dialogBorderRadius,
     this.topImageProvider,
     this.topImageHeight,
     this.updateButtonStyle,
     this.downloadCancelText,
+    this.downloadUri,
+    this.saveName,
+    this.downloadInterceptors = const <Interceptor>[],
+    this.deleteOnError = true,
+    this.lengthHeader = Headers.contentLengthHeader,
+    this.data,
+    this.options,
     this.isExistsFile = false,
     this.indicatorHeight,
     this.indicatorBackgroundColor,
@@ -153,12 +159,6 @@ class AndroidUpgradeConfig {
   /// The package name for markets other than presets.
   final List<String> otherMarkets;
 
-  /// A link of download for Apk.
-  final String? downloadUrl;
-
-  /// The name of the file after the apk download is completed.
-  final String? saveName;
-
   /// The dialog's borderRadius.
   final BorderRadius? dialogBorderRadius;
 
@@ -173,6 +173,37 @@ class AndroidUpgradeConfig {
 
   /// Cancel text when downloading
   late String? downloadCancelText;
+
+  /// A link of download for Apk.
+  final Uri? downloadUri;
+
+  /// A link of download for Apk.
+  @Deprecated('Use downloadUri instead')
+  String? downloadUrl;
+
+  /// The name of the file after the apk download is completed.
+  final String? saveName;
+
+  /// Interceptors added to [Dio].
+  final List<Interceptor> downloadInterceptors;
+
+  /// Whether delete the file when error occurs. The default value is true.
+  final bool deleteOnError;
+
+  ///  The real size of original file (not compressed).
+  ///  When file is compressed:
+  ///  1. If this value is 'content-length', the `total` argument of
+  ///  `onProgress` will be -1
+  ///  2. If this value is not 'content-length', maybe a custom header
+  ///  indicates the original file size , the `total` argument of `onProgress`
+  ///  will be this header value.
+  final String lengthHeader;
+
+  /// The request data.
+  final dynamic data;
+
+  /// Every request can pass a [Options] object.
+  final Options? options;
 
   /// Verify the existence of the file named [saveName].
   ///

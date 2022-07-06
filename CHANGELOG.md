@@ -5,6 +5,7 @@ Introduces new `downloadUri` API; `downloadUrl` are now deprecated. These new AP
 * replace the `String` URL argument with a `Uri`, to prevent common issues with providing invalid URL strings.
 * Add `downloadInterceptors`, `deleteOnError`, `lengthHeader`, `data`, `options` to dio.
 * Reorganizes and clarifies README.
+* Add new function basis [#2](https://github.com/LiWenHui96/upgrade_util/issues/2).
 
 ## 2.2.4
 

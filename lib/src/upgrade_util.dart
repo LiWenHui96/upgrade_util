@@ -12,10 +12,6 @@ import 'package:upgrade_util/upgrade_util.dart';
 class UpgradeUtil {
   static const MethodChannel _channel = MethodChannel(_channelName);
 
-  ///
-  static Future<String?> get platformVersion async =>
-      _channel.invokeMethod('getPlatformVersion');
-
   /// Get the save path of the software download.
   ///
   /// This uses the `getCacheDir` API on the context.

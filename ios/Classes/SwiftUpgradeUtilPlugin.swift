@@ -12,9 +12,6 @@ public class SwiftUpgradeUtilPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch (call.method) {
-      case "getPlatformVersion":
-        result("iOS " + UIDevice.current.systemVersion)
-        break
       case "launch":
         result(NSNumber(value: launchURL(arg: call.arguments as! [String: Any?])))
         break

@@ -1,3 +1,7 @@
+## 2.3.1
+
+* The version limit of Android application permission is O, O_MR1, P.
+
 ## 2.3.0
 
 Introduces new `downloadUri` API; `downloadUrl` are now deprecated. These new APIs:

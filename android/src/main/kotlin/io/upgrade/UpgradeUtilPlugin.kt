@@ -9,9 +9,6 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Base64
@@ -75,7 +72,9 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     val file = File(path)
     if (!file.exists()) throw FileNotFoundException("$path is not exist or check permission")
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !pm().canRequestPackageInstalls()) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+        && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+        && !pm().canRequestPackageInstalls()) {
       showSettingPackageInstall()
       apkFile = file
     } else {
@@ -194,19 +193,6 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     return mContext.packageManager
   }
 
-  /**
-   * 回调给Flutter信息
-   */
-  private val handler: Handler = object : Handler(Looper.myLooper()!!) {
-    override fun dispatchMessage(msg: Message) {
-      super.dispatchMessage(msg)
-
-      when (msg.arg1) {
-        handlerMarket -> channel.invokeMethod("getMarkets", msg.obj as MutableList<*>)
-      }
-    }
-  }
-
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
@@ -214,8 +200,6 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   companion object {
     private const val channelName = "upgrade_util.io.channel/method"
     private const val downloadType = "application/vnd.android.package-archive"
-
-    private const val handlerMarket = 1
 
     private const val installRequestCode = 9989
     private var apkFile: File? = null

@@ -1,3 +1,7 @@
+## 2.3.2
+
+* Fixed the issue that the click event of the upgrade button of the iOS pop-up window was invalid.
+
 ## 2.3.1
 
 * The version limit of Android application permission is O, O_MR1, P.

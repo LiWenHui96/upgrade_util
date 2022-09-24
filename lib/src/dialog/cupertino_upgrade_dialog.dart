@@ -91,7 +91,9 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
     );
 
     final CupertinoDialogAction updateAction = CupertinoDialogAction(
-      onPressed: () async => widget.onUpgradePressed,
+      onPressed: () {
+        widget.onUpgradePressed?.call(null);
+      },
       isDefaultAction: force ? force : config.isUpgradeDefaultAction,
       isDestructiveAction: config.isUpgradeDestructiveAction,
       textStyle: widget.updateTextStyle,

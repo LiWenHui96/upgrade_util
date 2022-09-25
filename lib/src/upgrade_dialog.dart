@@ -187,7 +187,10 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
       return;
     }
 
-    Navigator.pop(context);
+    if (!force) {
+      Navigator.pop(context);
+    }
+
     await UpgradeUtil.jumpToStore(
       jumpMode: JumpMode.detailPage,
       appleId: widget.iOSUpgradeConfig.appleId,

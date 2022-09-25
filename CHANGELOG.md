@@ -1,3 +1,7 @@
+## 2.3.3
+
+* In forced update mode, the popup no longer closes.
+
 ## 2.3.2
 
 * Fixed the issue that the click event of the upgrade button of the iOS pop-up window was invalid.

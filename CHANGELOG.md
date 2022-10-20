@@ -1,3 +1,7 @@
+## 2.3.4
+
+* Add `titleWidget`, `contentWidget`.
+
 ## 2.3.3
 
 * In forced update mode, the popup no longer closes.

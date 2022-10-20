@@ -86,19 +86,21 @@ Popups are implemented by using `showUpgradeDialog`.
 
 Popups are implemented by using `UpgradeConfig`.
 
-| Name              | Type          | Description                       | Default                                       |
-|-------------------|---------------|-----------------------------------|-----------------------------------------------|
-| force             | `bool`        | Whether to force the update       | `false`                                       |
-| title             | `String?`     | A title of the version.           | `UpgradeLocalizations.of(context).title`      |
-| titleTextStyle    | `TextStyle?`  | The text style of `title`         | `null`                                        |
-| titleStrutStyle   | `StrutStyle?` | The strut style of `title`        | `null`                                        |
-| content           | `String?`     | A description of the version      | `null`                                        |
-| contentTextStyle  | `TextStyle?`  | The text style of `content`       | `null`                                        |
-| contentStrutStyle | `StrutStyle?` | The strut style of `content`      | `null`                                        |
-| updateText        | `String?`     | Text message of the update button | `UpgradeLocalizations.of(context).updateText` |
-| updateTextStyle   | `TextStyle?`  | The text style of `updateText`    | `null`                                        |
-| cancelText        | `String?`     | Text message of cancel button     | `UpgradeLocalizations.of(context).cancelText` |
-| cancelTextStyle   | `TextStyle?`  | The text style of `cancelText`    | `null`                                        |
+| Name              | Type          | Description                                                          | Default                                       |
+|-------------------|---------------|----------------------------------------------------------------------|-----------------------------------------------|
+| force             | `bool`        | Whether to force the update                                          | `false`                                       |
+| titleWidget       | `Widget?`     | The layout of the title. When it is empty, use [Text] instead.       | `null`                                        |
+| title             | `String?`     | A title of the version.                                              | `UpgradeLocalizations.of(context).title`      |
+| titleTextStyle    | `TextStyle?`  | The text style of `title`                                            | `null`                                        |
+| titleStrutStyle   | `StrutStyle?` | The strut style of `title`                                           | `null`                                        |
+| contentWidget     | `Widget?`     | The layout of the description. When it is empty, use [Text] instead. | `null`                                        |
+| content           | `String?`     | A description of the version                                         | `null`                                        |
+| contentTextStyle  | `TextStyle?`  | The text style of `content`                                          | `null`                                        |
+| contentStrutStyle | `StrutStyle?` | The strut style of `content`                                         | `null`                                        |
+| updateText        | `String?`     | Text message of the update button                                    | `UpgradeLocalizations.of(context).updateText` |
+| updateTextStyle   | `TextStyle?`  | The text style of `updateText`                                       | `null`                                        |
+| cancelText        | `String?`     | Text message of cancel button                                        | `UpgradeLocalizations.of(context).cancelText` |
+| cancelTextStyle   | `TextStyle?`  | The text style of `cancelText`                                       | `null`                                        |
 
 ### IosUpgradeConfig
 

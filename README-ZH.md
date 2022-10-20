@@ -54,12 +54,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      ...
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        ...
-        UpgradeLocalizationsDelegate.delegate,
-      ],
-      ...
+    ...
+    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+    ...
+    UpgradeLocalizationsDelegate.delegate,
+    ],
+    ...
     );
   }
 }
@@ -86,19 +86,21 @@ class MyApp extends StatelessWidget {
 
 `UpgradeConfig` 字段说明：
 
-| 参数名               | 类型            | 描述                   | 默认值                                           |
-|-------------------|---------------|----------------------|-----------------------------------------------|
-| force             | `bool`        | 是否为强制更新              | `false`                                       |
-| title             | `String?`     | 版本更新标题               | `UpgradeLocalizations.of(context).title`      |
-| titleTextStyle    | `TextStyle?`  | `title` 的文本样式        | `null`                                        |
-| titleStrutStyle   | `StrutStyle?` | `title` 的支柱风格        | `null`                                        |
-| content           | `String?`     | 版本更新内容               | `null`                                        |
-| contentTextStyle  | `TextStyle?`  | `content` 的文本样式      | `null`                                        |
-| contentStrutStyle | `StrutStyle?` | `content ` 的支柱风格     | `null`                                        |
-| updateText        | `String?`     | 升级按钮的文本              | `UpgradeLocalizations.of(context).updateText` |
-| updateTextStyle   | `TextStyle?`  | `updateText ` 的文本样式  | `null`                                        |
-| cancelText        | `String?`     | 取消按钮的文本              | `UpgradeLocalizations.of(context).cancelText` |
-| cancelTextStyle   | `TextStyle?`  | `cancelText ` 的文本样式  | `null`                                        |
+| 参数名               | 类型            | 描述                      | 默认值                                           |
+|-------------------|---------------|-------------------------|-----------------------------------------------|
+| force             | `bool`        | 是否为强制更新                 | `false`                                       |
+| titleWidget       | `Widget?`     | 标题的布局。为空时，使用[Text]代替。   | `null`                                        |
+| title             | `String?`     | 版本更新标题                  | `UpgradeLocalizations.of(context).title`      |
+| titleTextStyle    | `TextStyle?`  | `title` 的文本样式           | `null`                                        |
+| titleStrutStyle   | `StrutStyle?` | `title` 的支柱风格           | `null`                                        |
+| titleWidget       | `Widget?`     | 更新内容的布局。为空时，使用[Text]代替。 | `null`                                        |
+| content           | `String?`     | 版本更新内容                  | `null`                                        |
+| contentTextStyle  | `TextStyle?`  | `content` 的文本样式         | `null`                                        |
+| contentStrutStyle | `StrutStyle?` | `content ` 的支柱风格        | `null`                                        |
+| updateText        | `String?`     | 升级按钮的文本                 | `UpgradeLocalizations.of(context).updateText` |
+| updateTextStyle   | `TextStyle?`  | `updateText ` 的文本样式     | `null`                                        |
+| cancelText        | `String?`     | 取消按钮的文本                 | `UpgradeLocalizations.of(context).cancelText` |
+| cancelTextStyle   | `TextStyle?`  | `cancelText ` 的文本样式     | `null`                                        |
 
 ### IosUpgradeConfig
 

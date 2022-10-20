@@ -13,9 +13,11 @@ class UpgradeConfig {
   // ignore: public_member_api_docs
   UpgradeConfig({
     this.force = false,
-    required this.title,
+    this.titleWidget,
+    this.title,
     this.titleTextStyle,
     this.titleStrutStyle,
+    this.contentWidget,
     this.content,
     this.contentTextStyle,
     this.contentStrutStyle,
@@ -31,6 +33,9 @@ class UpgradeConfig {
   /// It is `false` by default.
   final bool force;
 
+  /// The layout of the title. When it is empty, use [Text] instead.
+  final Widget? titleWidget;
+
   /// A title of the version.
   late String? title;
 
@@ -39,6 +44,9 @@ class UpgradeConfig {
 
   /// The strut style of [title].
   final StrutStyle? titleStrutStyle;
+
+  /// The layout of the description. When it is empty, use [Text] instead.
+  final Widget? contentWidget;
 
   /// A description of the version.
   late String? content;

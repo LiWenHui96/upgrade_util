@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -117,12 +118,16 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     Widget child = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[Flexible(child: _buildContent()), _buildActions()],
+      children: <Widget>[
+        Flexible(child: _buildContent()),
+        const SizedBox(height: 12),
+        _buildActions(),
+      ],
     );
 
     child = Container(
       color: const Color(0xFFFEFEFE),
-      child: Padding(padding: const EdgeInsets.all(8), child: child),
+      child: Padding(padding: const EdgeInsets.all(12), child: child),
     );
 
     if (config.topImageProvider != null) {
@@ -144,7 +149,10 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       backgroundColor: Colors.transparent,
       child: ClipRRect(
         borderRadius: config.dialogBorderRadius ?? BorderRadius.circular(10),
-        child: SizedBox(width: 270, child: child),
+        child: SizedBox(
+          width: MediaQueryData.fromWindow(window).size.width - 80,
+          child: child,
+        ),
       ),
     );
   }
@@ -164,7 +172,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
           textAlign: TextAlign.center,
           child: widget.title,
         ),
-        if (widget.content != null) const SizedBox(height: 2),
+        if (widget.content != null) const SizedBox(height: 8),
         if (widget.content != null)
           DefaultTextStyle(
             style: TextStyle(
@@ -181,7 +189,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     return Scrollbar(
       radius: const Radius.circular(10),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         physics: const BouncingScrollPhysics(),
         child: child,
       ),
@@ -237,7 +245,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     final Widget secondChild = ElevatedButton(
       onPressed: _isShowIndicator ? null : _update,
       style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
-        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 40)),
+        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 44)),
         elevation: MaterialStateProperty.all(0),
       ),
       child: Text(

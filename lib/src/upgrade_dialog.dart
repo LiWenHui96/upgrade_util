@@ -200,20 +200,24 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
 
   bool get force => upgradeConfig.force;
 
-  Widget get title => Text(
+  Widget get title =>
+      upgradeConfig.titleWidget ??
+      Text(
         upgradeConfig.title ?? '',
         style: upgradeConfig.titleTextStyle,
         strutStyle: upgradeConfig.titleStrutStyle,
       );
 
-  Widget? get content => upgradeConfig.content != null
-      ? Text(
-          upgradeConfig.content!,
-          style: upgradeConfig.contentTextStyle,
-          strutStyle: upgradeConfig.contentStrutStyle,
-          textAlign: TextAlign.start,
-        )
-      : null;
+  Widget? get content =>
+      upgradeConfig.contentWidget ??
+      (upgradeConfig.content != null
+          ? Text(
+              upgradeConfig.content!,
+              style: upgradeConfig.contentTextStyle,
+              strutStyle: upgradeConfig.contentStrutStyle,
+              textAlign: TextAlign.start,
+            )
+          : null);
 
   String get updateText => upgradeConfig.updateText ?? '';
 

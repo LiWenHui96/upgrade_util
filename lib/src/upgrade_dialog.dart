@@ -21,7 +21,6 @@ Future<T?> showUpgradeDialog<T>(
   AndroidUpgradeConfig? androidUpgradeConfig,
   bool isDebugLog = false,
   String? barrierLabel,
-  Object? arguments,
 }) {
   _platformAssert(
     iOSUpgradeConfig: iOSUpgradeConfig ??= IosUpgradeConfig(),
@@ -29,8 +28,7 @@ Future<T?> showUpgradeDialog<T>(
   );
 
   final UpgradeLocalizations local = UpgradeLocalizations.of(context);
-  final RouteSettings routeSettings =
-      RouteSettings(name: '/UpgradeDialog', arguments: arguments);
+  const RouteSettings routeSettings = RouteSettings(name: '/UpgradeDialog');
 
   androidUpgradeConfig.downloadCancelText ??= local.androidCancel;
 

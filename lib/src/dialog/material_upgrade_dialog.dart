@@ -492,7 +492,7 @@ class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             SizedBox(width: 48, height: 48, child: child),
-            Text(market.showName ?? ''),
+            Text(market.showName ?? '', style: const TextStyle(fontSize: 12)),
           ],
         );
 
@@ -501,9 +501,8 @@ class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
           child: Padding(padding: const EdgeInsets.all(5), child: child),
         );
       },
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-      ),
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
     );
 
     child = Column(

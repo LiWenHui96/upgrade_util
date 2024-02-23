@@ -16,8 +16,8 @@ Language: 中文 | [English](README.md)
 ### 版本限制
 
 ```yaml
-  sdk: ">=2.14.0 <3.0.0"
-  flutter: ">=2.5.0"
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
 ```
 
 ### 添加依赖
@@ -54,12 +54,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    ...
-    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-    ...
-    UpgradeLocalizationsDelegate.delegate,
-    ],
-    ...
+      ...
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        ...
+        UpgradeLocalizationsDelegate.delegate,
+      ],
+      ...
     );
   }
 }
@@ -120,31 +120,32 @@ class MyApp extends StatelessWidget {
 
 `AndroidUpgradeConfig` 字段说明：
 
-| 参数名                        | 类型                          | 描述                            | 默认值                                              |
-|----------------------------|-----------------------------|-------------------------------|--------------------------------------------------|
-| androidMarket              | `AndroidMarket?`            | Android应用市场配置                 | `AndroidMarket()`                                |
-| otherMarkets               | `List<String>`              | 未在 `AndroidMarket` 内预置的应用市场包名 | `<String>[]`                                     |
-| dialogBorderRadius         | `BorderRadius?`             | 弹窗的弧度                         | `BorderRadius.circular(10)`                      |
-| topImageProvider           | `ImageProvider?`            | 弹窗顶部的图片                       | `null`                                           |
-| topImageHeight             | `double?`                   | 弹窗顶部的图片的高度                    | `null`                                           |
-| updateButtonStyle          | `ButtonStyle?`              | 升级按钮的样式                       | `null`                                           |
-| downloadCancelText         | `String?`                   | 下载时的取消按钮的文本                   | `UpgradeLocalizations.of(context).androidCancel` |
-| downloadUri                | `Uri?`                      | apk下载链接                       | `null`                                           |
-| saveName                   | `String?`                   | apk文件保存名称                     | `temp.apk`                                       |
-| downloadInterceptors       | `List<Interceptor>`         | [Dio] 中添加的拦截器                 | `<Interceptor>[]`                                |
-| deleteOnError              | `bool`                      | 发生错误时是否删除文件                   | `true`                                           |
-| lengthHeader               | `String`                    | 原始文件的实际大小（未压缩）                | `Headers.contentLengthHeader`                    |
-| data                       | `dynamic`                   | 请求数据                          | `null`                                           |
-| options                    | `Options?`                  | 每个请求都可以传递一个 [Options] 对象      | `null`                                           |
-| isExistsFile               | `bool`                      | 验证是否存在文件。                     | `false`                                          |
-| indicatorHeight            | `double?`                   | 下载时进度条的的高度                    | `10px`                                           |
-| indicatorBackgroundColor   | `Color?`                    | 下载时进度条的背景色                    | `null`                                           |
-| indicatorColor             | `Color?`                    | 下载时进度条的进度颜色                   | `null`                                           |
-| indicatorValueColor        | `Color?`                    | 下载时进度条的进度颜色                   | `null`                                           |
-| indicatorTextSize          | `double?`                   | 下载时进度条的文字大小                   | `8px`                                            |
-| indicatorTextColor         | `Color?`                    | 下载时进度条的文字颜色                   | `null`                                           |
-| onDownloadProgressCallback | `DownloadProgressCallback?` | 下载事件的进度监听                     | `null`                                           |
-| onDownloadStatusCallback   | `DownloadStatusCallback?`   | 下载事件的状态监听                     | `null`                                           |
+| 参数名                        | 类型                                                         | 描述                            | 默认值                                              |
+|----------------------------|------------------------------------------------------------|-------------------------------|--------------------------------------------------|
+| androidMarket              | `AndroidMarket?`                                           | Android应用市场配置                 | `AndroidMarket()`                                |
+| otherMarkets               | `List<String>`                                             | 未在 `AndroidMarket` 内预置的应用市场包名 | `<String>[]`                                     |
+| dialogBorderRadius         | `BorderRadius?`                                            | 弹窗的弧度                         | `BorderRadius.circular(10)`                      |
+| topImageProvider           | `ImageProvider?`                                           | 弹窗顶部的图片                       | `null`                                           |
+| topImageHeight             | `double?`                                                  | 弹窗顶部的图片的高度                    | `null`                                           |
+| updateButton               | `Widget? Function(String label, VoidCallback? onPressed)?` | 升级按钮                          | `null`                                           |
+| updateButtonStyle          | `ButtonStyle?`                                             | 升级按钮的样式                       | `null`                                           |
+| downloadCancelText         | `String?`                                                  | 下载时的取消按钮的文本                   | `UpgradeLocalizations.of(context).androidCancel` |
+| downloadUri                | `Uri?`                                                     | apk下载链接                       | `null`                                           |
+| saveName                   | `String?`                                                  | apk文件保存名称                     | `temp.apk`                                       |
+| downloadInterceptors       | `List<Interceptor>`                                        | [Dio] 中添加的拦截器                 | `<Interceptor>[]`                                |
+| deleteOnError              | `bool`                                                     | 发生错误时是否删除文件                   | `true`                                           |
+| lengthHeader               | `String`                                                   | 原始文件的实际大小（未压缩）                | `Headers.contentLengthHeader`                    |
+| data                       | `dynamic`                                                  | 请求数据                          | `null`                                           |
+| options                    | `Options?`                                                 | 每个请求都可以传递一个 [Options] 对象      | `null`                                           |
+| isExistsFile               | `bool`                                                     | 验证是否存在文件。                     | `false`                                          |
+| indicatorHeight            | `double?`                                                  | 下载时进度条的的高度                    | `10px`                                           |
+| indicatorBackgroundColor   | `Color?`                                                   | 下载时进度条的背景色                    | `null`                                           |
+| indicatorColor             | `Color?`                                                   | 下载时进度条的进度颜色                   | `null`                                           |
+| indicatorValueColor        | `Color?`                                                   | 下载时进度条的进度颜色                   | `null`                                           |
+| indicatorTextSize          | `double?`                                                  | 下载时进度条的文字大小                   | `8px`                                            |
+| indicatorTextColor         | `Color?`                                                   | 下载时进度条的文字颜色                   | `null`                                           |
+| onDownloadProgressCallback | `DownloadProgressCallback?`                                | 下载事件的进度监听                     | `null`                                           |
+| onDownloadStatusCallback   | `DownloadStatusCallback?`                                  | 下载事件的状态监听                     | `null`                                           |
 
 * `androidMarket` 应用市场详细配置可查看 [AndroidMarket](lib/src/android_market.dart)；
 * `androidMarket` 与 `downloadUrl`，需配置其一；均配置的情况下，优先以 `androidMarket` 为主；

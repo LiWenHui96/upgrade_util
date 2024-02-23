@@ -12,7 +12,6 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Base64
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -36,14 +35,14 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var mContext: Context
   private lateinit var mActivity: Activity
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
     channel.setMethodCallHandler(this)
 
     mContext = flutterPluginBinding.applicationContext
   }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+  override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
       "getDownloadPath" -> result.success("${mContext.cacheDir.path}${File.separator}libCacheApkDownload${File.separator}")
       "installApk" -> {
@@ -54,6 +53,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
           result.error(e.javaClass.simpleName, e.message, null)
         }
       }
+
       "getMarkets" -> result.success(getMarkets(call.arguments<List<String>>()))
       "jumpToMarket" -> jumpToMarket(call.arguments as String?)
       else -> result.notImplemented()
@@ -73,8 +73,9 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     if (!file.exists()) throw FileNotFoundException("$path is not exist or check permission")
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-        && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-        && !pm().canRequestPackageInstalls()) {
+      && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+      && !pm().canRequestPackageInstalls()
+    ) {
       showSettingPackageInstall()
       apkFile = file
     } else {
@@ -193,7 +194,7 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     return mContext.packageManager
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
 

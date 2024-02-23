@@ -16,8 +16,8 @@ At present, the plugin is only used by Android, iOS.
 ### Version constraints
 
 ```yaml
-  sdk: ">=2.14.0 <3.0.0"
-  flutter: ">=2.5.0"
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
 ```
 
 ### Rely
@@ -120,31 +120,32 @@ Popups are implemented by using `IosUpgradeConfig`.
 
 Popups are implemented by using `AndroidUpgradeConfig`.
 
-| Name                       | Type                        | Description                                                              | Default                                          |
-|----------------------------|-----------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
-| androidMarket              | `AndroidMarket?`            | The settings of app market for Android                                   | `AndroidMarket()`                                |
-| otherMarkets               | `List<String>`              | The package name of the app market that is not preset in `AndroidMarket` | `<String>[]`                                     |
-| dialogBorderRadius         | `BorderRadius?`             | The dialog's borderRadius.                                               | `BorderRadius.circular(10)`                      |
-| topImageProvider           | `ImageProvider?`            | Picture at the top of the dialog                                         | `null`                                           |
-| topImageHeight             | `double?`                   | Height of the image                                                      | `null`                                           |
-| updateButtonStyle          | `ButtonStyle?`              | The style of the upgrade button                                          | `null`                                           |
-| downloadCancelText         | `String?`                   | Cancel text when downloading                                             | `UpgradeLocalizations.of(context).androidCancel` |
-| downloadUri                | `Uri?`                      | A link of download for Apk                                               | `null`                                           |
-| saveName                   | `String?`                   | The name of the file after the apk download is completed                 | `temp.apk`                                       |
-| downloadInterceptors       | `List<Interceptor>`         | Interceptors added to [Dio]                                              | `<Interceptor>[]`                                |
-| deleteOnError              | `bool`                      | Whether delete the file when error occurs                                | `true`                                           |
-| lengthHeader               | `String`                    | The real size of original file (not compressed)                          | `Headers.contentLengthHeader`                    |
-| data                       | `dynamic`                   | The request data                                                         | `null`                                           |
-| options                    | `Options?`                  | Every request can pass a [Options] object                                | `null`                                           |
-| isExistsFile               | `bool`                      | Verify the existence of the file named `saveName`                        | `false`                                          |
-| indicatorHeight            | `double?`                   | The height of the indicator                                              | `10px`                                           |
-| indicatorBackgroundColor   | `Color?`                    | It is `LinearProgressIndicator.backgroundColor`                          | `null`                                           |
-| indicatorColor             | `Color?`                    | It is `LinearProgressIndicator.color`                                    | `null`                                           |
-| indicatorValueColor        | `Color?`                    | It is `LinearProgressIndicator.valueColor`                               | `null`                                           |
-| indicatorTextSize          | `double?`                   | The text size of the indicator                                           | `8px`                                            |
-| indicatorTextColor         | `Color?`                    | The text color of the indicator                                          | `null`                                           |
-| onDownloadProgressCallback | `DownloadProgressCallback?` | Realize the listening event of download progress                         | `null`                                           |
-| onDownloadStatusCallback   | `DownloadStatusCallback?`   | Realize the listening event of download status                           | `null`                                           |
+| Name                       | Type                                                       | Description                                                              | Default                                          |
+|----------------------------|------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
+| androidMarket              | `AndroidMarket?`                                           | The settings of app market for Android                                   | `AndroidMarket()`                                |
+| otherMarkets               | `List<String>`                                             | The package name of the app market that is not preset in `AndroidMarket` | `<String>[]`                                     |
+| dialogBorderRadius         | `BorderRadius?`                                            | The dialog's borderRadius.                                               | `BorderRadius.circular(10)`                      |
+| topImageProvider           | `ImageProvider?`                                           | Picture at the top of the dialog                                         | `null`                                           |
+| topImageHeight             | `double?`                                                  | Height of the image                                                      | `null`                                           |
+| updateButton               | `Widget? Function(String label, VoidCallback? onPressed)?` | The upgrade button                                                       | `null`                                           |
+| updateButtonStyle          | `ButtonStyle?`                                             | The style of the upgrade button                                          | `null`                                           |
+| downloadCancelText         | `String?`                                                  | Cancel text when downloading                                             | `UpgradeLocalizations.of(context).androidCancel` |
+| downloadUri                | `Uri?`                                                     | A link of download for Apk                                               | `null`                                           |
+| saveName                   | `String?`                                                  | The name of the file after the apk download is completed                 | `temp.apk`                                       |
+| downloadInterceptors       | `List<Interceptor>`                                        | Interceptors added to [Dio]                                              | `<Interceptor>[]`                                |
+| deleteOnError              | `bool`                                                     | Whether delete the file when error occurs                                | `true`                                           |
+| lengthHeader               | `String`                                                   | The real size of original file (not compressed)                          | `Headers.contentLengthHeader`                    |
+| data                       | `dynamic`                                                  | The request data                                                         | `null`                                           |
+| options                    | `Options?`                                                 | Every request can pass a [Options] object                                | `null`                                           |
+| isExistsFile               | `bool`                                                     | Verify the existence of the file named `saveName`                        | `false`                                          |
+| indicatorHeight            | `double?`                                                  | The height of the indicator                                              | `10px`                                           |
+| indicatorBackgroundColor   | `Color?`                                                   | It is `LinearProgressIndicator.backgroundColor`                          | `null`                                           |
+| indicatorColor             | `Color?`                                                   | It is `LinearProgressIndicator.color`                                    | `null`                                           |
+| indicatorValueColor        | `Color?`                                                   | It is `LinearProgressIndicator.valueColor`                               | `null`                                           |
+| indicatorTextSize          | `double?`                                                  | The text size of the indicator                                           | `8px`                                            |
+| indicatorTextColor         | `Color?`                                                   | The text color of the indicator                                          | `null`                                           |
+| onDownloadProgressCallback | `DownloadProgressCallback?`                                | Realize the listening event of download progress                         | `null`                                           |
+| onDownloadStatusCallback   | `DownloadStatusCallback?`                                  | Realize the listening event of download status                           | `null`                                           |
 
 * `androidMarket` application market detailed configuration can be
   viewed [AndroidMarket](lib/src/android_market.dart);

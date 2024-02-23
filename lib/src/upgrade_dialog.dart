@@ -44,7 +44,7 @@ Future<T?> showUpgradeDialog<T>(
     isDebugLog: isDebugLog,
   );
 
-  child = WillPopScope(child: child, onWillPop: () async => false);
+  child = PopScope(canPop: false, child: child);
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     return showMaterialUpgradeDialog(
@@ -70,7 +70,7 @@ Future<T?> showUpgradeDialog<T>(
   }
 }
 
-/// Data analysis
+/// Data analysis.
 void _platformAssert({
   required IosUpgradeConfig iOSUpgradeConfig,
   required AndroidUpgradeConfig androidUpgradeConfig,
@@ -139,7 +139,7 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return MaterialUpgradeDialog(
-          androidUpgradeConfig: widget.androidUpgradeConfig,
+          config: widget.androidUpgradeConfig,
           force: force,
           title: title,
           content: content,
@@ -153,7 +153,7 @@ class _UpgradeDialogState extends State<_UpgradeDialog> {
         );
       case TargetPlatform.iOS:
         return CupertinoUpgradeDialog(
-          iOSUpgradeConfig: widget.iOSUpgradeConfig,
+          config: widget.iOSUpgradeConfig,
           force: force,
           title: title,
           content: content,

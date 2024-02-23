@@ -79,9 +79,7 @@ class UpgradeUtil {
       return <AndroidMarketModel>[];
     }
 
-    return markets
-        .map((Map<dynamic, dynamic> e) => AndroidMarketModel.fromJson(e))
-        .toList();
+    return markets.map(AndroidMarketModel.fromJson).toList();
   }
 
   /// The [jumpMode] is jump mode.

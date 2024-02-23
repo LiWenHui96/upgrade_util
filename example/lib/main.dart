@@ -11,22 +11,22 @@ void main() {
 
 /// Program entry.
 class MyApp extends StatelessWidget {
-  // ignore: public_member_api_docs
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
       // locale: const Locale('zh', 'CN'),
       // locale: const Locale('en', 'US'),
-      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         UpgradeLocalizationsDelegate.delegate,
       ],
-      supportedLocales: <Locale>[Locale('en', 'US'), Locale('zh', 'CN')],
-      home: HomePage(),
+      supportedLocales: const <Locale>[Locale('en', 'US'), Locale('zh', 'CN')],
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -34,8 +34,7 @@ class MyApp extends StatelessWidget {
 
 /// Home
 class HomePage extends StatefulWidget {
-  // ignore: public_member_api_docs
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -53,6 +52,9 @@ class _HomePageState extends State<HomePage> {
 
   /// The app number of WeChat.
   final String wechatAppleID = '414478124';
+
+  /// The package name of WeChat.
+  final String wechatPackageName = 'com.tencent.mm';
 
   @override
   Widget build(BuildContext context) => _platformWidget();

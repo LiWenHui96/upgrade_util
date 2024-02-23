@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 class UpgradeLocalizationsDelegate
     extends LocalizationsDelegate<UpgradeLocalizations> {
-  // ignore: public_member_api_docs
   const UpgradeLocalizationsDelegate();
 
   /// Provided to [MaterialApp] for use.
@@ -32,13 +31,10 @@ class UpgradeLocalizationsDelegate
 
 /// Localizations
 abstract class UpgradeLocalizationsBase {
-  // ignore: public_member_api_docs
   const UpgradeLocalizationsBase(this.locale);
 
-  // ignore: public_member_api_docs
   final Locale? locale;
 
-  // ignore: public_member_api_docs
   Object? getItem(String key);
 
   /// Default Title
@@ -59,8 +55,7 @@ abstract class UpgradeLocalizationsBase {
 
 /// localizations
 class UpgradeLocalizations extends UpgradeLocalizationsBase {
-  // ignore: public_member_api_docs
-  const UpgradeLocalizations(Locale? locale) : super(locale);
+  const UpgradeLocalizations(super.locale);
 
   static const UpgradeLocalizations _static = UpgradeLocalizations(null);
 

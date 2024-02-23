@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'upgrade_util'
-  s.version          = '2.3.4'
+  s.version          = '2.3.5'
   s.summary          = 'A plugin for app upgrades. It can jump to the application store, and implement the function of downloading and installing APK on Android.'
   s.description      = <<-DESC
 A plugin for app upgrades. It can jump to the application store, and implement the function of downloading and installing APK on Android.
@@ -15,7 +15,7 @@ A plugin for app upgrades. It can jump to the application store, and implement t
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '9.0'
+  s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

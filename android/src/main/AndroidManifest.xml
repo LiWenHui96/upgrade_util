@@ -10,7 +10,7 @@
         <!-- 处理FileProvider冲突方案-->
         <!-- https://www.jianshu.com/p/530336f06002 -->
         <provider
-            android:name="io.upgrade.FileProvider"
+            android:name=".FileProvider"
             android:authorities="${applicationId}.UpgradeUtilPlugin.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

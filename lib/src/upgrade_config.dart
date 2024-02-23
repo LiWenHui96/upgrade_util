@@ -10,7 +10,6 @@ import 'dialog/material_upgrade_dialog.dart';
 /// @Date: 2022/5/27
 
 class UpgradeConfig {
-  // ignore: public_member_api_docs
   UpgradeConfig({
     this.force = false,
     this.titleWidget,
@@ -72,7 +71,6 @@ class UpgradeConfig {
 
 /// iOS Upgrade Config
 class IosUpgradeConfig {
-  // ignore: public_member_api_docs
   IosUpgradeConfig({
     this.appleId,
     this.scrollController,
@@ -81,11 +79,11 @@ class IosUpgradeConfig {
     this.isUpgradeDestructiveAction = false,
     this.isCancelDefaultAction = false,
     this.isCancelDestructiveAction = true,
+    this.insetAnimationDuration = const Duration(milliseconds: 100),
+    this.insetAnimationCurve = Curves.decelerate,
   });
 
   /// Apple ID.
-  ///
-  /// It is required.
   final String? appleId;
 
   /// A scroll controller that can be used to control the scrolling of the
@@ -130,17 +128,23 @@ class IosUpgradeConfig {
   ///
   /// It is applied to Cancel button.
   final bool isCancelDestructiveAction;
+
+  /// {@macro flutter.material.dialog.insetAnimationDuration}
+  final Duration insetAnimationDuration;
+
+  /// {@macro flutter.material.dialog.insetAnimationCurve}
+  final Curve insetAnimationCurve;
 }
 
 /// Android Upgrade Config
 class AndroidUpgradeConfig {
-  // ignore: public_member_api_docs
   AndroidUpgradeConfig({
     this.androidMarket,
     this.otherMarkets = const <String>[],
     this.dialogBorderRadius,
     this.topImageProvider,
     this.topImageHeight,
+    this.updateButton,
     this.updateButtonStyle,
     this.downloadCancelText,
     this.downloadUri,
@@ -175,6 +179,9 @@ class AndroidUpgradeConfig {
 
   /// Height of the image.
   final double? topImageHeight;
+
+  /// The upgrade button.
+  final Widget? Function(String label, VoidCallback? onPressed)? updateButton;
 
   /// The style of the upgrade button.
   final ButtonStyle? updateButtonStyle;

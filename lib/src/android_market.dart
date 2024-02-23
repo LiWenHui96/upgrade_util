@@ -7,10 +7,10 @@ import 'dart:typed_data';
 /// @Date: 2022/1/17
 
 class AndroidMarket {
-  // ignore: public_member_api_docs
   AndroidMarket({
     this.isGooglePlay = false,
     this.isHuawei = false,
+    this.isHonor = false,
     this.isXiaomi = false,
     this.isOppo = false,
     this.isVivo = false,
@@ -31,64 +31,46 @@ class AndroidMarket {
     this.isMM = false,
   });
 
-  // ignore: public_member_api_docs
   late bool isGooglePlay;
 
-  // ignore: public_member_api_docs
   late bool isHuawei;
 
-  // ignore: public_member_api_docs
+  late bool isHonor;
+
   late bool isXiaomi;
 
-  // ignore: public_member_api_docs
   late bool isOppo;
 
-  // ignore: public_member_api_docs
   late bool isVivo;
 
-  // ignore: public_member_api_docs
   late bool isMeizu;
 
-  // ignore: public_member_api_docs
   late bool isZte;
 
-  // ignore: public_member_api_docs
   late bool isSamsung;
 
-  // ignore: public_member_api_docs
   late bool isLenovo;
 
-  // ignore: public_member_api_docs
   late bool isNubia;
 
-  // ignore: public_member_api_docs
   late bool isTencent;
 
-  // ignore: public_member_api_docs
   late bool is360;
 
-  // ignore: public_member_api_docs
   late bool isBaidu;
 
-  // ignore: public_member_api_docs
   late bool isWanDouJia;
 
-  // ignore: public_member_api_docs
   late bool is91;
 
-  // ignore: public_member_api_docs
   late bool isPp;
 
-  // ignore: public_member_api_docs
   late bool isAnZhi;
 
-  // ignore: public_member_api_docs
   late bool isYingYongHui;
 
-  // ignore: public_member_api_docs
   late bool isCool;
 
-  // ignore: public_member_api_docs
   late bool isMM;
 
   /// Google Play Store - https://play.google.com/
@@ -96,6 +78,9 @@ class AndroidMarket {
 
   /// 华为 - 华为应用市场 - http://app.hicloud.com/
   static const String MARKET_HUAWEI = 'com.huawei.appmarket';
+
+  /// 荣耀 - 荣耀应用市场 - http://app.hicloud.com/
+  static const String MARKET_HONOR = 'com.hihonor.appmarket';
 
   /// 小米 - 小米应用商店 - https://app.mi.com/
   static const String MARKET_XIAOMI = 'com.xiaomi.market';
@@ -158,68 +143,31 @@ class AndroidMarket {
   List<String> toMarkets() {
     final List<String> markets = <String>[];
 
-    if (isGooglePlay) {
-      markets.add(MARKET_GOOGLE);
-    }
-    if (isHuawei) {
-      markets.add(MARKET_HUAWEI);
-    }
-    if (isXiaomi) {
-      markets.add(MARKET_XIAOMI);
-    }
+    if (isGooglePlay) markets.add(MARKET_GOOGLE);
+    if (isHuawei) markets.add(MARKET_HUAWEI);
+    if (isHonor) markets.add(MARKET_HONOR);
+    if (isXiaomi) markets.add(MARKET_XIAOMI);
     if (isOppo) {
       markets
         ..add(MARKET_OPPO)
         ..add(MARKET_OPPO_NEW);
     }
-    if (isVivo) {
-      markets.add(MARKET_VIVO);
-    }
-    if (isMeizu) {
-      markets.add(MARKET_MEIZU);
-    }
-    if (isZte) {
-      markets.add(MARKET_ZTE);
-    }
-    if (isSamsung) {
-      markets.add(MARKET_SANSUNG);
-    }
-    if (isLenovo) {
-      markets.add(MARKET_LENOVO);
-    }
-    if (isNubia) {
-      markets.add(MARKET_NUBIA);
-    }
-    if (isTencent) {
-      markets.add(MARKET_TENCENT);
-    }
-    if (is360) {
-      markets.add(MARKET_360);
-    }
-    if (isBaidu) {
-      markets.add(MARKET_BAIDU);
-    }
-    if (isWanDouJia) {
-      markets.add(MARKET_WANDOUJIA);
-    }
-    if (is91) {
-      markets.add(MARKET_91);
-    }
-    if (isPp) {
-      markets.add(MARKET_PP);
-    }
-    if (isAnZhi) {
-      markets.add(MARKET_ANZHI);
-    }
-    if (isYingYongHui) {
-      markets.add(MARKET_YINGYONGHUI);
-    }
-    if (isCool) {
-      markets.add(MARKET_COOL);
-    }
-    if (isMM) {
-      markets.add(MARKET_MM);
-    }
+    if (isVivo) markets.add(MARKET_VIVO);
+    if (isMeizu) markets.add(MARKET_MEIZU);
+    if (isZte) markets.add(MARKET_ZTE);
+    if (isSamsung) markets.add(MARKET_SANSUNG);
+    if (isLenovo) markets.add(MARKET_LENOVO);
+    if (isNubia) markets.add(MARKET_NUBIA);
+    if (isTencent) markets.add(MARKET_TENCENT);
+    if (is360) markets.add(MARKET_360);
+    if (isBaidu) markets.add(MARKET_BAIDU);
+    if (isWanDouJia) markets.add(MARKET_WANDOUJIA);
+    if (is91) markets.add(MARKET_91);
+    if (isPp) markets.add(MARKET_PP);
+    if (isAnZhi) markets.add(MARKET_ANZHI);
+    if (isYingYongHui) markets.add(MARKET_YINGYONGHUI);
+    if (isCool) markets.add(MARKET_COOL);
+    if (isMM) markets.add(MARKET_MM);
 
     return markets;
   }
@@ -275,14 +223,12 @@ class AndroidMarket {
 
 /// Software information in the Android application market
 class AndroidMarketModel {
-  // ignore: public_member_api_docs
   AndroidMarketModel({
     this.packageName,
     this.showName,
     this.icon,
   });
 
-  // ignore: public_member_api_docs
   AndroidMarketModel.fromJson(Map<dynamic, dynamic> json) {
     packageName = json['packageName'] as String?;
     showName = json['showName'] as String?;

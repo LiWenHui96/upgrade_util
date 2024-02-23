@@ -1,3 +1,11 @@
+## 2.3.5
+
+* Add HiHonor Market for Android.
+
+### BREAKING CHANGES
+
+* Flutter minimum version `3.10.0`
+
 ## 2.3.4+1
 
 * Optimize.

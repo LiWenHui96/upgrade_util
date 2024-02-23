@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +18,19 @@ import 'package:upgrade_util/src/upgrade_util.dart';
 Future<T?> showMaterialUpgradeDialog<T>(
   BuildContext context, {
   required Widget child,
+  bool barrierDismissible = true,
   Color? barrierColor,
   String? barrierLabel,
+  bool useRootNavigator = true,
   RouteSettings? routeSettings,
 }) {
   return showDialog(
     context: context,
     builder: (_) => child,
+    barrierDismissible: barrierDismissible,
     barrierColor: barrierColor ?? const Color.fromRGBO(0, 0, 0, .4),
     barrierLabel: barrierLabel,
+    useRootNavigator: useRootNavigator,
     routeSettings: routeSettings,
   );
 }
@@ -35,10 +38,9 @@ Future<T?> showMaterialUpgradeDialog<T>(
 /// The widget of Material upgrade dialog.
 @protected
 class MaterialUpgradeDialog extends StatefulWidget {
-  // ignore: public_member_api_docs
   const MaterialUpgradeDialog({
     Key? key,
-    required this.androidUpgradeConfig,
+    required this.config,
     required this.force,
     required this.title,
     this.content,
@@ -55,7 +57,7 @@ class MaterialUpgradeDialog extends StatefulWidget {
   /// Only Android is supported.
   ///
   /// It is required.
-  final AndroidUpgradeConfig androidUpgradeConfig;
+  final AndroidUpgradeConfig config;
 
   /// Whether to force the update, there is no cancel button
   /// when forced.
@@ -87,7 +89,6 @@ class MaterialUpgradeDialog extends StatefulWidget {
   /// Click event of Cancel button.
   final VoidCallback? onCancelPressed;
 
-  // ignore: public_member_api_docs
   final bool isDebugLog;
 
   @override
@@ -150,7 +151,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       child: ClipRRect(
         borderRadius: config.dialogBorderRadius ?? BorderRadius.circular(10),
         child: SizedBox(
-          width: MediaQueryData.fromWindow(window).size.width - 80,
+          width: MediaQueryData.fromView(View.of(context)).size.width - 80,
           child: child,
         ),
       ),
@@ -222,7 +223,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
               borderRadius: BorderRadius.circular(iHeight),
               child: LinearProgressIndicator(
                 value: _downloadProgress,
-                backgroundColor: config.indicatorBackgroundColor,
+                backgroundColor: config.indicatorBackgroundColor ??
+                    Theme.of(context).colorScheme.background,
                 color: config.indicatorColor,
                 valueColor: config.indicatorValueColor,
                 minHeight: iHeight,
@@ -242,17 +244,19 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       ),
     );
 
-    final Widget secondChild = ElevatedButton(
-      onPressed: _isShowIndicator ? null : _update,
-      style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
-        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 44)),
-        elevation: MaterialStateProperty.all(0),
-      ),
-      child: Text(
-        _isShowIndicator ? '正在跳转...' : widget.updateText,
-        style: widget.updateTextStyle,
-      ),
-    );
+    final VoidCallback? onPressed = _isShowIndicator ? null : _update;
+    final String label = _isShowIndicator ? '正在跳转...' : widget.updateText;
+
+    final Widget secondChild = config.updateButton?.call(label, onPressed) ??
+        ElevatedButton(
+          onPressed: onPressed,
+          style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
+            minimumSize:
+                MaterialStateProperty.all(const Size(double.infinity, 44)),
+            elevation: MaterialStateProperty.all(0),
+          ),
+          child: Text(label, style: widget.updateTextStyle),
+        );
 
     final Widget child = AnimatedCrossFade(
       duration: const Duration(milliseconds: 200),
@@ -271,9 +275,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     final Widget firstChild = ElevatedButton(
       onPressed: () async => Navigator.pop(context),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith(
-          (Set<MaterialState> states) => const Color(0xFFDFDFDF),
-        ),
+        backgroundColor: MaterialStateProperty.all(const Color(0xFFDFDFDF)),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
         elevation: MaterialStateProperty.all(0),
         minimumSize: MaterialStateProperty.all(const Size(double.infinity, 32)),
         shape: MaterialStateProperty.all(
@@ -338,7 +341,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       } else {
         throw ArgumentError('Both androidMarket and downloadUri are empty');
       }
-    } else {
+    } else if (context.mounted) {
       widget.onUpgradePressed
           ?.call(await _chooseMarkets(context: context, markets: markets));
     }
@@ -452,13 +455,12 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     }
   }
 
-  AndroidUpgradeConfig get config => widget.androidUpgradeConfig;
+  AndroidUpgradeConfig get config => widget.config;
 }
 
 /// Choose Market
 @protected
 class ChooseMarketsDialog extends StatefulWidget {
-  // ignore: public_member_api_docs
   const ChooseMarketsDialog({
     Key? key,
     required this.markets,
@@ -522,7 +524,7 @@ class _ChooseMarketsDialogState extends State<ChooseMarketsDialog> {
             child: Center(child: Text(local.androidCancel)),
             onTap: () => Navigator.pop(context),
           ),
-        )
+        ),
       ],
     );
 

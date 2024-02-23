@@ -11,12 +11,16 @@ Future<T?> showCupertinoUpgradeDialog<T>(
   BuildContext context, {
   required Widget child,
   String? barrierLabel,
+  bool useRootNavigator = true,
+  bool barrierDismissible = false,
   RouteSettings? routeSettings,
 }) {
   return showCupertinoDialog(
     context: context,
     builder: (_) => child,
     barrierLabel: barrierLabel,
+    useRootNavigator: useRootNavigator,
+    barrierDismissible: barrierDismissible,
     routeSettings: routeSettings,
   );
 }
@@ -24,10 +28,9 @@ Future<T?> showCupertinoUpgradeDialog<T>(
 /// The widget of iOS-style upgrade dialog.
 @protected
 class CupertinoUpgradeDialog extends StatefulWidget {
-  // ignore: public_member_api_docs
   const CupertinoUpgradeDialog({
     Key? key,
-    required this.iOSUpgradeConfig,
+    required this.config,
     required this.force,
     required this.title,
     this.content,
@@ -39,14 +42,11 @@ class CupertinoUpgradeDialog extends StatefulWidget {
     required this.onCancelPressed,
   }) : super(key: key);
 
-  /// iOS upgrade config.
-  /// Only iOS is supported.
-  ///
-  /// It is required.
-  final IosUpgradeConfig iOSUpgradeConfig;
+  /// Configuration information used for iOS upgrades. Including appleId,
+  /// isUpgradeDefaultAction, isUpgradeDestructiveAction, etc.
+  final IosUpgradeConfig config;
 
-  /// Whether to force the update, there is no cancel button
-  /// when forced.
+  /// Whether to force the update, there is no cancel button when forced.
   ///
   /// It is `false` by default.
   final bool force;
@@ -84,35 +84,38 @@ class _CupertinoUpgradeDialogState extends State<CupertinoUpgradeDialog> {
   Widget build(BuildContext context) {
     final CupertinoDialogAction cancelAction = CupertinoDialogAction(
       onPressed: widget.onCancelPressed,
-      isDestructiveAction: config.isCancelDestructiveAction,
       isDefaultAction: config.isCancelDefaultAction,
+      isDestructiveAction: config.isCancelDestructiveAction,
       textStyle: widget.cancelTextStyle,
       child: Text(widget.cancelText),
     );
 
+    final bool isUpgradeDestructiveAction = config.isUpgradeDestructiveAction;
+    TextStyle? updateTextStyle = widget.updateTextStyle;
+    if (!isUpgradeDestructiveAction) {
+      updateTextStyle ??= const TextStyle(color: CupertinoColors.systemBlue);
+    }
+
     final CupertinoDialogAction updateAction = CupertinoDialogAction(
-      onPressed: () {
-        widget.onUpgradePressed?.call(null);
-      },
+      onPressed: () => widget.onUpgradePressed?.call(null),
       isDefaultAction: force ? force : config.isUpgradeDefaultAction,
-      isDestructiveAction: config.isUpgradeDestructiveAction,
-      textStyle: widget.updateTextStyle,
+      isDestructiveAction: isUpgradeDestructiveAction,
+      textStyle: updateTextStyle,
       child: Text(widget.updateText),
     );
 
     return CupertinoAlertDialog(
       title: widget.title,
       content: widget.content,
+      actions: <Widget>[if (!force) cancelAction, updateAction],
       scrollController: config.scrollController,
       actionScrollController: config.actionScrollController,
-      actions: <Widget>[
-        if (!force) cancelAction,
-        updateAction,
-      ],
+      insetAnimationDuration: config.insetAnimationDuration,
+      insetAnimationCurve: config.insetAnimationCurve,
     );
   }
 
-  IosUpgradeConfig get config => widget.iOSUpgradeConfig;
+  IosUpgradeConfig get config => widget.config;
 
   bool get force => widget.force;
 }

@@ -16,8 +16,8 @@ At present, the plugin is only used by Android, iOS.
 ### Version constraints
 
 ```yaml
-  sdk: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 ```
 
 ### Rely

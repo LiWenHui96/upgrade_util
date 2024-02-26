@@ -17,7 +17,7 @@ Language: 中文 | [English](README.md)
 
 ```yaml
   sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.10.0"
+  flutter: ">=3.12.0"
 ```
 
 ### 添加依赖

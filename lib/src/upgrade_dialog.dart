@@ -44,7 +44,7 @@ Future<T?> showUpgradeDialog<T>(
     isDebugLog: isDebugLog,
   );
 
-  child = WillPopScope(child: child, onWillPop: () async => false);
+  child = PopScope(canPop: false, child: child);
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     return showMaterialUpgradeDialog(

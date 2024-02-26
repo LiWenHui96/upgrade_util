@@ -1,3 +1,7 @@
+## 2.3.6
+
+* Flutter minimum version `3.12.0`
+
 ## 2.3.5+1
 
 * Fix `WillPopScope`.

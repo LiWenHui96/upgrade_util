@@ -1,5 +1,5 @@
 group 'io.upgrade'
-version '2.3.5'
+version '2.3.6'
 
 buildscript {
     ext.kotlin_version = '1.7.10'

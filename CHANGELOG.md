@@ -1,3 +1,7 @@
+## 2.3.6+1
+
+* Flutter minimum version `3.13.0`
+
 ## 2.3.6
 
 * Flutter minimum version `3.12.0`

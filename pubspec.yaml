@@ -1,13 +1,13 @@
 name: upgrade_util
 description: A plugin for app upgrades. It can jump to the application store, and implement the function of downloading and installing APK on Android.
-version: 2.3.6+1
+version: 2.3.7
 homepage: https://github.com/LiWenHui96
 repository: https://github.com/LiWenHui96/upgrade_util
 issue_tracker: https://github.com/LiWenHui96/upgrade_util/issues
 
 environment:
-  sdk: ">=3.1.0 <4.0.0"
-  flutter: ">=3.13.0"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   dio: ^5.0.0

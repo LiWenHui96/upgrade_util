@@ -1,3 +1,7 @@
+## 2.3.7
+
+* Support AGP 8 and Fix Compile Issue.
+
 ## 2.3.6+1
 
 * Flutter minimum version `3.13.0`

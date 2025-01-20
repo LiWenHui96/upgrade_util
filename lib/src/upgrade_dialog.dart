@@ -103,12 +103,12 @@ void _platformAssert({
 @protected
 class _UpgradeDialog extends StatefulWidget {
   const _UpgradeDialog({
-    Key? key,
+    super.key,
     required this.upgradeConfig,
     required this.iOSUpgradeConfig,
     required this.androidUpgradeConfig,
     required this.isDebugLog,
-  }) : super(key: key);
+  });
 
   /// ui upgrade config.
   ///

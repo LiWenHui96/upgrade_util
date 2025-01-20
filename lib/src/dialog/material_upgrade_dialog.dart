@@ -39,7 +39,7 @@ Future<T?> showMaterialUpgradeDialog<T>(
 @protected
 class MaterialUpgradeDialog extends StatefulWidget {
   const MaterialUpgradeDialog({
-    Key? key,
+    super.key,
     required this.config,
     required this.force,
     required this.title,
@@ -51,7 +51,7 @@ class MaterialUpgradeDialog extends StatefulWidget {
     required this.onUpgradePressed,
     required this.onCancelPressed,
     required this.isDebugLog,
-  }) : super(key: key);
+  });
 
   /// Android upgrade config.
   /// Only Android is supported.
@@ -126,7 +126,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       ],
     );
 
-    child = Container(
+    child = ColoredBox(
       color: const Color(0xFFFEFEFE),
       child: Padding(padding: const EdgeInsets.all(12), child: child),
     );
@@ -224,7 +224,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
               child: LinearProgressIndicator(
                 value: _downloadProgress,
                 backgroundColor: config.indicatorBackgroundColor ??
-                    Theme.of(context).colorScheme.background,
+                    Theme.of(context).colorScheme.surface,
                 color: config.indicatorColor,
                 valueColor: config.indicatorValueColor,
                 minHeight: iHeight,
@@ -252,8 +252,8 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
           onPressed: onPressed,
           style: (config.updateButtonStyle ?? const ButtonStyle()).copyWith(
             minimumSize:
-                MaterialStateProperty.all(const Size(double.infinity, 44)),
-            elevation: MaterialStateProperty.all(0),
+                WidgetStateProperty.all(const Size(double.infinity, 44)),
+            elevation: WidgetStateProperty.all(0),
           ),
           child: Text(label, style: widget.updateTextStyle),
         );
@@ -275,11 +275,11 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
     final Widget firstChild = ElevatedButton(
       onPressed: () async => Navigator.pop(context),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(const Color(0xFFDFDFDF)),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-        elevation: MaterialStateProperty.all(0),
-        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 32)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(const Color(0xFFDFDFDF)),
+        foregroundColor: WidgetStateProperty.all(Colors.white),
+        elevation: WidgetStateProperty.all(0),
+        minimumSize: WidgetStateProperty.all(const Size(double.infinity, 32)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
           ),
@@ -341,7 +341,7 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
       } else {
         throw ArgumentError('Both androidMarket and downloadUri are empty');
       }
-    } else if (context.mounted) {
+    } else if (mounted) {
       widget.onUpgradePressed
           ?.call(await _chooseMarkets(context: context, markets: markets));
     }
@@ -462,9 +462,9 @@ class _MaterialUpgradeDialogState extends State<MaterialUpgradeDialog> {
 @protected
 class ChooseMarketsDialog extends StatefulWidget {
   const ChooseMarketsDialog({
-    Key? key,
+    super.key,
     required this.markets,
-  }) : super(key: key);
+  });
 
   /// Get the software information of the application market included in
   /// the mobile phone.

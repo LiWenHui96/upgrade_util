@@ -101,13 +101,10 @@ class UpgradeUtil {
       switch (jumpMode) {
         case JumpMode.detailPage:
           await _launchUrl('$_detailPageUrl$appleId');
-          break;
         case JumpMode.reviewsPage:
           await _launchUrl('$_reviewsPageUrl$appleId');
-          break;
         case JumpMode.writeReview:
           await _launchUrl('$_detailPageUrl$appleId$_writeReviewUrl');
-          break;
       }
     } else {
       throw PlatformException(

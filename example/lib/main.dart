@@ -98,34 +98,29 @@ class _HomePageState extends State<HomePage> {
       case 0:
         final String result = await UpgradeUtil.getDownloadPath();
         debugPrint(result);
-        break;
       case 1:
         // Get a list of all the app markets in the phone.
         final List<AndroidMarketModel> marketPackages =
             await UpgradeUtil.getMarkets(AndroidMarket.allTrue.toMarkets());
         debugPrint(marketPackages.toString());
-        break;
       case 2:
         // Jump to the AppStore review page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.reviewsPage,
           appleId: wechatAppleID,
         );
-        break;
       case 3:
         // Jump to AppStore and comment, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.writeReview,
           appleId: wechatAppleID,
         );
-        break;
       case 4:
         // Jump to the details page, here we use WeChat as an example.
         await UpgradeUtil.jumpToStore(
           jumpMode: JumpMode.detailPage,
           appleId: wechatAppleID,
         );
-        break;
       case 5:
         // Show update dialog, here we use WeChat as an example.
         await showUpgradeDialog<void>(
@@ -138,7 +133,6 @@ class _HomePageState extends State<HomePage> {
           androidUpgradeConfig:
               AndroidUpgradeConfig(androidMarket: AndroidMarket.allTrue),
         );
-        break;
       default:
         break;
     }

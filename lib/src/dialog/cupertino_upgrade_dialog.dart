@@ -29,7 +29,7 @@ Future<T?> showCupertinoUpgradeDialog<T>(
 @protected
 class CupertinoUpgradeDialog extends StatefulWidget {
   const CupertinoUpgradeDialog({
-    Key? key,
+    super.key,
     required this.config,
     required this.force,
     required this.title,
@@ -40,7 +40,7 @@ class CupertinoUpgradeDialog extends StatefulWidget {
     this.cancelTextStyle,
     required this.onUpgradePressed,
     required this.onCancelPressed,
-  }) : super(key: key);
+  });
 
   /// Configuration information used for iOS upgrades. Including appleId,
   /// isUpgradeDefaultAction, isUpgradeDestructiveAction, etc.

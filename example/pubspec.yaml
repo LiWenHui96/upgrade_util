@@ -1,25 +1,25 @@
 name: upgrade_util_example
-description: Demonstrates how to use the upgrade_util plugin.
+description: "Demonstrates how to use the upgrade_util plugin."
 
 publish_to: 'none'
 
 version: 2.3.7+29
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ^3.3.0
 
 dependencies:
   flutter:
-    sdk: flutter
-  flutter_localizations:
     sdk: flutter
 
   upgrade_util:
     path: ../
 
 dev_dependencies:
-  flutter_lints: ^3.0.1
+  flutter_lints: ^5.0.0
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
 flutter:

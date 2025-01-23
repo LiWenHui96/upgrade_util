@@ -3,21 +3,19 @@ import UIKit
 
 let channelName = "upgrade_util.io.channel/method"
 
-public class SwiftUpgradeUtilPlugin: NSObject, FlutterPlugin {
+public class UpgradeUtilPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
-    let instance = SwiftUpgradeUtilPlugin()
+    let instance = UpgradeUtilPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch (call.method) {
-      case "launch":
-        result(NSNumber(value: launchURL(arg: call.arguments as! [String: Any?])))
-        break
-      default:
-        result(FlutterMethodNotImplemented)
-        break
+    switch call.method {
+    case "launch":
+      result(NSNumber(value: launchURL(arg: call.arguments as! [String: Any?])))
+    default:
+      result(FlutterMethodNotImplemented)
     }
   }
   

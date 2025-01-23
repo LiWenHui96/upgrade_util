@@ -1,22 +1,28 @@
 PODS:
   - Flutter (1.0.0)
+  - integration_test (0.0.1):
+    - Flutter
   - "upgrade_util (2.3.7+1)":
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - upgrade_util (from `.symlinks/plugins/upgrade_util/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
   upgrade_util:
     :path: ".symlinks/plugins/upgrade_util/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  upgrade_util: f796dc580aa882bd9a9c8ca858000341eb2f642a
+  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
+  upgrade_util: 21cf1eff3e0de7f60a6ad2ed6f5faf5dfdaf0d5d
 
-PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

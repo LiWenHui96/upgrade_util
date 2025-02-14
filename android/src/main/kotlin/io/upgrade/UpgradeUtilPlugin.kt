@@ -1,15 +1,13 @@
 package io.upgrade
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 /** UpgradeUtilPlugin */
-class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -36,12 +34,4 @@ class UpgradeUtilPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   companion object {
     private const val CHANNEL_NAME = "upgrade_util.io.channel/method"
   }
-
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {}
-
-  override fun onDetachedFromActivityForConfigChanges() {}
-
-  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {}
-
-  override fun onDetachedFromActivity() {}
 }

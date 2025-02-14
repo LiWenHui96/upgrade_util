@@ -7,7 +7,8 @@ import 'upgrade_util_platform_interface.dart';
 class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final MethodChannel methodChannel = const MethodChannel('upgrade_util');
+  final MethodChannel methodChannel =
+      const MethodChannel('upgrade_util.io.channel/method');
 
   @override
   Future<String?> getPlatformVersion() async {

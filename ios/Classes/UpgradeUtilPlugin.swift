@@ -12,35 +12,10 @@ public class UpgradeUtilPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
-    case "launch":
-      result(NSNumber(value: launchURL(arg: call.arguments as! [String: Any?])))
+    case "getPlatformVersion":
+      result("iOS " + UIDevice.current.systemVersion)
     default:
       result(FlutterMethodNotImplemented)
     }
-  }
-  
-  func launchURL(arg: [String : Any?]) -> Bool {
-    let urlString = arg["url"] as! String
-    
-    guard let url = URL(string: urlString) else {
-      return false
-    }
-    let application = UIApplication.shared
-    
-    if urlString.count > 0 && application.canOpenURL(url) {
-      if #available(iOS 10.0, *) {
-        let universalLinksOnly = arg["universalLinksOnly"] ?? NSNumber(value: 0)
-        let options = [
-          UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: universalLinksOnly ?? false
-        ]
-        
-        application.open(url, options: options, completionHandler: nil)
-        return true
-      } else {
-        return application.openURL(url)
-      }
-    }
-    
-    return false
   }
 }

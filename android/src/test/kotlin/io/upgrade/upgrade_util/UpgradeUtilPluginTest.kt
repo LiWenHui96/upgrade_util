@@ -2,7 +2,6 @@ package io.upgrade.upgrade_util
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.upgrade.UpgradeUtilPlugin
 import kotlin.test.Test
 import org.mockito.Mockito
 

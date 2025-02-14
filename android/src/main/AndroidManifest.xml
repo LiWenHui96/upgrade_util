@@ -1,11 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.upgrade">
 
-    <!-- 访问网络状态-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 未知来源安装权限-->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
     <application>
         <!-- 处理FileProvider冲突方案-->
         <!-- https://www.jianshu.com/p/530336f06002 -->

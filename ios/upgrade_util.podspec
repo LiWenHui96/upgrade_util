@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'upgrade_util'
-  s.version          = '2.3.7+1'
+  s.version          = '0.0.1'
   s.summary          = 'A plug-in for application upgrades, which implements the method of jumping to the store and the function of installing after downloading the APK.'
   s.description      = <<-DESC
 A plug-in for application upgrades, which implements the method of jumping to the store and the function of installing after downloading the APK.

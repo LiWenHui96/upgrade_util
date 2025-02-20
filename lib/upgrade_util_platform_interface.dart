@@ -1,4 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:upgrade_util/upgrade_util.dart';
 
 import 'upgrade_util_method_channel.dart';
 
@@ -25,5 +26,15 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
 
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  /// {@template upgrade.util.openStore}
+  /// Open App Store or Android application market.
+  /// {@endtemplate}
+  Future<void> openStore({
+    String? packageName,
+    IOSUpgradeOption? iOSOption,
+  }) {
+    throw UnimplementedError('openStore() has not been implemented.');
   }
 }

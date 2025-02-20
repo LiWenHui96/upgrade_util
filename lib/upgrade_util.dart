@@ -1,7 +1,11 @@
+library;
+
+import 'package:upgrade_util/src/string.dart';
+
 import 'upgrade_util_platform_interface.dart';
 
-class UpgradeUtil {
-  Future<String?> getPlatformVersion() {
-    return UpgradeUtilPlatform.instance.getPlatformVersion();
-  }
-}
+part 'src/enums.dart';
+
+part 'src/option.dart';
+
+part 'src/upgrade_util.dart';

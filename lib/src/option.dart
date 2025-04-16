@@ -98,7 +98,7 @@ class IOSUpgradeOption extends UpgradeOption {
 
   @override
   String get url {
-    String url = mode.link.replace(<dynamic>[appId]);
+    String url = (_iOSPrefixUrl + mode.link).replace(<dynamic>[appId]);
     if (parameters != null) url = url.addParameters(parameters!);
     return url;
   }

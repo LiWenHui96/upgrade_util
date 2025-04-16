@@ -1,3 +1,9 @@
+## 3.0.0
+
+* Flutter minimum version `3.24.0`.
+* Use `UpgradeUtil.openStore` to App Store.
+* The download function of pop-up window and APK is no longer provided.
+
 ## 2.3.7
 
 * Support AGP 8 and Fix Compile Issue.

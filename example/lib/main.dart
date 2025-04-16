@@ -82,19 +82,22 @@ class _HomePageState extends State<HomePage> {
     return <Widget>[
       ElevatedButton(
         onPressed: () async => onPressed(
-          IOSUpgradeOption(appId: wechatAppleID, mode: IOSOpenMode.product),
+          IOSUpgradeOption(appleId: wechatAppleID, mode: IOSOpenMode.product),
         ),
         child: const Text('Open Product Page.'),
       ),
       ElevatedButton(
         onPressed: () async => onPressed(
-          IOSUpgradeOption(appId: wechatAppleID, mode: IOSOpenMode.reviews),
+          IOSUpgradeOption(appleId: wechatAppleID, mode: IOSOpenMode.reviews),
         ),
         child: const Text('Open Reviews Page'),
       ),
       ElevatedButton(
         onPressed: () async => onPressed(
-          IOSUpgradeOption(appId: wechatAppleID, mode: IOSOpenMode.writeReview),
+          IOSUpgradeOption(
+            appleId: wechatAppleID,
+            mode: IOSOpenMode.writeReview,
+          ),
         ),
         child: const Text('Open Reviews Page, and Write review.'),
       ),

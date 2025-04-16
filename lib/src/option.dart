@@ -78,27 +78,27 @@ class AndroidUpgradeOption extends UpgradeOption {
 
 /// IOS Upgrade Option.
 ///
-/// [appId] You only need to configure `Apple ID`.
+/// [appleId] You only need to configure `Apple ID`.
 /// After logging in to `App Store Connect`, find `Apple ID`
 /// through `Comprehensive` -> `App Information` -> `Comprehensive Information`.
 ///
 /// Select the opening [mode] of AppStore.
 class IOSUpgradeOption extends UpgradeOption {
   IOSUpgradeOption({
-    required this.appId,
+    required this.appleId,
     required this.mode,
     super.parameters,
   });
 
   /// Apple ID.
-  final String appId;
+  final String appleId;
 
   /// Open Mode.
   final IOSOpenMode mode;
 
   @override
   String get url {
-    String url = (_iOSPrefixUrl + mode.link).replace(<dynamic>[appId]);
+    String url = (_iOSPrefixUrl + mode.link).replace(<dynamic>[appleId]);
     if (parameters != null) url = url.addParameters(parameters!);
     return url;
   }

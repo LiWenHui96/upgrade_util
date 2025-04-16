@@ -1,17 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.upgrade">
-
-    <application>
-        <!-- 处理FileProvider冲突方案-->
-        <!-- https://www.jianshu.com/p/530336f06002 -->
-        <provider
-            android:name=".FileProvider"
-            android:authorities="${applicationId}.UpgradeUtilPlugin.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/upgrade_plugin_paths" />
-        </provider>
-    </application>
-</manifest>
+<manifest package="io.upgrade" />

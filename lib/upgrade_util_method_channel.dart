@@ -22,21 +22,25 @@ class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
 
   @override
   Future<void> openStore({
-    String? packageName,
+    AndroidUpgradeOption? androidOption,
     IOSUpgradeOption? iOSOption,
   }) async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      // if (packageName.isBlank) {
-      //   packageName =
-      //       await methodChannel.invokeMethod<String>('getPackageName');
-      // }
-      // assert(!packageName.isBlank, 'The package name cannot be empty.');
-
-      // await _launchUrl('market://details?id=$packageName');
-      // await _launchUrl('market://details?id=$packageName');
-      await _launchUrl(packageName ?? '');
+      assert(androidOption != null, 'The androidOption cannot be empty.');
+      if ((androidOption?.packageName).isBlank) {
+        androidOption?.packageName =
+            await methodChannel.invokeMethod<String>('getPackageName');
+      }
+      assert(
+        !(androidOption?.packageName).isBlank,
+        'The packageName cannot be empty.',
+      );
+      final bool canUseMarket = await _launchUrl(androidOption?.url);
+      if (!canUseMarket && !(androidOption?.downloadUrl).isBlank) {
+        await _launchUrl(androidOption?.downloadUrl);
+      }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      assert(iOSOption != null, 'The IOSUpgradeOption cannot be empty.');
+      assert(iOSOption != null, 'The iOSOption cannot be empty.');
       await _launchUrl(iOSOption?.url);
     } else {
       const String details =

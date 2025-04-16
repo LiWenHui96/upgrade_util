@@ -10,7 +10,9 @@ enum IOSOpenMode {
   product('$_iOSPrefixUrl/app/apple-store/id%s'),
 
   /// Reviews page.
-  reviews('$_iOSPrefixUrl/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%s&type=Purple+Software'),
+  reviews(
+    '$_iOSPrefixUrl/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%s&type=Purple+Software',
+  ),
 
   /// Write a review.
   writeReview('$_iOSPrefixUrl/app/apple-store/id%s?action=write-review');
@@ -21,20 +23,43 @@ enum IOSOpenMode {
   final String link;
 }
 
-enum AndroidOpenMode {
-  /// Product page.
-  product('market://details?id=%s'),
+enum AndroidBrand {
+  /// Google
+  google(),
 
-  /// Reviews page.
-  reviews('market://search?q=pub:%s'),
+  /// 华为
+  huawei(link: 'appmarket://details?id=%s'),
 
-  /// Write a review.
-  writeReview('market://details?id=%s&showAllReviews=true');
+  /// 荣耀
+  honor(),
 
-  const AndroidOpenMode(this.link);
+  /// 小米/红米
+  xiaomi(),
+
+  /// OPPO/realme/OnePlus
+  oppo(),
+
+  /// vivo/iqoo
+  vivo(link: 'vivomarket://details?id=%s'),
+
+  /// 魅族
+  meizu(),
+
+  /// 腾讯应用宝
+  tencent(),
+
+  /// If you use a custom link, you need to use [AndroidUpgradeOption.link].
+  custom();
+
+  const AndroidBrand({this.link});
 
   /// Link.
-  final String link;
+  final String? link;
+
+  /// Whether to use a custom link.
+  bool get isNeedLink =>
+      this == AndroidBrand.xiaomi || this == AndroidBrand.custom;
 }
 
 const String _iOSPrefixUrl = 'itms-apps://itunes.apple.com';
+const String _AndroidPrefixUrl = 'market://details?id=%s';

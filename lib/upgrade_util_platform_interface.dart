@@ -32,7 +32,7 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
   /// Open App Store or Android application market.
   /// {@endtemplate}
   Future<void> openStore({
-    String? packageName,
+    AndroidUpgradeOption? androidOption,
     IOSUpgradeOption? iOSOption,
   }) {
     throw UnimplementedError('openStore() has not been implemented.');

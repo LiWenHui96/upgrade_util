@@ -12,11 +12,11 @@ class UpgradeUtil {
 
   /// {@macro upgrade.util.openStore}
   static Future<void> openStore({
-    String? packageName,
+    AndroidUpgradeOption? androidOption,
     IOSUpgradeOption? iOSOption,
   }) {
     return UpgradeUtilPlatform.instance.openStore(
-      packageName: packageName,
+      androidOption: androidOption,
       iOSOption: iOSOption,
     );
   }

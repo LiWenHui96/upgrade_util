@@ -105,43 +105,81 @@ class _HomePageState extends State<HomePage> {
   List<Widget> get _buildAndroidBody {
     return <Widget>[
       ElevatedButton(
-        // onPressed: () async => UpgradeUtil.openStore(
-        //   packageName: wechatPackageName,
-        // ),
         onPressed: () async => UpgradeUtil.openStore(
-          packageName: 'appmarket://details?id=$wechatPackageName',
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.google,
+            packageName: wechatPackageName,
+          ),
         ),
-        // child: const Text('Open Product Page.'),
+        child: const Text('Google'),
+      ),
+      ElevatedButton(
+        onPressed: () async => UpgradeUtil.openStore(
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.huawei,
+            packageName: wechatPackageName,
+          ),
+        ),
         child: const Text('华为'),
       ),
       ElevatedButton(
         onPressed: () async => UpgradeUtil.openStore(
-          // packageName: 'mimarket://details?id=$wechatPackageName',
-          // packageName: 'https://link.vvstc.com/index.html?id=$wechatPackageName',
-          packageName: 'https://link.vvstc.com/index.html?id=cn.eol.kaoyan',
-          // packageName: 'https://app.mi.com/details?id=$wechatPackageName',
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.xiaomi,
+            packageName: wechatPackageName,
+          ),
         ),
         child: const Text('小米'),
       ),
       ElevatedButton(
         onPressed: () async => UpgradeUtil.openStore(
-          packageName:
-              'market://details?id=$wechatPackageName&caller=$wechatPackageName',
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.oppo,
+            packageName: wechatPackageName,
+            parameters: <String, dynamic>{'caller': wechatPackageName},
+          ),
         ),
         child: const Text('OPPO'),
       ),
       ElevatedButton(
         onPressed: () async => UpgradeUtil.openStore(
-          packageName:
-              'vivomarket://details?id=$wechatPackageName&th_name=self_update&th_update_delay=1',
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.vivo,
+            packageName: wechatPackageName,
+            parameters: <String, dynamic>{
+              'th_name': 'self_update',
+              'th_update_delay': '1',
+            },
+          ),
         ),
         child: const Text('vivo'),
       ),
       ElevatedButton(
         onPressed: () async => UpgradeUtil.openStore(
-          packageName: 'market://details?id=$wechatPackageName',
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.honor,
+            packageName: wechatPackageName,
+          ),
         ),
         child: const Text('荣耀'),
+      ),
+      ElevatedButton(
+        onPressed: () async => UpgradeUtil.openStore(
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.meizu,
+            packageName: wechatPackageName,
+          ),
+        ),
+        child: const Text('魅族'),
+      ),
+      ElevatedButton(
+        onPressed: () async => UpgradeUtil.openStore(
+          androidOption: AndroidUpgradeOption(
+            brand: AndroidBrand.tencent,
+            packageName: wechatPackageName,
+          ),
+        ),
+        child: const Text('应用宝'),
       ),
     ];
   }

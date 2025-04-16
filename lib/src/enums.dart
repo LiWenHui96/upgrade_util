@@ -25,36 +25,42 @@ enum IOSOpenMode {
 
 enum AndroidBrand {
   /// Google
-  google(),
+  google(label: 'Google'),
 
   /// 华为
-  huawei(link: 'appmarket://details?id=%s'),
+  huawei(link: 'appmarket://details?id=%s', label: '华为'),
 
   /// 荣耀
-  honor(),
+  honor(label: '荣耀'),
 
   /// 小米/红米
-  xiaomi(),
+  xiaomi(label: '小米'),
 
   /// OPPO/realme/OnePlus
-  oppo(),
+  oppo(label: 'OPPO'),
 
   /// vivo/iqoo
-  vivo(link: 'vivomarket://details?id=%s'),
+  vivo(link: 'vivomarket://details?id=%s', label: 'vivo'),
 
   /// 魅族
-  meizu(),
+  meizu(label: '魅族'),
 
   /// 腾讯应用宝
-  tencent(),
+  tencent(label: '腾讯应用宝'),
+
+  /// 百度
+  baidu(label: '百度'),
 
   /// If you use a custom link, you need to use [AndroidUpgradeOption.link].
   custom();
 
-  const AndroidBrand({this.link});
+  const AndroidBrand({this.link, this.label});
 
   /// Link.
   final String? link;
+
+  /// label
+  final String? label;
 
   /// Whether to use a custom link.
   bool get isNeedLink =>

@@ -60,6 +60,3 @@ enum AndroidBrand {
   bool get isNeedLink =>
       this == AndroidBrand.xiaomi || this == AndroidBrand.custom;
 }
-
-const String _iOSPrefixUrl = 'itms-apps://itunes.apple.com';
-const String _AndroidPrefixUrl = 'market://details?id=%s';

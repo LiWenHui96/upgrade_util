@@ -1,9 +1,9 @@
 name: upgrade_util
 description: "A plug-in for application upgrades, which implements the method of jumping to the store and the function of installing after downloading the APK."
 version: 3.0.0
-homepage: https://github.com/LiWenHui96
-repository: https://github.com/LiWenHui96/upgrade_util
-issue_tracker: https://github.com/LiWenHui96/upgrade_util/issues
+homepage: https://github.com/LiWenHui96/
+repository: https://github.com/LiWenHui96/upgrade_util/
+issue_tracker: https://github.com/LiWenHui96/upgrade_util/issues/
 
 environment:
   sdk: ^3.5.0

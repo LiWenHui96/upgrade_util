@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Format Code.
+
 ## 3.0.0
 
 * Flutter minimum version `3.24.0`.

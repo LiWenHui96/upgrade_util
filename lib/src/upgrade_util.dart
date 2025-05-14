@@ -42,40 +42,51 @@ class AndroidUpgradeOption extends UpgradeOption {
     required this.brand,
     this.packageName,
     this.link,
-    this.isUseDownloadUrl = false,
     this.downloadUrl,
     super.parameters,
   });
 
-  /// The brand.
+  /// The brand of the current device.
   final AndroidBrand brand;
 
-  /// The package name.
-  String? packageName;
+  /// The name of package.
+  final String? packageName;
 
   /// Custom link.
-  /// Used for [AndroidBrand.xiaomi] and [AndroidBrand.custom].
+  /// Used for [AndroidBrand.xiaomi] or [AndroidBrand.custom].
   final String? link;
-
-  /// Whether to use download url.
-  final bool isUseDownloadUrl;
 
   /// Download url.
   final String? downloadUrl;
 
+  MethodChannel? channel;
+
   @override
-  String get url {
-    /// If [isUseDownloadUrl] is true, it will directly return [downloadUrl].
-    if (isUseDownloadUrl) {
-      return downloadUrl ?? '';
+  Future<String> get url async {
+    /// If [packageName] is null, get it from the native.
+    String? packageName = this.packageName;
+    if (packageName == null || packageName.isBlank) {
+      packageName = await channel?.invokeMethod<String>('getPackageName');
     }
 
-    /// Otherwise, jump to the application market.
+    /// If [packageName] is null, return empty string.
+    if (packageName == null || packageName.isBlank) return '';
+
     String url = '';
     if (brand.isNeedLink && !link.isBlank) {
       url = link.replace(<dynamic>[packageName]);
     } else {
-      url = brand.link ?? AndroidPrefixUrl;
+      /// 验证所属品牌的应用商店是否存在
+      bool? hasStore =
+          await channel?.invokeMethod<bool>('hasStore', brand.name);
+      hasStore ??= false;
+
+      if (hasStore) {
+        url = brand.link ?? AndroidPrefixUrl;
+      } else {
+        url = AndroidPrefixUrl;
+      }
+
       url = url.replace(<dynamic>[packageName]);
     }
     if (parameters != null) url = url.addParameters(parameters!);
@@ -104,8 +115,9 @@ class IOSUpgradeOption extends UpgradeOption {
   final IOSOpenMode mode;
 
   @override
-  String get url {
-    String url = (iOSPrefixUrl + mode.link).replace(<dynamic>[appleId]);
+  Future<String> get url async {
+    String url = (iOSPrefixUrl + mode.link).addParameters(mode.parameters);
+    url = url.replace(<dynamic>[appleId]);
     if (parameters != null) url = url.addParameters(parameters!);
     return url;
   }

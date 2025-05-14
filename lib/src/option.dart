@@ -3,6 +3,8 @@
 /// @Author: LiWeNHuI
 /// @Date: 2025/2/18
 
+library;
+
 abstract class UpgradeOption {
   UpgradeOption({this.parameters});
 
@@ -10,7 +12,7 @@ abstract class UpgradeOption {
   final Map<String, dynamic>? parameters;
 
   /// Link.
-  String get url;
+  Future<String> get url;
 }
 
 const String iOSPrefixUrl = 'itms-apps://itunes.apple.com';

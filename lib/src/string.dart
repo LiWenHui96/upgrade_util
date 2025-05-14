@@ -20,15 +20,16 @@ extension ExtendString on String? {
 
   /// 链接Uri拼接参数
   String addParameters(Map<String, dynamic> parameters) {
-    if (isBlank) return _d;
+    if (isBlank || parameters.isEmpty) return _d;
 
     final Uri? uri = Uri.tryParse(_d);
     if (uri == null) return _d;
 
     final Map<String, dynamic> existingMap =
         uri.queryParameters.cast<String, dynamic>();
-    final Map<String, dynamic> map = Map<String, dynamic>.from(existingMap);
-    return uri.replace(queryParameters: map..addAll(parameters)).toString();
+    Map<String, dynamic> map = Map<String, dynamic>.from(existingMap);
+    map = map..addAll(parameters);
+    return Uri.decodeFull(uri.replace(queryParameters: map).toString());
   }
 
   /// 替换文本

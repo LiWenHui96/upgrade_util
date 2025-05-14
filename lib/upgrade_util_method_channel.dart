@@ -26,22 +26,25 @@ class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
     IOSUpgradeOption? iOSOption,
   }) async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      assert(androidOption != null, 'The androidOption cannot be empty.');
-      if ((androidOption?.packageName).isBlank) {
-        androidOption?.packageName =
-            await methodChannel.invokeMethod<String>('getPackageName');
-      }
-      assert(
-        !(androidOption?.packageName).isBlank,
-        'The packageName cannot be empty.',
-      );
-      final bool canUseMarket = await _launchUrl(androidOption?.url);
-      if (!canUseMarket && !(androidOption?.downloadUrl).isBlank) {
-        await _launchUrl(androidOption?.downloadUrl);
+      if (androidOption == null) {
+        throw Exception('The AndroidUpgradeOption cannot be empty.');
+      } else {
+        androidOption.channel = methodChannel;
+        final String url = await androidOption.url;
+
+        if (url.isBlank) {
+          await _launchUrl(androidOption.downloadUrl);
+        } else {
+          final bool canUseMarket = await _launchUrl(await androidOption.url);
+          if (!canUseMarket) await _launchUrl(androidOption.downloadUrl);
+        }
       }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      assert(iOSOption != null, 'The iOSOption cannot be empty.');
-      await _launchUrl(iOSOption?.url);
+      if (iOSOption == null) {
+        throw Exception('The IOSUpgradeOption cannot be empty.');
+      } else {
+        await _launchUrl(await iOSOption.url);
+      }
     } else {
       const String details =
           'The `openStore` method of the upgrade_util plugin currently only '

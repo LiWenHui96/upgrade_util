@@ -7,60 +7,67 @@ part of '../upgrade_util.dart';
 
 enum IOSOpenMode {
   /// Product page.
-  product('/app/apple-store/id%s'),
+  product(link: '/app/apple-store/id%s'),
 
   /// Reviews page.
   reviews(
-    '/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%s&type=Purple+Software',
+    link: '/WebObjects/MZStore.woa/wa/viewContentsUserReviews',
+    parameters: <String, dynamic>{'id': '%s', 'type': 'Purple+Software'},
   ),
 
   /// Write a review.
-  writeReview('/app/apple-store/id%s?action=write-review');
+  writeReview(
+    link: '/app/apple-store/id%s',
+    parameters: <String, dynamic>{'action': 'write-review'},
+  );
 
-  const IOSOpenMode(this.link);
+  const IOSOpenMode({
+    this.link = '',
+    this.parameters = const <String, dynamic>{},
+  });
 
   /// Link.
   final String link;
+
+  /// 拼接参数
+  final Map<String, dynamic> parameters;
 }
 
 enum AndroidBrand {
   /// Google
-  google(label: 'Google'),
+  google(),
 
   /// 华为
-  huawei(link: 'appmarket://details?id=%s', label: '华为'),
+  huawei(link: 'appmarket://details?id=%s'),
 
   /// 荣耀
-  honor(label: '荣耀'),
+  honor(),
 
   /// 小米/红米
-  xiaomi(label: '小米'),
+  xiaomi(),
 
   /// OPPO/realme/OnePlus
-  oppo(label: 'OPPO'),
+  oppo(),
 
   /// vivo/iqoo
-  vivo(link: 'vivomarket://details?id=%s', label: 'vivo'),
+  vivo(link: 'vivomarket://details?id=%s'),
 
   /// 魅族
-  meizu(label: '魅族'),
+  meizu(),
 
   /// 腾讯应用宝
-  tencent(label: '腾讯应用宝'),
+  tencent(),
 
   /// 百度
-  baidu(label: '百度'),
+  baidu(),
 
   /// If you use a custom link, you need to use [AndroidUpgradeOption.link].
   custom();
 
-  const AndroidBrand({this.link, this.label});
+  const AndroidBrand({this.link});
 
   /// Link.
   final String? link;
-
-  /// label
-  final String? label;
 
   /// Whether to use a custom link.
   bool get isNeedLink =>

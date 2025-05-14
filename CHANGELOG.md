@@ -1,3 +1,7 @@
+## 3.1.0
+
+* Delete The label of Brand.
+
 ## 3.0.2
 
 * Add The label of Brand.

@@ -33,19 +33,19 @@ void main() {
   group('iOS', () {
     setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.iOS);
 
-    test('open detail opens the App Store detail page', () async {
-      await platform.open(type: .detail, appleID: appleID);
+    test('launch detail opens the App Store detail page', () async {
+      await platform.launch(type: .detail, appleID: appleID);
 
       expect(log, hasLength(1));
-      expect(log.single.method, 'open');
+      expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{'url': 'itms-apps://apps.apple.com/app/id$appleID'});
     });
 
-    test('open reviews opens the App Store reviews page', () async {
-      await platform.open(type: .reviews, appleID: appleID);
+    test('launch reviews opens the App Store reviews page', () async {
+      await platform.launch(type: .reviews, appleID: appleID);
 
       expect(log, hasLength(1));
-      expect(log.single.method, 'open');
+      expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{
         'url':
             'itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews'
@@ -53,30 +53,30 @@ void main() {
       });
     });
 
-    test('open review opens the App Store write-review page', () async {
-      await platform.open(type: .review, appleID: appleID);
+    test('launch review opens the App Store write-review page', () async {
+      await platform.launch(type: .review, appleID: appleID);
 
       expect(log, hasLength(1));
-      expect(log.single.method, 'open');
+      expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{
         'url': 'itms-apps://apps.apple.com/app/id$appleID?action=write-review',
       });
     });
 
-    test('open ignores packageName on iOS', () async {
-      await platform.open(type: .detail, packageName: 'com.tencent.xin', appleID: appleID);
+    test('launch ignores packageName on iOS', () async {
+      await platform.launch(type: .detail, packageName: 'com.tencent.xin', appleID: appleID);
 
       expect(log, hasLength(1));
       expect(log.single.arguments, <String, String>{'url': 'itms-apps://apps.apple.com/app/id$appleID'});
     });
 
-    test('open without appleID throws ArgumentError', () async {
-      await expectLater(platform.open(type: .detail), throwsArgumentError);
+    test('launch without appleID throws ArgumentError', () async {
+      await expectLater(platform.launch(type: .detail), throwsArgumentError);
       expect(log, isEmpty);
     });
 
-    test('open with an empty appleID throws ArgumentError', () async {
-      await expectLater(platform.open(type: .detail, appleID: ''), throwsArgumentError);
+    test('launch with an empty appleID throws ArgumentError', () async {
+      await expectLater(platform.launch(type: .detail, appleID: ''), throwsArgumentError);
       expect(log, isEmpty);
     });
   });
@@ -84,26 +84,25 @@ void main() {
   group('Android', () {
     setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.android);
 
-    // 当前 Android 分支尚未接入原生通道，仅断言调用可以正常完成。
-    test('open detail completes', () async {
-      await expectLater(platform.open(type: .detail), completes);
+    test('launch detail completes', () async {
+      await expectLater(platform.launch(type: .detail), completes);
     });
 
-    test('open with packageName completes', () async {
-      await expectLater(platform.open(type: .detail, packageName: 'com.example.app'), completes);
+    test('launch with packageName completes', () async {
+      await expectLater(platform.launch(type: .detail, packageName: 'com.example.app'), completes);
     });
   });
 
   group('unsupported platforms', () {
     setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.linux);
 
-    test('open detail throws UnsupportedError', () async {
-      await expectLater(platform.open(type: .detail, appleID: appleID), throwsUnsupportedError);
+    test('launch detail throws UnsupportedError', () async {
+      await expectLater(platform.launch(type: .detail, appleID: appleID), throwsUnsupportedError);
       expect(log, isEmpty);
     });
 
-    test('open review throws UnsupportedError', () async {
-      await expectLater(platform.open(type: .review, appleID: appleID), throwsUnsupportedError);
+    test('launch review throws UnsupportedError', () async {
+      await expectLater(platform.launch(type: .review, appleID: appleID), throwsUnsupportedError);
       expect(log, isEmpty);
     });
   });

@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   /// 以微信为例，跳转至 App Store。
   Future<void> _open(UpgradeOpenType type) async {
     try {
-      await UpgradeUtil.open(type: type, appleID: wechatAppleID);
+      await UpgradeUtil.launch(type: type, appleID: wechatAppleID);
     } on PlatformException catch (e) {
       debugPrint('Failed to open ${type.name}: ${e.message}');
     }

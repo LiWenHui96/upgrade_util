@@ -21,7 +21,7 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  /// {@template upgrade.util.open}
+  /// {@template upgrade.util.launch}
   /// 跳转至应用商店
   ///
   /// [type] 打开类型，参见 [UpgradeOpenType]。
@@ -32,7 +32,7 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
   /// 获取方式：App Store Connect（https://appstoreconnect.apple.com）→ 我的 App → 选择对应 App → 「App 信息」中的「Apple ID」；
   /// 也可从 App Store 链接 `https://apps.apple.com/app/id<AppleID>` 中 `id` 后的数字部分获取。
   /// {@endtemplate}
-  Future<void> open({required UpgradeOpenType type, String? packageName, String? appleID}) {
-    throw UnimplementedError('open() has not been implemented.');
+  Future<void> launch({required UpgradeOpenType type, String? packageName, String? appleID}) {
+    throw UnimplementedError('launch() has not been implemented.');
   }
 }

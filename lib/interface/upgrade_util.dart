@@ -11,7 +11,7 @@ part 'upgrade_util_method_channel.dart';
 part 'upgrade_util_platform_interface.dart';
 
 class UpgradeUtil {
-  /// {@macro upgrade.util.open}
-  static Future<void> open({required UpgradeOpenType type, String? packageName, String? appleID}) =>
-      UpgradeUtilPlatform.instance.open(type: type, packageName: packageName, appleID: appleID);
+  /// {@macro upgrade.util.launch}
+  static Future<void> launch({required UpgradeOpenType type, String? packageName, String? appleID}) =>
+      UpgradeUtilPlatform.instance.launch(type: type, packageName: packageName, appleID: appleID);
 }

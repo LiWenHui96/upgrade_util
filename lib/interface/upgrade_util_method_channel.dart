@@ -7,8 +7,10 @@ class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
   final MethodChannel methodChannel = const MethodChannel('upgrade_util');
 
   @override
-  Future<void> launch({required UpgradeOpenType type, String? packageName, String? appleID}) async {
+  Future<bool> launch({required UpgradeOpenType type, String? packageName, String? appleID}) async {
     if (defaultTargetPlatform == .android) {
+      // TODO(leoli): Android 端跳转应用商店暂未实现，先固定返回 false。
+      return false;
     } else if (defaultTargetPlatform == .iOS) {
       return _launchAppStore(type: type, id: appleID);
     } else {
@@ -22,7 +24,9 @@ class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
   /// iOS 端根据 [type] 拼接 App Store 链接，并通过原生通道打开。
   ///
   /// [id] 为 App 的 Apple ID，可在 App Store Connect 的「App 信息」中查看，iOS 端必传。
-  Future<void> _launchAppStore({required UpgradeOpenType type, String? id}) async {
+  ///
+  /// 返回系统回调的打开结果；原生侧未返回结果时视为失败。
+  Future<bool> _launchAppStore({required UpgradeOpenType type, String? id}) async {
     if (id == null || id.isEmpty) throw ArgumentError.value(id, 'id', 'The Apple ID is required on iOS.');
 
     final String url = switch (type) {
@@ -30,6 +34,6 @@ class MethodChannelUpgradeUtil extends UpgradeUtilPlatform {
       .reviews => 'itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=$id&type=Purple+Software',
       .review => 'apps.apple.com/app/id$id?action=write-review',
     };
-    await methodChannel.invokeMethod<void>('launch', <String, String>{'url': 'itms-apps://$url'});
+    return await methodChannel.invokeMethod<bool>('launch', <String, String>{'url': 'itms-apps://$url'}) ?? false;
   }
 }

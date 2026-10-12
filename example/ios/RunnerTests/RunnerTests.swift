@@ -22,7 +22,7 @@ class RunnerTests: XCTestCase {
 
     let resultExpectation = expectation(description: "result block must be called.")
     plugin.handle(call) { result in
-      XCTAssertEqual(result as! String, FlutterMethodNotImplemented)
+      XCTAssertTrue(result as? NSObject === FlutterMethodNotImplemented)
       resultExpectation.fulfill()
     }
     waitForExpectations(timeout: 1)
@@ -45,9 +45,12 @@ class RunnerTests: XCTestCase {
     expectLaunchInvalidArgument(arguments: ["url": 123])
   }
 
-  /// url 为无法解析的非法字符串时应返回 INVALID_ARGUMENT。
+  /// url 为无法解析的非法字符串（host 含空格）时应返回 INVALID_ARGUMENT。
+  ///
+  /// 注意 iOS 17 起 URL(string:) 会自动百分号编码路径中的空格，
+  /// 因此用 host 含空格的字符串作为无法解析的非法输入。
   func testLaunch_invalidURLString_returnsInvalidArgument() {
-    expectLaunchInvalidArgument(arguments: ["url": "invalid url with space"])
+    expectLaunchInvalidArgument(arguments: ["url": "http://exam ple.com"])
   }
 
   /// 校验 launch 参数非法时统一返回 code 为 INVALID_ARGUMENT 的 FlutterError。

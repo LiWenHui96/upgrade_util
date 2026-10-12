@@ -9,11 +9,12 @@ class _FakeUpgradeUtilPlatform extends UpgradeUtilPlatform {
   String? appleID;
 
   @override
-  Future<void> launch({required UpgradeOpenType type, String? packageName, String? appleID}) async {
+  Future<bool> launch({required UpgradeOpenType type, String? packageName, String? appleID}) async {
     callCount++;
     this.type = type;
     this.packageName = packageName;
     this.appleID = appleID;
+    return true;
   }
 }
 
@@ -37,8 +38,9 @@ void main() {
     final _FakeUpgradeUtilPlatform fake = _FakeUpgradeUtilPlatform();
     UpgradeUtilPlatform.instance = fake;
 
-    await UpgradeUtil.launch(type: .review, packageName: 'com.tencent.xin', appleID: '414478124');
+    final bool result = await UpgradeUtil.launch(type: .review, packageName: 'com.tencent.xin', appleID: '414478124');
 
+    expect(result, isTrue);
     expect(fake.callCount, 1);
     expect(fake.type, UpgradeOpenType.review);
     expect(fake.packageName, 'com.tencent.xin');

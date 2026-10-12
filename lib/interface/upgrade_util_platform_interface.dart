@@ -31,8 +31,10 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
   /// [appleID] App 的 Apple ID，iOS 必传，Android 不使用该参数。
   /// 获取方式：App Store Connect（https://appstoreconnect.apple.com）→ 我的 App → 选择对应 App → 「App 信息」中的「Apple ID」；
   /// 也可从 App Store 链接 `https://apps.apple.com/app/id<AppleID>` 中 `id` 后的数字部分获取。
+  ///
+  /// 返回是否成功打开目标页面；iOS 端由系统回调给出，Android 端暂未实现，固定返回 `false`。
   /// {@endtemplate}
-  Future<void> launch({required UpgradeOpenType type, String? packageName, String? appleID}) {
+  Future<bool> launch({required UpgradeOpenType type, String? packageName, String? appleID}) {
     throw UnimplementedError('launch() has not been implemented.');
   }
 }

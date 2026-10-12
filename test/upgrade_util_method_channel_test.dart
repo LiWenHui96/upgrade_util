@@ -34,16 +34,18 @@ void main() {
     setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.iOS);
 
     test('launch detail opens the App Store detail page', () async {
-      await platform.launch(type: .detail, appleID: appleID);
+      final bool result = await platform.launch(type: .detail, appleID: appleID);
 
+      expect(result, isTrue);
       expect(log, hasLength(1));
       expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{'url': 'itms-apps://apps.apple.com/app/id$appleID'});
     });
 
     test('launch reviews opens the App Store reviews page', () async {
-      await platform.launch(type: .reviews, appleID: appleID);
+      final bool result = await platform.launch(type: .reviews, appleID: appleID);
 
+      expect(result, isTrue);
       expect(log, hasLength(1));
       expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{
@@ -54,8 +56,9 @@ void main() {
     });
 
     test('launch review opens the App Store write-review page', () async {
-      await platform.launch(type: .review, appleID: appleID);
+      final bool result = await platform.launch(type: .review, appleID: appleID);
 
+      expect(result, isTrue);
       expect(log, hasLength(1));
       expect(log.single.method, 'launch');
       expect(log.single.arguments, <String, String>{
@@ -64,10 +67,39 @@ void main() {
     });
 
     test('launch ignores packageName on iOS', () async {
-      await platform.launch(type: .detail, packageName: 'com.tencent.xin', appleID: appleID);
+      final bool result = await platform.launch(type: .detail, packageName: 'com.tencent.xin', appleID: appleID);
 
+      expect(result, isTrue);
       expect(log, hasLength(1));
       expect(log.single.arguments, <String, String>{'url': 'itms-apps://apps.apple.com/app/id$appleID'});
+    });
+
+    test('launch returns false when the system fails to open the URL', () async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+        MethodCall methodCall,
+      ) async {
+        log.add(methodCall);
+        return false;
+      });
+
+      final bool result = await platform.launch(type: .detail, appleID: appleID);
+
+      expect(result, isFalse);
+      expect(log, hasLength(1));
+    });
+
+    test('launch returns false when the native side returns null', () async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+        MethodCall methodCall,
+      ) async {
+        log.add(methodCall);
+        return null;
+      });
+
+      final bool result = await platform.launch(type: .detail, appleID: appleID);
+
+      expect(result, isFalse);
+      expect(log, hasLength(1));
     });
 
     test('launch without appleID throws ArgumentError', () async {

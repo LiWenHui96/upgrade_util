@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,42 +17,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final UpgradeUtil _upgradeUtilPlugin = UpgradeUtil();
+  /// The app number of WeChat.
+  final String wechatAppleID = '414478124';
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
+  /// 以微信为例，跳转至 App Store。
+  Future<void> _open(UpgradeOpenType type) async {
     try {
-      platformVersion = await _upgradeUtilPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      await UpgradeUtil.open(type: type, appleID: wechatAppleID);
+    } on PlatformException catch (e) {
+      debugPrint('Failed to open ${type.name}: ${e.message}');
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final Widget child = Column(
+      crossAxisAlignment: .stretch,
+      spacing: 12,
+      children: <Widget>[
+        ElevatedButton(onPressed: () => _open(.detail), child: const Text('详情页')),
+        if (Platform.isIOS) ElevatedButton(onPressed: () => _open(.reviews), child: const Text('评论列表页')),
+        ElevatedButton(onPressed: () => _open(.review), child: const Text('写评论')),
+      ],
+    );
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Plugin example app')),
-        body: Center(child: Text('Running on: $_platformVersion\n')),
+        body: Padding(
+          padding: const .symmetric(horizontal: 12),
+          child: SingleChildScrollView(child: child),
+        ),
       ),
     );
   }

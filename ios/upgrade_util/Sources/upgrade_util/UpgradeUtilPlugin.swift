@@ -12,8 +12,25 @@ public class UpgradeUtilPlugin: NSObject, FlutterPlugin {
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
+    case "open":
+      open(call.arguments as? [String: Any], result: result)
     default:
       result(FlutterMethodNotImplemented)
     }
+  }
+
+  /// 打开链接
+  private func open(_ args: [String: Any]?, result: @escaping FlutterResult) {
+    guard let urlString = args?["url"] as? String, let url = URL(string: urlString) else {
+      result(
+        FlutterError(
+          code: "INVALID_ARGUMENT",
+          message: "open requires a valid url, got: \(String(describing: args?["url"])).",
+          details: nil
+        )
+      )
+      return
+    }
+    UIApplication.shared.open(url, options: [:]) { success in result(success) }
   }
 }

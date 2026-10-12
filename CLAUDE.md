@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `upgrade_util` is a Flutter plugin (published to pub.dev) for in-app updates: redirecting users to app stores, previewing reviews, and writing reviews. Supports Android and iOS.
 
-**Current state:** the Dart API surface was recently re-scaffolded from a newer Flutter plugin template (commits like "基于3.44.9升级" = upgraded based on Flutter 3.44.9). `lib/` currently only exposes `getPlatformVersion()` over a `MethodChannel`, while `README.md`/`CHANGELOG.md` still describe the fuller historical API (`UpgradeUtil.openStore`, `UpgradeOption`, `IOSUpgradeOption`, `AndroidUpgradeOption`, `AndroidBrand`). The `url_launcher` dependency was just added, indicating the store-redirect functionality is being reimplemented in Dart. When asked to implement store-opening features, follow the README's documented API as the spec.
+**Current state:** the Dart API surface was re-scaffolded from a newer Flutter plugin template (commits like "基于3.44.9升级" = upgraded based on Flutter 3.44.9), and the scaffold's `getPlatformVersion()` method has since been removed from Dart, Android and iOS. `lib/` now exposes `UpgradeUtil.launch({required UpgradeOpenType type, ...})`, which routes to the native `launch` method over the `upgrade_util` MethodChannel. `README.md`/`CHANGELOG.md` still describe the fuller historical API (`UpgradeUtil.openStore`, `UpgradeOption`, `IOSUpgradeOption`, `AndroidUpgradeOption`, `AndroidBrand`). When asked to implement store-opening features, follow the README's documented API as the spec.
 
 ## Commands
 

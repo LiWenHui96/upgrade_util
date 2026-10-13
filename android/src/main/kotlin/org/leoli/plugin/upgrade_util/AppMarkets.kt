@@ -117,19 +117,19 @@ object AppMarkets {
     /**
      * 返回 [all] 中已安装的市场包名。
      *
-     * 通过一次 `getInstalledPackages` 调用取回可见包列表后求交集，
-     * 避免逐包名多次 Binder IPC。manifest 中已通过 `<queries>` 声明
-     * 这些包名，Android 11+ 上它们在返回列表中可见。
+     * 逐包名调用 `getPackageInfo` 探测，不使用 `getInstalledPackages`：
+     * 后者会读取整机应用列表，属于敏感个人信息，存在隐私合规风险。
+     * manifest 中已通过 `<queries>` 声明这些包名，Android 11+ 上可被探测到。
      */
     fun filterInstalled(context: Context): List<String> {
-        val packages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.packageManager.getInstalledPackages(PackageManager.PackageInfoFlags.of(0))
-        } else {
-            @Suppress("DEPRECATION")
-            context.packageManager.getInstalledPackages(0)
+        return all.filter {
+            try {
+                packageInfo(context, it)
+                true
+            } catch (e: PackageManager.NameNotFoundException) {
+                false
+            }
         }
-        val installed = packages.mapTo(HashSet()) { it.packageName }
-        return all.filter { it in installed }
     }
 
     /** 返回 [packageName] 的 versionCode，未安装时返回 0。 */

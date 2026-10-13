@@ -1,3 +1,20 @@
+## 4.0.0
+
+* Add `UpgradeUtil.launch` with `UpgradeOpenType`: jump to the app store detail page, the review list page, or the write-review page, and return whether the jump was successfully initiated.
+* Android: automatically detect the installed vendor app market (Huawei, Honor, Xiaomi, OPPO, vivo, Meizu, Samsung) and launch it with the brand-specific scheme; unlisted markets use the generic `market://` protocol.
+* Android: support write-review deep links for OPPO (incl. realme, OnePlus), vivo and Honor (market versionCode ≥ 160036301); other markets fall back to the detail page.
+* Android: defer installed-market detection until the user triggers a jump, to comply with privacy requirements on reading the installed-app list.
+* Android: upgrade the build to AGP 8.11.1, Kotlin 2.2.20, Java 17 and compileSdk 36.
+* iOS: open the App Store detail page, the review list page and the write-review page via `itms-apps://` links.
+* iOS: support Swift Package Manager (iOS 15+) alongside CocoaPods, and bundle the privacy manifest.
+
+### BREAKING CHANGES
+
+* Flutter minimum version `3.41.0`, Dart minimum version `3.11.0`.
+* Android `minSdk` raised from 21 to 24; iOS deployment target raised from 12.0 to 15.0.
+* Remove `UpgradeUtil.openStore`, `UpgradeOption`, `IOSUpgradeOption`, `AndroidUpgradeOption` and `AndroidBrand`. Use `UpgradeUtil.launch` with `UpgradeOpenType` instead. For details on how to use it, see [README.md](README.md).
+* The review list page (`UpgradeOpenType.reviews`) is only supported on iOS; calling it on Android throws `UnsupportedError`.
+
 ## 3.1.0
 
 * Delete The label of Brand.

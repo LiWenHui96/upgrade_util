@@ -15,7 +15,7 @@ An in-app update plugin that supports redirecting to app stores for updates, pre
   s.source           = { :path => '.' }
   s.source_files = 'upgrade_util/Sources/upgrade_util/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '13.0'
+  s.platform = :ios, '15.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

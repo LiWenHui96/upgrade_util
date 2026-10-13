@@ -1,6 +1,6 @@
 name: upgrade_util
 description: "An in-app update plugin that supports redirecting to app stores for updates, previewing reviews, and writing reviews."
-version: 3.1.0
+version: 4.0.0
 homepage: https://github.com/LeoLi-Byte/
 repository: https://github.com/LeoLi-Byte/upgrade_util/
 issue_tracker: https://github.com/LeoLi-Byte/upgrade_util/issues/

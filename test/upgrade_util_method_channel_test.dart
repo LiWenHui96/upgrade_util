@@ -116,12 +116,58 @@ void main() {
   group('Android', () {
     setUp(() => debugDefaultTargetPlatformOverride = TargetPlatform.android);
 
-    test('launch detail completes', () async {
-      await expectLater(platform.launch(type: .detail), completes);
+    test('launch detail opens the market detail page', () async {
+      await platform.launch(type: .detail);
+
+      expect(log, hasLength(1));
+      expect(log.single.method, 'launchDetail');
+      // packageName 缺省为 null，由原生端使用本应用包名。
+      expect(log.single.arguments, <String, String?>{'packageName': null});
     });
 
-    test('launch with packageName completes', () async {
-      await expectLater(platform.launch(type: .detail, packageName: 'com.example.app'), completes);
+    test('launch detail forwards packageName', () async {
+      await platform.launch(type: .detail, packageName: 'com.example.app');
+
+      expect(log, hasLength(1));
+      expect(log.single.method, 'launchDetail');
+      expect(log.single.arguments, <String, String?>{'packageName': 'com.example.app'});
+    });
+
+    test('launch review opens the market review page', () async {
+      final bool result = await platform.launch(type: .review);
+
+      expect(result, isTrue);
+      expect(log, hasLength(1));
+      expect(log.single.method, 'launchReview');
+      // packageName 缺省为 null，由原生端使用本应用包名。
+      expect(log.single.arguments, <String, String?>{'packageName': null});
+    });
+
+    test('launch review forwards packageName', () async {
+      await platform.launch(type: .review, packageName: 'com.example.app');
+
+      expect(log, hasLength(1));
+      expect(log.single.method, 'launchReview');
+      expect(log.single.arguments, <String, String?>{'packageName': 'com.example.app'});
+    });
+
+    test('launch review returns false when the native side fails to open', () async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+        MethodCall methodCall,
+      ) async {
+        log.add(methodCall);
+        return false;
+      });
+
+      final bool result = await platform.launch(type: .review);
+
+      expect(result, isFalse);
+      expect(log, hasLength(1));
+    });
+
+    test('launch reviews throws UnsupportedError', () async {
+      await expectLater(platform.launch(type: .reviews), throwsUnsupportedError);
+      expect(log, isEmpty);
     });
   });
 

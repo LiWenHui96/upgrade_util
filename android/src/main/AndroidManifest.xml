@@ -1,1 +1,15 @@
-<manifest package="org.leoli.plugin.upgrade_util" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.leoli.plugin.upgrade_util">
+
+    <!-- Android 11+ 包可见性声明，用于检测各厂商应用市场是否安装 -->
+    <queries>
+        <package android:name="com.huawei.appmarket" />
+        <package android:name="com.xiaomi.market" />
+        <package android:name="com.heytap.market" />
+        <package android:name="com.oppo.market" />
+        <package android:name="com.bbk.appstore" />
+        <package android:name="com.hihonor.appmarket" />
+        <package android:name="com.sec.android.app.samsungapps" />
+        <package android:name="com.meizu.mstore" />
+    </queries>
+</manifest>

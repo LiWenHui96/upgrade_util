@@ -1,5 +1,9 @@
 part of 'upgrade_util.dart';
 
+/// upgrade_util 的平台接口
+///
+/// 平台侧实现应继承（而非实现）本类，以便在不破坏现有实现的前提下新增方法
+/// 注册实现时请赋值给 [UpgradeUtilPlatform.instance]
 abstract class UpgradeUtilPlatform extends PlatformInterface {
   /// Constructs a UpgradeUtilPlatform.
   UpgradeUtilPlatform() : super(token: _token);
@@ -24,15 +28,15 @@ abstract class UpgradeUtilPlatform extends PlatformInterface {
   /// {@template upgrade.util.launch}
   /// 跳转至应用商店
   ///
-  /// [type] 打开类型，参见 [UpgradeOpenType]。
+  /// [type] 目标页面类型，参见 [UpgradeOpenType]
   ///
-  /// [packageName] 目标应用包名，可不传；不传时 Android 默认使用本应用包名；iOS 不使用该参数。
+  /// [packageName] 目标应用包名，可不传；不传时 Android 默认使用本应用包名；iOS 不使用该参数
   ///
-  /// [appleID] App 的 Apple ID，iOS 必传，Android 不使用该参数。
+  /// [appleID] App 的 Apple ID，iOS 必传，Android 不使用该参数
   /// 获取方式：App Store Connect（https://appstoreconnect.apple.com）→ 我的 App → 选择对应 App → 「App 信息」中的「Apple ID」；
-  /// 也可从 App Store 链接 `https://apps.apple.com/app/id<AppleID>` 中 `id` 后的数字部分获取。
+  /// 也可从 App Store 链接 `https://apps.apple.com/app/id<AppleID>` 中 `id` 后的数字部分获取
   ///
-  /// 返回是否成功打开目标页面；iOS 端由系统回调给出，Android 端暂未实现，固定返回 `false`。
+  /// 返回是否成功发起跳转；iOS 端由系统回调给出，Android 端以能否唤起目标页面为准（不含用户后续操作）
   /// {@endtemplate}
   Future<bool> launch({required UpgradeOpenType type, String? packageName, String? appleID}) {
     throw UnimplementedError('launch() has not been implemented.');

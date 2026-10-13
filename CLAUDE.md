@@ -19,12 +19,6 @@ flutter test test/upgrade_util_test.dart # single test file
 cd example && flutter run                # run example app on a connected device/emulator
 ```
 
-Android plugin unit tests (JUnit 5 + Mockito, in `android/src/test/kotlin/`) run through the example's Gradle wrapper:
-
-```bash
-cd example/android && ./gradlew :upgrade_util:testDebugUnitTest
-```
-
 ## Release Process
 
 Pushing a version tag (`X.Y.Z`) triggers `.github/workflows/release.yml`, which extracts the matching section from `CHANGELOG.md` and creates a GitHub Release. When releasing: bump `version` in `pubspec.yaml`, add a `## X.Y.Z` section to `CHANGELOG.md`, then tag.
